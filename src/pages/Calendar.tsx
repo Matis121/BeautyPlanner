@@ -1,11 +1,12 @@
-import React from 'react';
-import { useState } from 'react';
-import Sidebar from '../components/Sidebar';
-import AddNewEventToCalendar from '../components/AddNewEventToCalendar';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import React from "react"
+import { useState } from "react"
+import Sidebar from "../components/Sidebar"
+import AddNewEventToCalendar from "../components/AddNewEventToCalendar"
+import FullCalendar from "@fullcalendar/react"
+import dayGridPlugin from "@fullcalendar/daygrid"
+import timeGridPlugin from "@fullcalendar/timegrid"
+import interactionPlugin from "@fullcalendar/interaction"
+import NotivicationBar from "@/components/NotivicationBar"
 
 function renderEventContent(eventInfo) {
   return (
@@ -16,11 +17,10 @@ function renderEventContent(eventInfo) {
         <p>{eventInfo.event.extendedProps.description}</p>
       )}
     </>
-  );
+  )
 }
 
 const Calendar = () => {
-
   const events = [
     {
       id: 1,
@@ -35,17 +35,23 @@ const Calendar = () => {
       start: "2023-07-22T11:00:00",
       end: "2023-07-22T12:00:00",
     },
-  ];
+  ]
 
-  const [showAddNewEvent, setShowAddNewEvent] = useState(false);
-  const [allEvents, setAllEvents] = useState(events);
-  const [newEvent, setNewEvent] = useState({id: "", title: "", start: "", end: "", description: ""});
+  const [showAddNewEvent, setShowAddNewEvent] = useState(false)
+  const [allEvents, setAllEvents] = useState(events)
+  const [newEvent, setNewEvent] = useState({
+    id: "",
+    title: "",
+    start: "",
+    end: "",
+    description: "",
+  })
 
   const handleAddEvents = () => {
     setAllEvents([...allEvents, newEvent])
   }
 
-  const eventContent = (arg) => {
+  const eventContent = arg => {
     return (
       <div className="overflow-hidden h-full">
         {arg.timeText}
@@ -57,56 +63,65 @@ const Calendar = () => {
     )
   }
 
-  const handleEventDrop = (eventDropInfo) => {
-    const updatedEvents = allEvents.map((event) => {
+  const handleEventDrop = eventDropInfo => {
+    const updatedEvents = allEvents.map(event => {
       if (event.id == eventDropInfo.event.id) {
         return {
           ...event,
           start: eventDropInfo.event.start,
           end: eventDropInfo.event.end,
-        };
+        }
       }
-      return event;
-    });
-    setAllEvents(updatedEvents);
-  };
+      return event
+    })
+    setAllEvents(updatedEvents)
+  }
 
-  console.log(allEvents);
+  console.log(allEvents)
 
   return (
-    <div className='flex'>
-      <Sidebar/>
-      <div className="w-full"> 
-      <AddNewEventToCalendar setShowAddNewEvent={setShowAddNewEvent} showAddNewEvent={showAddNewEvent} setNewEvent={setNewEvent} newEvent={newEvent} handleAddEvents={handleAddEvents}/>   
-        <FullCalendar
-          plugins={[ dayGridPlugin, timeGridPlugin, interactionPlugin ]}
-          initialView="timeGridWeek"
-          allDaySlot={false}
-          headerToolbar={{
-            start: "today prev,next",
-            center: "title",
-            end: "dayGridMonth,timeGridWeek,timeGridDay"
-          }}
-          height={"100vh"}
-          events={allEvents}
-          selectable={true}
-          eventContent={eventContent}
-          select ={function(start){
-            console.log("selection");
-            setNewEvent({
-              ...newEvent,
-              start: start.startStr,
-              end: start.endStr,
-              id: allEvents.length + 1,
-            });
-            setShowAddNewEvent(true);
-          }}
-          editable={true}
-          eventDrop={handleEventDrop}
-        />
+    <div className="flex">
+      <Sidebar />
+      <div className="w-full">
+        <NotivicationBar />
+        <div>
+          <AddNewEventToCalendar
+            setShowAddNewEvent={setShowAddNewEvent}
+            showAddNewEvent={showAddNewEvent}
+            setNewEvent={setNewEvent}
+            newEvent={newEvent}
+            handleAddEvents={handleAddEvents}
+          />
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
+            allDaySlot={false}
+            headerToolbar={{
+              start: "today prev,next",
+              center: "title",
+              end: "dayGridMonth,timeGridWeek,timeGridDay",
+            }}
+            height={"100vh"}
+            events={allEvents}
+            selectable={true}
+            eventContent={eventContent}
+            select={function (start) {
+              console.log("selection")
+              setNewEvent({
+                ...newEvent,
+                start: start.startStr,
+                end: start.endStr,
+                id: allEvents.length + 1,
+              })
+              setShowAddNewEvent(true)
+            }}
+            editable={true}
+            eventDrop={handleEventDrop}
+          />
+        </div>
       </div>
     </div>
   )
 }
 
-export default Calendar;
+export default Calendar
