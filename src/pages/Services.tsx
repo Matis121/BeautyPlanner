@@ -3,6 +3,7 @@ import Sidebar from "../components/Sidebar"
 import AddNewServices from "../components/AddNewServices"
 import { useServiceStore } from "../stores/store"
 import NotivicationBar from "@/components/NotivicationBar"
+import { Button } from "@/components/ui/button"
 
 const Services = () => {
   const removeService = useServiceStore(state => state.removeService)
@@ -19,7 +20,7 @@ const Services = () => {
         <Sidebar />
         <div className="w-full">
           <NotivicationBar />
-          <div className="flex flex-col w-full items-center justify-center">
+          <div className="flex flex-col w-full h-full items-center justify-center">
             <AddNewServices
               showAddServiceBox={showAddServiceBox}
               setShowAddServiceBox={setShowAddServiceBox}
@@ -28,23 +29,21 @@ const Services = () => {
               <div className="flex items-center justify-center w-full border-2 py-4">
                 <p className="p-4 font-bold text-2xl text-center uppercase"></p>
                 {services.length > 0 ? (
-                  <button
-                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 absolute right-20"
+                  <Button
                     onClick={() => setShowAddServiceBox(!showAddServiceBox)}
                   >
-                    Add new service
-                  </button>
+                    Dodaj usługę
+                  </Button>
                 ) : null}
               </div>
               {services.length === 0 ? (
                 <span className="flex flex-col gap-8 self-center mt-48 p-12 rounded-xl">
                   You dont have any services yet
-                  <button
-                    className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                  <Button
                     onClick={() => setShowAddServiceBox(!showAddServiceBox)}
                   >
-                    Add service
-                  </button>
+                    Dodaj usługę
+                  </Button>
                 </span>
               ) : (
                 <div className="relative overflow-x-auto shadow-md w-full">

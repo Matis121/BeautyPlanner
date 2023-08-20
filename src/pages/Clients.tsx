@@ -19,7 +19,7 @@ const Clients = () => {
         <Sidebar />
         <div className="w-full">
           <NotivicationBar />
-          <div className="flex flex-col w-full items-center justify-center">
+          <div className="flex flex-col w-full h-full items-center justify-center">
             <AddNewClient
               showAddClientBox={showAddClientBox}
               setShowAddClientBox={setShowAddClientBox}
