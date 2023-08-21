@@ -1,13 +1,11 @@
-import React from "react";
 import { useState } from "react";
-import Sidebar from "../components/Sidebar";
 import AddNewEventToCalendar from "../components/AddNewEventToCalendar";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import NotivicationBar from "@/components/NotivicationBar";
 import BasicLayout from "@/layout/BasicLayout";
+import "../myCalendarStyles.css"; // Import your custom styles
 
 function renderEventContent(eventInfo) {
   return (
@@ -77,7 +75,6 @@ const Calendar = () => {
     });
     setAllEvents(updatedEvents);
   };
-
   console.log(allEvents);
 
   return (
@@ -92,17 +89,33 @@ const Calendar = () => {
         />
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="timeGridWeek"
+          initialView={"timeGridWeek"}
+          locale={"en-GB"}
           allDaySlot={false}
+          buttonText={{
+            today: "dzisiaj",
+            month: "miesiąc",
+            week: "tydzień",
+            day: "dzień",
+          }}
           headerToolbar={{
-            start: "today prev,next",
+            start: "prev,next today",
             center: "title",
             end: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
+          slotLabelFormat={{
+            hour: "2-digit",
+            minute: "2-digit",
+            omitZeroMinute: false,
+            meridiem: false,
+            hour12: false,
+          }}
           height={"91vh"}
           events={allEvents}
-          selectable={true}
           eventContent={eventContent}
+          selectable={true}
+          editable={true}
+          eventDrop={handleEventDrop}
           select={function (start) {
             console.log("selection");
             setNewEvent({
@@ -113,8 +126,6 @@ const Calendar = () => {
             });
             setShowAddNewEvent(true);
           }}
-          editable={true}
-          eventDrop={handleEventDrop}
         />
       </div>
     </BasicLayout>
