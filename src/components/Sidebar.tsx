@@ -1,39 +1,54 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {
+  LuCalendarDays,
+  LuUsers,
+  LuWrench,
+  LuLineChart,
+  LuSettings,
+} from "react-icons/lu";
 
 const Sidebar = () => {
   return (
     <>
-      <section className="flex flex-col bg-slate-700 h-screen w-40 z-50">
-        <div className="pt-3 pb-6 px-6 flex text-white">
-          <a className="hover:cursor-pointer">WSTAW LOGO</a>
-        </div>
-        <div className="py-4 px-6 flex text-white">
-          <Link to="/" className="hover:cursor-pointer">
-            Pulpit
+      <section className="flex flex-col justify-between bg-zinc-800 h-screen w-28 z-50">
+        <div>
+          <Link
+            to="/calendar"
+            className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
+          >
+            <span className="mb-2 font-normal">Kalendarz</span>
+            <LuCalendarDays size={25} />
+          </Link>
+          <Link
+            to="/clients"
+            className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
+          >
+            <span className="mb-2 font-normal">Klienci</span>
+            <LuUsers size={25} />
+          </Link>
+          <Link
+            to="/services"
+            className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
+          >
+            <span className="mb-2 font-normal">Usługi</span>
+            <LuWrench size={25} />
+          </Link>
+          <Link
+            to="/calendar"
+            className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
+          >
+            <span className="mb-2 font-normal">Raporty</span>
+            <LuLineChart size={25} />
           </Link>
         </div>
-        <div className="py-4 px-6 flex text-white">
-          <Link to="/calendar" className="hover:cursor-pointer">
-            Kalendarz
-          </Link>
-        </div>
-        <div className="py-4 px-6 flex text-white">
-          <Link to="/clients" className="hover:cursor-pointer">
-            Klienci
-          </Link>
-        </div>
-        <div className="py-4 px-6 flex text-white">
-          <Link to="/services" className="hover:cursor-pointer">
-            Usługi
-          </Link>
-        </div>
-        <div className="py-4 px-6 flex text-white">
-          <a className="hover:cursor-pointer">Raporty</a>
-        </div>
-        <div className="py-4 px-6 flex text-white">
-          <a className="hover:cursor-pointer">Ustawienia</a>
-        </div>
+        <Link
+          to="/calendar"
+          className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
+        >
+          <span className="mb-2 font-normal">Ustawienia</span>
+          <LuSettings size={25} />
+        </Link>
       </section>
     </>
   );

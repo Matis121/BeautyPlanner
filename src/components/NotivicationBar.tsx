@@ -1,12 +1,19 @@
-import React from "react"
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const NotivicationBar = () => {
   return (
-    <nav className="flex justify-between bg-slate-700 w-full py-2 px-4">
-      <p className="text-white">Lokalizacja</p>
-      <p className="text-white">Moje konto</p>
+    <nav className="flex justify-between bg-background w-full py-4 px-4 border-b">
+      <Link
+        to="/"
+        className="text-violet-900 font-bold uppercase hover:cursor-pointer"
+      >
+        Wstaw logo
+      </Link>
+      <p>Moje konto</p>
     </nav>
-  )
-}
+  );
+};
 
-export default NotivicationBar
+export default NotivicationBar;
