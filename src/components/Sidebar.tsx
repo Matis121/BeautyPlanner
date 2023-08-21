@@ -17,37 +17,37 @@ const Sidebar = () => {
             to="/calendar"
             className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
           >
-            <span className="mb-2 font-normal">Kalendarz</span>
             <LuCalendarDays size={25} />
+            <span className="mb-2 font-normal">Kalendarz</span>
           </Link>
           <Link
             to="/clients"
             className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
           >
-            <span className="mb-2 font-normal">Klienci</span>
             <LuUsers size={25} />
+            <span className="mb-2 font-normal">Klienci</span>
           </Link>
           <Link
             to="/services"
             className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
           >
-            <span className="mb-2 font-normal">Usługi</span>
             <LuWrench size={25} />
+            <span className="mb-2 font-normal">Usługi</span>
           </Link>
           <Link
             to="/calendar"
             className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
           >
-            <span className="mb-2 font-normal">Raporty</span>
             <LuLineChart size={25} />
+            <span className="mb-2 font-normal">Raporty</span>
           </Link>
         </div>
         <Link
           to="/calendar"
           className="py-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-zinc-300"
         >
-          <span className="mb-2 font-normal">Ustawienia</span>
           <LuSettings size={25} />
+          <span className="mb-2 font-normal">Ustawienia</span>
         </Link>
       </section>
     </>

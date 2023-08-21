@@ -82,7 +82,7 @@ const Calendar = () => {
 
   return (
     <BasicLayout>
-      <div>
+      <div className="p-4">
         <AddNewEventToCalendar
           setShowAddNewEvent={setShowAddNewEvent}
           showAddNewEvent={showAddNewEvent}
@@ -99,7 +99,7 @@ const Calendar = () => {
             center: "title",
             end: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
-          height={"100vh"}
+          height={"91vh"}
           events={allEvents}
           selectable={true}
           eventContent={eventContent}
