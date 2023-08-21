@@ -1,23 +1,18 @@
-import React from "react"
-import Sidebar from "../components/Sidebar"
-import { useClientStore } from "../stores/store"
-import NotivicationBar from "@/components/NotivicationBar"
+import React from "react";
+import Sidebar from "../components/Sidebar";
+import { useClientStore } from "../stores/store";
+import NotivicationBar from "@/components/NotivicationBar";
+import BasicLayout from "@/layout/BasicLayout";
 
 const Home = () => {
-  const clients = useClientStore(state => state.clients)
-  console.log(clients)
+  const clients = useClientStore(state => state.clients);
+  console.log(clients);
 
   return (
-    <>
-      <section className="flex">
-        <Sidebar />
-        <div className="w-full">
-          <NotivicationBar />
-          <p>this is homepage</p>
-        </div>
-      </section>
-    </>
-  )
-}
+    <BasicLayout>
+      <p>this is homepage</p>
+    </BasicLayout>
+  );
+};
 
-export default Home
+export default Home;
