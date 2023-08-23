@@ -78,3 +78,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+nav a.active {
+  color: rgb(59 130 246);
+}
+nav a.active:hover {
+  color: rgb(59 130 246);
+}
