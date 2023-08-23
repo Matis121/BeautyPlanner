@@ -90,7 +90,7 @@ const Calendar = () => {
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView={"timeGridWeek"}
-          locale={"en-GB"}
+          locale={"pl-PL"}
           allDaySlot={false}
           buttonText={{
             today: "dzisiaj",
@@ -103,13 +103,45 @@ const Calendar = () => {
             center: "title",
             end: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
+          // titleFormat={{
+          //   year: "numeric",
+          //   month: "long",
+          //   day: "numeric",
+          //   weekday: "long",
+          // }}
+          views={{
+            dayGrid: {
+              titleFormat: {
+                year: "numeric",
+                month: "long",
+                day: "2-digit",
+              },
+            },
+            timeGridWeek: {
+              titleFormat: {
+                year: "numeric",
+                month: "long",
+                day: "2-digit",
+              },
+            },
+            timeGridDay: {
+              titleFormat: {
+                year: "numeric",
+                month: "long",
+                day: "2-digit",
+                weekday: "long",
+              },
+            },
+          }}
           slotLabelFormat={{
-            hour: "2-digit",
+            hour: "numeric",
             minute: "2-digit",
             omitZeroMinute: false,
             meridiem: false,
             hour12: false,
           }}
+          slotLabelInterval="01:00"
+          slotDuration="00:15:00"
           height={"91vh"}
           events={allEvents}
           eventContent={eventContent}
