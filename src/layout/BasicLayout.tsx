@@ -1,6 +1,7 @@
 import NotivicationBar from "@/components/NotivicationBar";
 import Sidebar from "@/components/Sidebar";
 import React from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 const BasicLayout = ({ children }) => {
   return (
@@ -9,6 +10,7 @@ const BasicLayout = ({ children }) => {
       <div className="flex flex-col w-full">
         <NotivicationBar />
         {children}
+        <Toaster />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
-import React from "react"
-import { useClientStore } from "../stores/store"
-import { useForm } from "react-hook-form"
-import { Button } from "@/components/ui/button"
+import React from "react";
+import { useClientStore } from "../../stores/store";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -9,11 +9,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 
 const AddNewClient = props => {
-  const addClient = useClientStore(state => state.addClient)
-  const clientStore = useClientStore(state => state.clients)
+  const addClient = useClientStore(state => state.addClient);
+  const clientStore = useClientStore(state => state.clients);
 
   const {
     register,
@@ -21,15 +21,15 @@ const AddNewClient = props => {
     getValues,
     resetField,
     formState: { errors },
-  } = useForm({})
-  const errorValue = "Pole obowiązkowe"
+  } = useForm({});
+  const errorValue = "Pole obowiązkowe";
 
   const resetValues = () => {
-    props.setShowAddClientBox(false)
-    resetField("firstName")
-    resetField("lastName")
-    resetField("phoneNumber")
-  }
+    props.setShowAddClientBox(false);
+    resetField("firstName");
+    resetField("lastName");
+    resetField("phoneNumber");
+  };
 
   const onSubmit = () => {
     const clientStructure = {
@@ -41,10 +41,10 @@ const AddNewClient = props => {
       mailAddress: getValues("emailAddress"),
       birthDay: getValues(),
       visits: {},
-    }
-    addClient(clientStructure)
-    resetValues()
-  }
+    };
+    addClient(clientStructure);
+    resetValues();
+  };
 
   return (
     <div
@@ -175,7 +175,7 @@ const AddNewClient = props => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddNewClient
+export default AddNewClient;
