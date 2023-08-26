@@ -58,6 +58,7 @@ const CustomForm = () => {
                     errors.firstName ? "border-red-500" : "null"
                   }`}
                   placeholder={`${errors.firstName ? errorValue : ""}`}
+                  maxLength={20}
                 />
               </div>
               <div className="grid grid-col-1 text-center"></div>
@@ -69,6 +70,7 @@ const CustomForm = () => {
                   id="lastName"
                   {...register("lastName")}
                   className="col-span-3"
+                  maxLength={25}
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -96,6 +98,8 @@ const CustomForm = () => {
                   id="phoneNumber"
                   {...register("phoneNumber")}
                   className="col-span-3"
+                  type="number"
+                  maxLength={15}
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -104,7 +108,12 @@ const CustomForm = () => {
                 </Label>
                 <Input
                   id="emailAddress"
-                  {...register("emailAddress")}
+                  {...register("emailAddress", {
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Invalid email format",
+                    },
+                  })}
                   className="col-span-3"
                 />
               </div>
@@ -116,6 +125,7 @@ const CustomForm = () => {
                   id="birthDay"
                   {...register("birthDay")}
                   className="col-span-3"
+                  type="date"
                 />
               </div>
             </div>

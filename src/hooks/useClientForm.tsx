@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 
-const useCustomForm = () => {
+const useClientForm = () => {
   const [open, setOpen] = useState(false);
   const addClient = useClientStore(state => state.addClient);
   const { toast } = useToast();
@@ -62,4 +62,4 @@ const useCustomForm = () => {
   };
 };
 
-export default useCustomForm;
+export default useClientForm;

@@ -1,12 +1,15 @@
 import { useClientStore } from "../../stores/store";
+import { Button } from "@/components/ui/button";
+import EditClientForm from "./EditClientForm";
 
 const ClientTable = () => {
   const clients = useClientStore(state => state.clients);
   const removeClient = useClientStore(state => state.removeClient);
-
   const handleDeleteClient = id => {
     removeClient(id);
   };
+
+  console.log(clients);
 
   return (
     <div className="relative overflow-x-auto w-full px-4">
@@ -57,20 +60,22 @@ const ClientTable = () => {
                 {/* KOD DO ZACIĄGANIA ILOŚCI WIZYT */}
               </td>
               <td className="px-6 py-4 text-right">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-4"
+                <EditClientForm
+                  selectedClient={{
+                    id: client.id,
+                    firstName: client.firstName,
+                    lastName: client.lastName,
+                    phoneNumber: client.phoneNumber,
+                    emailAddress: client.mailAddress,
+                    birthDay: client.birthDay,
+                  }}
+                />
+                <Button
+                  variant="link"
                   onClick={() => handleDeleteClient(client.id)}
                 >
-                  Edit
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  onClick={() => handleDeleteClient(client.id)}
-                >
-                  Delete
-                </a>
+                  Usuń
+                </Button>
               </td>
             </tr>
           ))}
