@@ -2,6 +2,16 @@ import { useClientStore } from "../../stores/store";
 import { Button } from "@/components/ui/button";
 import EditClientForm from "./EditClientForm";
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 const ClientTable = () => {
   const clients = useClientStore(state => state.clients);
   const removeClient = useClientStore(state => state.removeClient);
@@ -12,54 +22,28 @@ const ClientTable = () => {
   console.log(clients);
 
   return (
-    <div className="relative overflow-x-auto w-full px-4">
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-neutral-200 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" className="px-6 py-3">
-              LP
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Imię
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Nazwisko
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Telefon
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Wizyty
-            </th>
-            <th scope="col" className="px-6 py-3">
-              <span className="sr-only">Edit</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="relative w-full p-4 h-5/6 overflow-y-auto">
+      <Table className="bg-white rounded-md ">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">LP</TableHead>
+            <TableHead className="w-[300px]">Imię Nazwisko</TableHead>
+            <TableHead className="w-[300px]">Telefon</TableHead>
+            <TableHead className="w-[100px]">Wizyty</TableHead>
+            <TableHead className="text-right"></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {clients.map((client, idx) => (
-            <tr
-              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-              key={idx}
-            >
-              <td className="px-6 py-4">{idx + 1}</td>
-              <td
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                {client.firstName}
-              </td>
-              <td
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
+            <TableRow>
+              <TableCell className="font-medium">{idx + 1}</TableCell>
+              <TableCell>
+                {client.firstName + " "}
                 {client.lastName}
-              </td>
-              <td className="px-6 py-4">{client.phoneNumber}</td>
-              <td className="px-6 py-4">
-                {/* KOD DO ZACIĄGANIA ILOŚCI WIZYT */}
-              </td>
-              <td className="px-6 py-4 text-right">
+              </TableCell>
+              <TableCell>{client.phoneNumber}</TableCell>
+              <TableCell>{/* KOD DO WIZYT */}</TableCell>
+              <TableCell className="text-right">
                 <EditClientForm
                   selectedClient={{
                     id: client.id,
@@ -76,11 +60,11 @@ const ClientTable = () => {
                 >
                   Usuń
                 </Button>
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 };
