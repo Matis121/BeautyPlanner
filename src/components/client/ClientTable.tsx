@@ -22,14 +22,14 @@ const ClientTable = () => {
   console.log(clients);
 
   return (
-    <div className="relative w-full p-4 h-5/6 overflow-y-auto">
-      <Table className="bg-white rounded-md ">
+    <div className="overflow-y-auto mb-20 m-4 shadow-md max-h-full">
+      <Table className="bg-white rounded-md">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">LP</TableHead>
-            <TableHead className="w-[300px]">Imię Nazwisko</TableHead>
-            <TableHead className="w-[300px]">Telefon</TableHead>
-            <TableHead className="w-[100px]">Wizyty</TableHead>
+            <TableHead>LP</TableHead>
+            <TableHead>Imię Nazwisko</TableHead>
+            <TableHead>Telefon</TableHead>
+            <TableHead>Wizyty</TableHead>
             <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
