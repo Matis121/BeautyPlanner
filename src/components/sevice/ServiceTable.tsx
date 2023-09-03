@@ -1,6 +1,5 @@
-import { useClientStore } from "../../stores/store";
+import { useServiceStore } from "../../stores/store";
 import { Button } from "@/components/ui/button";
-// import EditClientForm from "./EditClientForm";
 
 import {
   Table,
@@ -12,10 +11,10 @@ import {
 } from "@/components/ui/table";
 
 const ServiceTable = () => {
-  const clients = useClientStore(state => state.clients);
-  const removeClient = useClientStore(state => state.removeClient);
-  const handleDeleteClient = id => {
-    removeClient(id);
+  const services = useServiceStore(state => state.services);
+  const removeService = useServiceStore(state => state.removeService);
+  const handleDeleteService = id => {
+    removeService(id);
   };
 
   return (
@@ -31,19 +30,16 @@ const ServiceTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {clients.map((client, idx) => (
+          {services.map((service, idx) => (
             <TableRow>
               <TableCell className="font-medium">{idx + 1}</TableCell>
-              <TableCell>
-                {client.firstName + " "}
-                {client.lastName}
-              </TableCell>
-              <TableCell>{client.phoneNumber}</TableCell>
-              <TableCell>{/* KOD DO WIZYT */}</TableCell>
+              <TableCell>{service.name + " "}</TableCell>
+              <TableCell>{service.duration}</TableCell>
+              <TableCell>{service.price}zł</TableCell>
               <TableCell className="text-right">
                 <Button
                   variant="link"
-                  onClick={() => handleDeleteClient(client.id)}
+                  onClick={() => handleDeleteService(service.id)}
                 >
                   Usuń
                 </Button>
