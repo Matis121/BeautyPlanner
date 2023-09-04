@@ -7,18 +7,6 @@ import interactionPlugin from "@fullcalendar/interaction";
 import BasicLayout from "@/layout/BasicLayout";
 import "../myCalendarStyles.css"; // Import your custom styles
 
-function renderEventContent(eventInfo) {
-  return (
-    <>
-      <strong>{eventInfo.timeText}</strong>
-      <p>{eventInfo.event.title}</p>
-      {eventInfo.event.extendedProps.description && (
-        <p>{eventInfo.event.extendedProps.description}</p>
-      )}
-    </>
-  );
-}
-
 const Calendar = () => {
   const events = [
     {
@@ -27,6 +15,7 @@ const Calendar = () => {
       start: "2023-07-22T08:00:00",
       end: "2023-07-22T10:00:00",
       description: "This is the description for Event 1.",
+      freeTime: true,
     },
     {
       id: 2,
@@ -44,6 +33,8 @@ const Calendar = () => {
     start: "",
     end: "",
     description: "",
+    freeTime: "",
+    status: "",
   });
 
   const handleAddEvents = () => {
@@ -51,8 +42,16 @@ const Calendar = () => {
   };
 
   const eventContent = arg => {
+    let bgEventColor;
+
+    if (arg.event.extendedProps.freeTime === false) {
+      bgEventColor = "bg-black";
+    } else {
+      bgEventColor = "bg-red-400";
+    }
+
     return (
-      <div className="overflow-hidden h-full">
+      <div className={`overflow-hidden h-full ${bgEventColor} border-none`}>
         {arg.timeText}
         <br></br>
         <strong>{arg.event.title}</strong>
@@ -75,7 +74,6 @@ const Calendar = () => {
     });
     setAllEvents(updatedEvents);
   };
-  console.log(allEvents);
 
   return (
     <BasicLayout>
@@ -103,12 +101,6 @@ const Calendar = () => {
             center: "title",
             end: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
-          // titleFormat={{
-          //   year: "numeric",
-          //   month: "long",
-          //   day: "numeric",
-          //   weekday: "long",
-          // }}
           views={{
             dayGrid: {
               titleFormat: {
@@ -140,6 +132,13 @@ const Calendar = () => {
             meridiem: false,
             hour12: false,
           }}
+          eventRender={function (event, element, view) {
+            if (event.start === "2023-07-22T08:00:00") {
+              element.css("background-color", "#FFB347");
+            } else {
+              element.css("background-color", "#b806af");
+            }
+          }}
           slotLabelInterval="01:00"
           slotDuration="00:15:00"
           height={"91vh"}
@@ -154,7 +153,7 @@ const Calendar = () => {
               ...newEvent,
               start: start.startStr,
               end: start.endStr,
-              id: allEvents.length + 1,
+              id: crypto.randomUUID(),
             });
             setShowAddNewEvent(true);
           }}

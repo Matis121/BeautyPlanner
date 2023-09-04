@@ -1,32 +1,39 @@
-import React, { useRef, useState } from "react"
-import { useEffect } from "react"
-import { useClientStore, useServiceStore } from "../stores/store"
+import React, { useRef, useState } from "react";
+import { useEffect } from "react";
+import { useClientStore, useServiceStore } from "../stores/store";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 const AddNewEventToCalendar = props => {
-  const clients = useClientStore(state => state.clients)
-  const services = useServiceStore(state => state.services)
-  const [eventTitle, setEventTitle] = useState("")
-  const [eventDescription, setEventDescription] = useState("")
+  const clients = useClientStore(state => state.clients);
+  const services = useServiceStore(state => state.services);
+  const [eventTitle, setEventTitle] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+  const [freeTime, setFreeTime] = useState(false);
 
   const addNewEvent = () => {
     if (eventTitle === "") {
-      return
+      return;
     }
     setTimeout(() => {
-      props.handleAddEvents()
-    }, 300)
-    setEventTitle("")
-    setEventDescription("")
-    props.setShowAddNewEvent(false)
-  }
+      props.handleAddEvents();
+    }, 300);
+    setEventTitle("");
+    setEventDescription("");
+    props.setShowAddNewEvent(false);
+  };
 
   useEffect(() => {
-    props.setNewEvent({ ...props.newEvent, title: eventTitle })
-  }, [eventTitle])
+    props.setNewEvent({ ...props.newEvent, title: eventTitle });
+  }, [eventTitle]);
 
   useEffect(() => {
-    props.setNewEvent({ ...props.newEvent, description: eventDescription })
-  }, [eventDescription])
+    props.setNewEvent({ ...props.newEvent, description: eventDescription });
+  }, [eventDescription]);
+
+  useEffect(() => {
+    props.setNewEvent({ ...props.newEvent, freeTime: freeTime });
+  }, [freeTime]);
 
   return (
     <div
@@ -43,12 +50,20 @@ const AddNewEventToCalendar = props => {
           Close
         </button>
         <p className="text-lg">Create new visit:</p>
+        <div className="flex justify-center items-center">
+          <Switch
+            id="airplane-mode"
+            className="mr-4"
+            onClick={() => setFreeTime(!freeTime)}
+          />
+          <Label htmlFor="airplane-mode">Czas wolny</Label>
+        </div>
         <select
           name="clients"
           value={eventTitle}
           onChange={e => setEventTitle(e.target.value)}
         >
-          <option>choose client</option>
+          <option>Wybierz klienta</option>
           {clients.map(client => (
             <option key={client.id}>
               {client.firstName} {client.surName}
@@ -60,9 +75,9 @@ const AddNewEventToCalendar = props => {
           value={eventDescription}
           onChange={e => setEventDescription(e.target.value)}
         >
-          <option>choose service</option>
+          <option>Wybierz usługę</option>
           {services.map(service => (
-            <option key={service.id}>{service.serviceName}</option>
+            <option key={service.id}>{service.name}</option>
           ))}
         </select>
         <button
@@ -74,7 +89,7 @@ const AddNewEventToCalendar = props => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddNewEventToCalendar
+export default AddNewEventToCalendar;
