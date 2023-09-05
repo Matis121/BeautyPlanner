@@ -1,10 +1,8 @@
-import React from "react"
-import { useServiceStore } from "../stores/store"
-import { useForm } from "react-hook-form"
+import { useServiceStore } from "../stores/store";
+import { useForm } from "react-hook-form";
 
 const AddNewServices = props => {
-  const addService = useServiceStore(state => state.addService)
-  const serviceStore = useServiceStore(state => state.services)
+  const addService = useServiceStore(state => state.addService);
 
   const {
     register,
@@ -12,8 +10,8 @@ const AddNewServices = props => {
     getValues,
     resetField,
     formState: { errors },
-  } = useForm({})
-  const errorValue = "This field is required"
+  } = useForm({});
+  const errorValue = "This field is required";
 
   const onSubmit = () => {
     const serviceStructure = {
@@ -21,13 +19,13 @@ const AddNewServices = props => {
       name: getValues("name"),
       price: getValues("price"),
       duration: getValues("duration"),
-    }
-    addService(serviceStructure)
-    props.setShowAddServiceBox(false)
-    resetField("name")
-    resetField("price")
-    resetField("duration")
-  }
+    };
+    addService(serviceStructure);
+    props.setShowAddServiceBox(false);
+    resetField("name");
+    resetField("price");
+    resetField("duration");
+  };
 
   return (
     <div
@@ -89,7 +87,7 @@ const AddNewServices = props => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddNewServices
+export default AddNewServices;

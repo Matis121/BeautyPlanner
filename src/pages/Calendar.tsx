@@ -50,6 +50,19 @@ const Calendar = () => {
       bgEventColor = "bg-red-400";
     }
 
+    if(arg.event.extendedProps.status){
+      switch(arg.event.extendedProps.status){
+        case 'confirmed':
+          bgEventColor = "";
+        case 'done':
+          bgEventColor = "";
+        case 'canceled':
+          bgEventColor = "";
+        default:
+          bgEventColor = "";
+      }
+    }
+
     return (
       <div className={`overflow-hidden h-full ${bgEventColor} border-none`}>
         {arg.timeText}
@@ -131,13 +144,6 @@ const Calendar = () => {
             omitZeroMinute: false,
             meridiem: false,
             hour12: false,
-          }}
-          eventRender={function (event, element, view) {
-            if (event.start === "2023-07-22T08:00:00") {
-              element.css("background-color", "#FFB347");
-            } else {
-              element.css("background-color", "#b806af");
-            }
           }}
           slotLabelInterval="01:00"
           slotDuration="00:15:00"
