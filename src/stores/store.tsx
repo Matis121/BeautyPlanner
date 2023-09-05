@@ -42,3 +42,26 @@ const ClientStore = persist(
 );
 
 export const useClientStore = create(ClientStore);
+
+const EventStore = persist(
+  devtools(set => ({
+    events: [],
+    addEvent: event => set(state => ({ events: [...state.events, event] })),
+    removeEvent: id =>
+      set(state => ({
+        events: state.events.filter(event => event.id !== id),
+      })),
+    editEvent: (id, updatedEvent) =>
+      set(state => ({
+        events: state.events.map(event =>
+          event.id === id ? { ...event, ...updatedEvent } : event
+        ),
+      })),
+  })),
+  {
+    name: "eventStore", // Specify a unique name for the store
+    getStorage: () => localStorage, // Use localStorage as the storage provider
+  }
+);
+
+export const useEventStore = create(EventStore);

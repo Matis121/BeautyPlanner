@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddNewEventToCalendar from "../components/AddNewEventToCalendar";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -7,39 +7,42 @@ import interactionPlugin from "@fullcalendar/interaction";
 import BasicLayout from "@/layout/BasicLayout";
 import "../myCalendarStyles.css"; // Import your custom styles
 
+import { useEventStore } from "../stores/store";
+
 const Calendar = () => {
-  const events = [
-    {
-      id: 1,
-      title: "Our first client",
-      start: "2023-07-22T08:00:00",
-      end: "2023-07-22T10:00:00",
-      description: "This is the description for Event 1.",
-      freeTime: true,
-    },
-    {
-      id: 2,
-      title: "Our first client",
-      start: "2023-07-22T11:00:00",
-      end: "2023-07-22T12:00:00",
-    },
-  ];
+  // const events = [];
+
+  const removeEvent = useEventStore(state => state.removeEvent);
+  const editEvent = useEventStore(state => state.editEvent);
+  const addEvent = useEventStore(state => state.addEvent);
+  const events = useEventStore(state => state.events);
+
+  const oneEvent = {
+    id: 1,
+    title: "Our first client",
+    start: "2023-07-22T08:00:00",
+    end: "2023-07-22T10:00:00",
+    description: "This is the description for Event 1.",
+    freeTime: true,
+  };
 
   const [showAddNewEvent, setShowAddNewEvent] = useState(false);
-  const [allEvents, setAllEvents] = useState(events);
   const [newEvent, setNewEvent] = useState({
-    id: "",
-    title: "",
-    start: "",
-    end: "",
-    description: "",
-    freeTime: "",
-    status: "",
+    // id: "",
+    // title: "",
+    // start: "",
+    // end: "",
+    // description: "",
+    // freeTime: "",
+    // status: "",
   });
 
   const handleAddEvents = () => {
-    setAllEvents([...allEvents, newEvent]);
+    console.log(newEvent);
+    addEvent(newEvent);
   };
+
+  console.log(events);
 
   const eventContent = arg => {
     let bgEventColor;
@@ -50,13 +53,13 @@ const Calendar = () => {
       bgEventColor = "bg-red-400";
     }
 
-    if(arg.event.extendedProps.status){
-      switch(arg.event.extendedProps.status){
-        case 'confirmed':
+    if (arg.event.extendedProps.status) {
+      switch (arg.event.extendedProps.status) {
+        case "confirmed":
           bgEventColor = "";
-        case 'done':
+        case "done":
           bgEventColor = "";
-        case 'canceled':
+        case "canceled":
           bgEventColor = "";
         default:
           bgEventColor = "";
@@ -75,17 +78,16 @@ const Calendar = () => {
   };
 
   const handleEventDrop = eventDropInfo => {
-    const updatedEvents = allEvents.map(event => {
+    const updatedEvents = events.map(event => {
       if (event.id == eventDropInfo.event.id) {
-        return {
-          ...event,
+        const newEventValues = {
           start: eventDropInfo.event.start,
           end: eventDropInfo.event.end,
         };
+        editEvent(event.id, newEventValues);
       }
-      return event;
     });
-    setAllEvents(updatedEvents);
+    updatedEvents();
   };
 
   return (
@@ -148,13 +150,12 @@ const Calendar = () => {
           slotLabelInterval="01:00"
           slotDuration="00:15:00"
           height={"91vh"}
-          events={allEvents}
+          events={events}
           eventContent={eventContent}
           selectable={true}
           editable={true}
           eventDrop={handleEventDrop}
           select={function (start) {
-            console.log("selection");
             setNewEvent({
               ...newEvent,
               start: start.startStr,
@@ -162,6 +163,10 @@ const Calendar = () => {
               id: crypto.randomUUID(),
             });
             setShowAddNewEvent(true);
+          }}
+          eventClick={function (info) {
+            removeEvent(info.event._def.publicId);
+            console.log(events);
           }}
         />
       </div>

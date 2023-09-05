@@ -17,7 +17,7 @@ const AddNewEventToCalendar = props => {
     }
     setTimeout(() => {
       props.handleAddEvents();
-    }, 300);
+    });
     setEventTitle("");
     setEventDescription("");
     props.setShowAddNewEvent(false);

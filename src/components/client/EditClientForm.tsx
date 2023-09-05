@@ -30,8 +30,6 @@ const EditClientForm = props => {
     ...props.selectedClient,
   });
 
-  console.log(clientData);
-
   const handleFieldChange = (field, value) => {
     setClientData(prevClientData => ({
       ...prevClientData,

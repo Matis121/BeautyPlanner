@@ -19,8 +19,6 @@ const ClientTable = () => {
     removeClient(id);
   };
 
-  console.log(clients);
-
   return (
     <div className="overflow-y-auto mb-20 m-4 shadow-md max-h-full">
       <Table className="bg-white rounded-md">
