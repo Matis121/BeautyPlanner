@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useClientStore, useServiceStore } from "../stores/store";
+import { useClientStore, useServiceStore } from "../../stores/store";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 
 const AddNewEventToCalendar = props => {
   const clients = useClientStore(state => state.clients);
@@ -10,6 +11,14 @@ const AddNewEventToCalendar = props => {
   const [eventTitle, setEventTitle] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [freeTime, setFreeTime] = useState(false);
+  const { toast } = useToast();
+
+  const toastEvent = () => {
+    toast({
+      title: "Zadanie wykonane!",
+      description: "Wizyta została dodana do kalendarza.",
+    });
+  };
 
   const addNewEvent = () => {
     if (eventTitle === "") {
@@ -21,6 +30,7 @@ const AddNewEventToCalendar = props => {
     setEventTitle("");
     setEventDescription("");
     props.setShowAddNewEvent(false);
+    toastEvent();
   };
 
   useEffect(() => {
