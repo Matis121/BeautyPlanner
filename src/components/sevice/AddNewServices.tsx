@@ -1,4 +1,4 @@
-import { useServiceStore } from "../stores/store";
+import { useServiceStore } from "../../stores/store";
 import { useForm } from "react-hook-form";
 
 const AddNewServices = props => {
