@@ -61,7 +61,6 @@ const CustomForm = () => {
                   maxLength={20}
                 />
               </div>
-              <div className="grid grid-col-1 text-center"></div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="lastName" className="text-right">
                   Nazwisko

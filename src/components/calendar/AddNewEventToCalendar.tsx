@@ -1,18 +1,40 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { useClientStore, useServiceStore } from "../../stores/store";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 
 const AddNewEventToCalendar = props => {
   const clients = useClientStore(state => state.clients);
   const services = useServiceStore(state => state.services);
+
   const [eventTitle, setEventTitle] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [freeTime, setFreeTime] = useState(false);
-  const { toast } = useToast();
 
+  console.log(eventTitle);
+
+  const { toast } = useToast();
   const toastEvent = () => {
     toast({
       title: "Zadanie wykonane!",
@@ -21,15 +43,14 @@ const AddNewEventToCalendar = props => {
   };
 
   const addNewEvent = () => {
-    if (eventTitle === "") {
+    if (freeTime === false && eventTitle === "") {
       return;
     }
-    setTimeout(() => {
-      props.handleAddEvents();
-    });
+    props.handleAddEvents();
+    props.setOpen(false);
     setEventTitle("");
     setEventDescription("");
-    props.setShowAddNewEvent(false);
+    setFreeTime(false);
     toastEvent();
   };
 
@@ -46,58 +67,101 @@ const AddNewEventToCalendar = props => {
   }, [freeTime]);
 
   return (
-    <div
-      className={`${
-        props.showAddNewEvent === true ? "flex" : "hidden"
-      } fixed w-full h-full bg-slate-500/60 items-center justify-center z-10`}
-    >
-      <div className="fixed flex flex-col gap-6 items-center justify-center bg-white p-24 rounded-xl z-10 drop-shadow-md">
-        <button
-          onClick={() => props.setShowAddNewEvent(false)}
-          type="button"
-          className="absolute top-3 right-5 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-        >
-          Close
-        </button>
-        <p className="text-lg">Create new visit:</p>
-        <div className="flex justify-center items-center">
-          <Switch
-            id="airplane-mode"
-            className="mr-4"
-            onClick={() => setFreeTime(!freeTime)}
-          />
-          <Label htmlFor="airplane-mode">Czas wolny</Label>
-        </div>
-        <select
-          name="clients"
-          value={eventTitle}
-          onChange={e => setEventTitle(e.target.value)}
-        >
-          <option>Wybierz klienta</option>
-          {clients.map(client => (
-            <option key={client.id}>
-              {client.firstName} {client.surName}
-            </option>
-          ))}
-        </select>
-        <select
-          name="services"
-          value={eventDescription}
-          onChange={e => setEventDescription(e.target.value)}
-        >
-          <option>Wybierz usługę</option>
-          {services.map(service => (
-            <option key={service.id}>{service.name}</option>
-          ))}
-        </select>
-        <button
-          onClick={addNewEvent}
-          type="button"
-          className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Confirm
-        </button>
-      </div>
+    <div className="p-4">
+      <Dialog open={props.open} onOpenChange={props.setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="outline">Dodaj klienta</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Nowa wizyta</DialogTitle>
+          </DialogHeader>
+          <form>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="firstName" className="text-right">
+                  Czas wolny
+                </Label>
+                <Switch
+                  id="airplane-mode"
+                  className="mr-4 col-span-2"
+                  onClick={() => setFreeTime(!freeTime)}
+                />
+              </div>
+              {freeTime === false ? (
+                <>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="firstName" className="text-right">
+                      Klient
+                    </Label>
+                    <Select onValueChange={e => setEventTitle(e)}>
+                      <SelectTrigger className="col-span-2">
+                        <SelectValue placeholder="Wybierz klienta" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {clients.map(client => (
+                            <SelectItem
+                              key={client.id}
+                              value={client.firstName + " " + client.lastName}
+                            >
+                              {client.firstName + " " + client.lastName}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <Button type="submit" className=" text-xs">
+                      Nowy klient
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="lastName" className="text-right">
+                      Usługa
+                    </Label>
+                    <Select onValueChange={e => setEventDescription(e)}>
+                      <SelectTrigger className="col-span-3">
+                        <SelectValue placeholder="Wybierz usługę" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {services.map(service => (
+                            <SelectItem key={service.id} value={service.name}>
+                              {service.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="gender" className="text-right">
+                      Opis
+                    </Label>
+                    <Input
+                      className="col-span-3"
+                      type="number"
+                      maxLength={15}
+                    />
+                  </div>
+                </>
+              ) : null}
+            </div>
+            <div className="flex justify-end gap-4">
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => props.setOpen(false)}
+              >
+                Anuluj
+              </Button>
+              <Button type="button" onClick={addNewEvent}>
+                Dodaj
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

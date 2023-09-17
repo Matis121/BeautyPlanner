@@ -27,6 +27,7 @@ const Calendar = () => {
   };
 
   const [showAddNewEvent, setShowAddNewEvent] = useState(false);
+  const [open, setOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({
     // id: "",
     // title: "",
@@ -38,11 +39,8 @@ const Calendar = () => {
   });
 
   const handleAddEvents = () => {
-    console.log(newEvent);
     addEvent(newEvent);
   };
-
-  console.log(events);
 
   const eventContent = arg => {
     let bgEventColor;
@@ -94,8 +92,8 @@ const Calendar = () => {
     <BasicLayout>
       <div className="p-4">
         <AddNewEventToCalendar
-          setShowAddNewEvent={setShowAddNewEvent}
-          showAddNewEvent={showAddNewEvent}
+          setOpen={setOpen}
+          open={open}
           setNewEvent={setNewEvent}
           newEvent={newEvent}
           handleAddEvents={handleAddEvents}
@@ -162,11 +160,10 @@ const Calendar = () => {
               end: start.endStr,
               id: crypto.randomUUID(),
             });
-            setShowAddNewEvent(true);
+            setOpen(true);
           }}
           eventClick={function (info) {
             removeEvent(info.event._def.publicId);
-            console.log(events);
           }}
         />
       </div>
