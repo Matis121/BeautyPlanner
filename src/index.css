@@ -85,3 +85,11 @@ nav a.active {
 nav a.active:hover {
   color: rgb(59 130 246);
 }
+
+.fc-non-business {
+  backdrop-filter: brightness(90%) !important;
+}
+
+.fc-timegrid-slot-label-cushion {
+  font-weight: 500;
+}

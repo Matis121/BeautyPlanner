@@ -39,13 +39,13 @@ const Sidebar = () => {
             <LuWrench size={28} />
             <span className="mt-1 font-normal text-xs">Usługi</span>
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/reports"
             className="my-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-gray-300"
           >
             <LuLineChart size={28} />
             <span className="mt-1 font-normal text-xs">Raporty</span>
-          </NavLink>
+          </NavLink> */}
         </div>
         <NavLink
           to="/settings"

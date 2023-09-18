@@ -34,8 +34,8 @@ const ServiceTable = () => {
             <TableRow>
               <TableCell className="font-medium">{idx + 1}</TableCell>
               <TableCell>{service.name + " "}</TableCell>
-              <TableCell>{service.duration}</TableCell>
-              <TableCell>{service.price}zł</TableCell>
+              <TableCell>{service.duration} min</TableCell>
+              <TableCell>{service.price} zł</TableCell>
               <TableCell className="text-right">
                 <Button
                   variant="link"

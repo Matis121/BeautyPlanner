@@ -23,6 +23,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import ClientForm from "../client/ClientForm";
 
 const AddNewEventToCalendar = props => {
   const clients = useClientStore(state => state.clients);
@@ -32,8 +33,6 @@ const AddNewEventToCalendar = props => {
   const [eventDescription, setEventDescription] = useState("");
   const [freeTime, setFreeTime] = useState(false);
 
-  console.log(eventTitle);
-
   const { toast } = useToast();
   const toastEvent = () => {
     toast({
@@ -42,36 +41,51 @@ const AddNewEventToCalendar = props => {
     });
   };
 
+  const resetValues = () => {
+    setEventTitle("");
+    setEventDescription("");
+    setFreeTime(false);
+  };
+
   const addNewEvent = () => {
     if (freeTime === false && eventTitle === "") {
       return;
     }
     props.handleAddEvents();
-    props.setOpen(false);
-    setEventTitle("");
-    setEventDescription("");
-    setFreeTime(false);
+    props.setOpenNewEvent(false);
+    resetValues();
     toastEvent();
   };
 
   useEffect(() => {
-    props.setNewEvent({ ...props.newEvent, title: eventTitle });
-  }, [eventTitle]);
+    if (freeTime === true) {
+      props.setNewEvent({
+        ...props.newEvent,
+        title: "🌴 CZAS WOLNY 🌴",
+        description: "",
+        freeTime: freeTime,
+      });
+    } else {
+      props.setNewEvent({
+        ...props.newEvent,
+        title: eventTitle,
+        description: eventDescription,
+        freeTime: freeTime,
+      });
+    }
+  });
 
-  useEffect(() => {
-    props.setNewEvent({ ...props.newEvent, description: eventDescription });
-  }, [eventDescription]);
+  // useEffect(() => {
+  //   props.setNewEvent({ ...props.newEvent, description: eventDescription });
+  // }, [eventDescription]);
 
-  useEffect(() => {
-    props.setNewEvent({ ...props.newEvent, freeTime: freeTime });
-  }, [freeTime]);
+  // useEffect(() => {
+  //   props.setNewEvent({ ...props.newEvent, freeTime: freeTime });
+  // }, [freeTime]);
 
   return (
-    <div className="p-4">
-      <Dialog open={props.open} onOpenChange={props.setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Dodaj klienta</Button>
-        </DialogTrigger>
+    <div className="">
+      <Dialog open={props.openNewEvent} onOpenChange={props.setOpenNewEvent}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Nowa wizyta</DialogTitle>
@@ -111,9 +125,7 @@ const AddNewEventToCalendar = props => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                    <Button type="submit" className=" text-xs">
-                      Nowy klient
-                    </Button>
+                    <ClientForm noPadding />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="lastName" className="text-right">
@@ -151,7 +163,7 @@ const AddNewEventToCalendar = props => {
               <Button
                 variant="outline"
                 type="button"
-                onClick={() => props.setOpen(false)}
+                onClick={() => props.setOpenNewEvent(false)}
               >
                 Anuluj
               </Button>

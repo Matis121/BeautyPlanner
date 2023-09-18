@@ -65,3 +65,67 @@ const EventStore = persist(
 );
 
 export const useEventStore = create(EventStore);
+
+const BusinessHourStore = persist(
+  devtools(set => ({
+    hours: [
+      {
+        dayName: "Poniedziałek",
+        active: true,
+        startTime: "10:00",
+        endTime: "18:00",
+        dayOfWeek: [1],
+      },
+      {
+        dayName: "Wtorek",
+        active: true,
+        startTime: "10:00",
+        endTime: "18:00",
+        dayOfWeek: [2],
+      },
+      {
+        dayName: "Środa",
+        active: true,
+        startTime: "10:00",
+        endTime: "15:00",
+        dayOfWeek: [3],
+      },
+      {
+        dayName: "Czwartek",
+        active: true,
+        startTime: "10:00",
+        endTime: "18:00",
+        dayOfWeek: [4],
+      },
+      {
+        dayName: "Piątek",
+        active: true,
+        startTime: "10:00",
+        endTime: "18:00",
+        dayOfWeek: [5],
+      },
+      {
+        dayName: "Sobota",
+        active: false,
+        startTime: "",
+        endTime: "",
+        dayOfWeek: [6],
+      },
+      {
+        dayName: "Niedziela",
+        active: false,
+        startTime: "",
+        endTime: "",
+        dayOfWeek: [0],
+      },
+    ],
+    addHours: hour => set(state => ({ hours: [...state.hours, hour] })),
+    replaceHours: newHours => set({ hours: newHours }),
+  })),
+  {
+    name: "hourStore", // Specify a unique name for the store
+    getStorage: () => localStorage, // Use localStorage as the storage provider
+  }
+);
+
+export const useBusinessHourStore = create(BusinessHourStore);

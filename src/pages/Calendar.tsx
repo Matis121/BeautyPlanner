@@ -8,35 +8,19 @@ import BasicLayout from "@/layout/BasicLayout";
 import "../myCalendarStyles.css"; // Import your custom styles
 
 import { useEventStore } from "../stores/store";
+import { useBusinessHourStore } from "../stores/store";
+import ViewClientEvent from "@/components/calendar/ViewClientEvent";
 
 const Calendar = () => {
-  // const events = [];
-
   const removeEvent = useEventStore(state => state.removeEvent);
   const editEvent = useEventStore(state => state.editEvent);
   const addEvent = useEventStore(state => state.addEvent);
   const events = useEventStore(state => state.events);
 
-  const oneEvent = {
-    id: 1,
-    title: "Our first client",
-    start: "2023-07-22T08:00:00",
-    end: "2023-07-22T10:00:00",
-    description: "This is the description for Event 1.",
-    freeTime: true,
-  };
-
-  const [showAddNewEvent, setShowAddNewEvent] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [newEvent, setNewEvent] = useState({
-    // id: "",
-    // title: "",
-    // start: "",
-    // end: "",
-    // description: "",
-    // freeTime: "",
-    // status: "",
-  });
+  const [clickedEventId, setClickedEventId] = useState("");
+  const [openNewEvent, setOpenNewEvent] = useState(false);
+  const [openViewClientEvent, setOpenViewClientEvent] = useState(false);
+  const [newEvent, setNewEvent] = useState({});
 
   const handleAddEvents = () => {
     addEvent(newEvent);
@@ -88,15 +72,29 @@ const Calendar = () => {
     updatedEvents();
   };
 
+  const hours = useBusinessHourStore(state => state.hours);
+  const businessHours = hours
+    .filter(hour => hour.active === true)
+    .map(hour => ({
+      daysOfWeek: hour.dayOfWeek,
+      startTime: hour.startTime,
+      endTime: hour.endTime,
+    }));
+
   return (
     <BasicLayout>
       <div className="p-4">
         <AddNewEventToCalendar
-          setOpen={setOpen}
-          open={open}
+          setOpenNewEvent={setOpenNewEvent}
+          openNewEvent={openNewEvent}
           setNewEvent={setNewEvent}
           newEvent={newEvent}
           handleAddEvents={handleAddEvents}
+        />
+        <ViewClientEvent
+          openViewClientEvent={openViewClientEvent}
+          setOpenViewClientEvent={setOpenViewClientEvent}
+          clickedEventId={clickedEventId}
         />
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -138,6 +136,8 @@ const Calendar = () => {
               },
             },
           }}
+          firstDay={1}
+          businessHours={businessHours}
           slotLabelFormat={{
             hour: "numeric",
             minute: "2-digit",
@@ -147,7 +147,7 @@ const Calendar = () => {
           }}
           slotLabelInterval="01:00"
           slotDuration="00:15:00"
-          height={"91vh"}
+          height={"97vh"}
           events={events}
           eventContent={eventContent}
           selectable={true}
@@ -160,10 +160,11 @@ const Calendar = () => {
               end: start.endStr,
               id: crypto.randomUUID(),
             });
-            setOpen(true);
+            setOpenNewEvent(true);
           }}
           eventClick={function (info) {
-            removeEvent(info.event._def.publicId);
+            setClickedEventId(info.event._def.publicId);
+            setOpenViewClientEvent(true);
           }}
         />
       </div>

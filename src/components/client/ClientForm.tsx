@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useCustomForm from "@/hooks/useClientForm";
 
-const CustomForm = () => {
+const ClientForm = props => {
   const {
     open,
     setOpen,
@@ -32,7 +32,7 @@ const CustomForm = () => {
   } = useCustomForm();
 
   return (
-    <div className="p-4">
+    <div className={`${props.noPadding ? "p-0" : "p-4"}`}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="outline">Dodaj klienta</Button>
@@ -145,4 +145,4 @@ const CustomForm = () => {
   );
 };
 
-export default CustomForm;
+export default ClientForm;

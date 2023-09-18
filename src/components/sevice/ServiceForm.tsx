@@ -24,6 +24,7 @@ import {
 const ServiceForm = props => {
   const [open, setOpen] = useState(false);
   const addService = useServiceStore(state => state.addService);
+  const [durationService, setDurationService] = useState();
 
   const {
     register,
@@ -38,7 +39,7 @@ const ServiceForm = props => {
     const serviceStructure = {
       id: crypto.randomUUID(),
       name: getValues("name"),
-      duration: getValues("duration"),
+      duration: durationService,
       price: getValues("price"),
     };
 
@@ -52,6 +53,11 @@ const ServiceForm = props => {
     resetValues();
     setOpen(false);
   };
+
+  const durationServiceTable = Array.from(
+    { length: 13 },
+    (_, index) => index * 5
+  );
 
   return (
     <div className="p-4">
@@ -79,15 +85,14 @@ const ServiceForm = props => {
                     errors.name ? "border-red-500" : "null"
                   }`}
                   placeholder={`${errors.name ? errorValue : ""}`}
-                  maxLength={20}
+                  maxLength={30}
                 />
               </div>
-              <div className="grid grid-col-1 text-center"></div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="duration" className="text-right">
                   Czas trwania
                 </Label>
-                <Input
+                {/* <Input
                   id="duration"
                   {...register("duration", { required: true })}
                   className={`col-span-3  ${
@@ -95,7 +100,21 @@ const ServiceForm = props => {
                   }`}
                   placeholder={`${errors.duration ? errorValue : ""}`}
                   maxLength={25}
-                />
+                /> */}
+                <Select onValueChange={e => setDurationService(e)}>
+                  <SelectTrigger className="col-span-2">
+                    <SelectValue placeholder="Czas trwania" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {durationServiceTable.map(time => (
+                        <SelectItem key={time} value={`${time}`}>
+                          {time + "min"}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="price" className="text-right">
