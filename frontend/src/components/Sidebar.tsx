@@ -7,15 +7,26 @@ import {
   LuSettings,
 } from "react-icons/lu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   return (
     <>
       <nav className="flex flex-col justify-between items-center bg-neutral-800 h-screen w-26 z-10 px-2 py-5">
         <div className="flex flex-col items-center">
-          <Avatar className="shadow-md hover:cursor-pointer hover:shadow-xl hover:scale-105 mb-6">
+          <Avatar
+            onClick={handleLogout}
+            className="shadow-md hover:cursor-pointer hover:shadow-xl hover:scale-105 mb-6"
+          >
             <AvatarImage src="https://lh6.googleusercontent.com/-rHKzuuteqoc/AAAAAAAAAAI/AAAAAAAAAAA/fK12yfqT0TM/s44-w44-h44-p-k-no-ns-nd/photo.jpg" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback></AvatarFallback>
           </Avatar>
           <NavLink
             to="/calendar"
