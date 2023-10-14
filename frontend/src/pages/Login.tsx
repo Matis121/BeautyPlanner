@@ -4,12 +4,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "../api/User";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const loggedIn = localStorage.getItem("user") !== null;
 
   async function handleLogin() {
     const payload = {
@@ -25,6 +26,12 @@ const Login = () => {
       toastEvent();
     }
   }
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/");
+    }
+  }, [loggedIn, navigate]);
 
   const { toast } = useToast();
   const toastEvent = () => {
