@@ -13,6 +13,7 @@ module.exports = () => {
   const connectionsParams = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    dbName: "main",
   };
 
   try {

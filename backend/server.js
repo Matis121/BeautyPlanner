@@ -16,10 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // API
-app.get("/api", (req, res) => {
-  res.json({ users: ["userOne", "userTwo"] });
-});
-
 app.listen(5000, () => {
   console.log("Server started on port 5000");
 });
