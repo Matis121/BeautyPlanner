@@ -20,11 +20,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { addNewService } from "../../api/User";
 
 const ServiceForm = props => {
   const [open, setOpen] = useState(false);
   const addService = useServiceStore(state => state.addService);
   const [durationService, setDurationService] = useState();
+
+  const userToken = localStorage.getItem("user");
+  const userData = JSON.parse(userToken).username;
 
   const {
     register,
@@ -35,13 +39,15 @@ const ServiceForm = props => {
   } = useForm({});
   const errorValue = "Uzupełnij pole";
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const serviceStructure = {
       id: crypto.randomUUID(),
       name: getValues("name"),
       duration: durationService,
       price: getValues("price"),
     };
+
+    const res = await addNewService(userData, serviceStructure);
 
     const resetValues = () => {
       resetField("name");

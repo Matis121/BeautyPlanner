@@ -1,16 +1,20 @@
 import BasicLayout from "@/layout/BasicLayout";
-import { useEffect, useState } from "react";
+import { getUserServices } from "../api/User";
+import { useEffect } from "react";
 
 const Home = () => {
-  const [backendData, setBackendData] = useState([{}]);
+  const userToken = localStorage.getItem("user");
+  const userData = JSON.parse(userToken).username;
+  console.log(userData);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api")
-      .then(response => response.json())
-      .then(data => setBackendData(data));
-  }, []);
+    const fetchData = async () => {
+      const getServices = await getUserServices(userData);
+      console.log(getServices);
+    };
 
-  console.log(backendData);
+    fetchData();
+  }, []);
 
   return (
     <BasicLayout>
