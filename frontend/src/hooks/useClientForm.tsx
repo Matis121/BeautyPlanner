@@ -2,11 +2,15 @@ import { useClientStore } from "@/stores/store";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
+import { addNewClient } from "../api/User";
 
 const useClientForm = () => {
   const [open, setOpen] = useState(false);
   const addClient = useClientStore(state => state.addClient);
   const { toast } = useToast();
+
+  const userToken = localStorage.getItem("user");
+  const userData = JSON.parse(userToken).username;
 
   const {
     register,
@@ -17,7 +21,23 @@ const useClientForm = () => {
   } = useForm({});
   const errorValue = "Uzupełnij pole";
 
-  const onSubmit = () => {
+  const resetValues = () => {
+    resetField("firstName");
+    resetField("lastName");
+    resetField("gender");
+    resetField("phoneNumber");
+    resetField("emailAddress");
+    resetField("birthDay");
+  };
+
+  const toastClientAdded = () => {
+    toast({
+      title: "Zadanie wykonane!",
+      description: "Osoba została dodana do bazy klientów.",
+    });
+  };
+
+  const onSubmit = async () => {
     const clientStructure = {
       id: crypto.randomUUID(),
       firstName: getValues("firstName"),
@@ -29,21 +49,7 @@ const useClientForm = () => {
       visits: {},
     };
 
-    const toastClientAdded = () => {
-      toast({
-        title: "Zadanie wykonane!",
-        description: "Osoba została dodana do bazy klientów.",
-      });
-    };
-
-    const resetValues = () => {
-      resetField("firstName");
-      resetField("lastName");
-      resetField("gender");
-      resetField("phoneNumber");
-      resetField("emailAddress");
-      resetField("birthDay");
-    };
+    const res = await addNewClient(userData, clientStructure);
 
     addClient(clientStructure);
     resetValues();

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useClientStore } from "../../stores/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,7 +7,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,21 +19,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { editClient } from "../../api/User";
 
 const EditClientForm = props => {
   const [open, setOpen] = useState(false);
-  const editClient = useClientStore(state => state.editClient);
-
-  const [clientData, setClientData] = useState({
-    ...props.selectedClient,
-  });
-
-  const handleFieldChange = (field, value) => {
-    setClientData(prevClientData => ({
-      ...prevClientData,
-      [field]: value,
-    }));
-  };
+  const userToken = localStorage.getItem("user");
+  const userData = JSON.parse(userToken).username;
 
   const {
     register,
@@ -46,7 +35,16 @@ const EditClientForm = props => {
   } = useForm({});
   const errorValue = "Uzupełnij pole";
 
-  const onSubmit = () => {
+  const resetValues = () => {
+    resetField("firstName");
+    resetField("lastName");
+    resetField("gender");
+    resetField("phoneNumber");
+    resetField("emailAddress");
+    resetField("birthDay");
+  };
+
+  const onSubmit = async () => {
     const clientStructure = {
       firstName: getValues("firstName"),
       lastName: getValues("lastName"),
@@ -56,16 +54,8 @@ const EditClientForm = props => {
       birthDay: getValues("birthDay"),
     };
 
-    const resetValues = () => {
-      resetField("firstName");
-      resetField("lastName");
-      resetField("gender");
-      resetField("phoneNumber");
-      resetField("emailAddress");
-      resetField("birthDay");
-    };
+    const res = await editClient(userData, props.clientId, clientStructure);
 
-    editClient(props.selectedClient.id, clientStructure);
     resetValues();
     setOpen(false);
   };
@@ -96,8 +86,6 @@ const EditClientForm = props => {
                 }`}
                 placeholder={`${errors.firstName ? errorValue : ""}`}
                 maxLength={20}
-                value={clientData.firstName}
-                onChange={e => handleFieldChange(e.target.id, e.target.value)}
               />
             </div>
             <div className="grid grid-col-1 text-center"></div>
@@ -110,8 +98,6 @@ const EditClientForm = props => {
                 {...register("lastName")}
                 className="col-span-3"
                 maxLength={25}
-                value={clientData.lastName}
-                onChange={e => handleFieldChange(e.target.id, e.target.value)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -141,8 +127,6 @@ const EditClientForm = props => {
                 className="col-span-3"
                 type="number"
                 maxLength={15}
-                value={clientData.phoneNumber}
-                onChange={e => handleFieldChange(e.target.id, e.target.value)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -158,8 +142,6 @@ const EditClientForm = props => {
                   },
                 })}
                 className="col-span-3"
-                value={clientData.emailAddress}
-                onChange={e => handleFieldChange(e.target.id, e.target.value)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -171,8 +153,6 @@ const EditClientForm = props => {
                 {...register("birthDay")}
                 className="col-span-3"
                 type="date"
-                value={clientData.birthDay}
-                onChange={e => handleFieldChange(e.target.id, e.target.value)}
               />
             </div>
           </div>

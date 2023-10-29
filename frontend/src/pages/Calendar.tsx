@@ -8,22 +8,37 @@ import BasicLayout from "@/layout/BasicLayout";
 import "../myCalendarStyles.css"; // Import your custom styles
 
 import { useEventStore } from "../stores/store";
-import { useBusinessHourStore } from "../stores/store";
 import ViewClientEvent from "@/components/calendar/ViewClientEvent";
 
+import { getHours, getEvents, addEvent } from "../api/User";
+import { useQuery } from "react-query";
+
 const Calendar = () => {
-  const removeEvent = useEventStore(state => state.removeEvent);
-  const editEvent = useEventStore(state => state.editEvent);
-  const addEvent = useEventStore(state => state.addEvent);
-  const events = useEventStore(state => state.events);
+  const userToken = localStorage.getItem("user");
+  const userData = JSON.parse(userToken).username;
 
   const [clickedEventId, setClickedEventId] = useState("");
   const [openNewEvent, setOpenNewEvent] = useState(false);
   const [openViewClientEvent, setOpenViewClientEvent] = useState(false);
   const [newEvent, setNewEvent] = useState({});
+  const [businessHours, setBusinessHours] = useState();
 
-  const handleAddEvents = () => {
-    addEvent(newEvent);
+  const { data: hoursData } = useQuery(["Hours"], () => getHours(userData), {
+    onSuccess: data => {
+      const activeHours = hoursData
+        .filter(hour => hour.active === true)
+        .map(hour => ({
+          daysOfWeek: hour.dayOfWeek,
+          startTime: hour.startTime,
+          endTime: hour.endTime,
+        }));
+      setBusinessHours(activeHours);
+    },
+  });
+  const { data: eventsData } = useQuery(["Events"], () => getEvents(userData));
+
+  const handleAddEvents = async () => {
+    const res = await addEvent(userData, newEvent);
   };
 
   const eventContent = arg => {
@@ -59,27 +74,23 @@ const Calendar = () => {
     );
   };
 
-  const handleEventDrop = eventDropInfo => {
-    const updatedEvents = events.map(event => {
-      if (event.id == eventDropInfo.event.id) {
-        const newEventValues = {
-          start: eventDropInfo.event.start,
-          end: eventDropInfo.event.end,
-        };
-        editEvent(event.id, newEventValues);
-      }
-    });
-    updatedEvents();
-  };
+  // const handleEventDrop = eventDropInfo => {
+  //   const updatedEvents = events.map(event => {
+  //     if (event.id == eventDropInfo.event.id) {
+  //       const newEventValues = {
+  //         start: eventDropInfo.event.start,
+  //         end: eventDropInfo.event.end,
+  //       };
+  //       editEvent(event.id, newEventValues);
+  //     }
+  //   });
+  // };
 
-  const hours = useBusinessHourStore(state => state.hours);
-  const businessHours = hours
-    .filter(hour => hour.active === true)
-    .map(hour => ({
-      daysOfWeek: hour.dayOfWeek,
-      startTime: hour.startTime,
-      endTime: hour.endTime,
-    }));
+  if (!hoursData) {
+    console.log(hoursData);
+    console.log("siema");
+    return;
+  }
 
   return (
     <BasicLayout>
@@ -148,11 +159,13 @@ const Calendar = () => {
           slotLabelInterval="01:00"
           slotDuration="00:15:00"
           height={"97vh"}
-          events={events}
+          events={eventsData}
           eventContent={eventContent}
           selectable={true}
           editable={true}
-          eventDrop={handleEventDrop}
+          eventDrop={function (eventDropInfo) {
+            console.log(eventDropInfo);
+          }}
           select={function (start) {
             setNewEvent({
               ...newEvent,

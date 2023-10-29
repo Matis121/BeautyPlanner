@@ -1,11 +1,11 @@
-import { useClientStore } from "../../stores/store";
 import { Button } from "@/components/ui/button";
 import EditClientForm from "./EditClientForm";
+import { getClients, removeClient } from "../../api/User";
+import { useQuery } from "react-query";
 
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -13,10 +13,13 @@ import {
 } from "@/components/ui/table";
 
 const ClientTable = () => {
-  const clients = useClientStore(state => state.clients);
-  const removeClient = useClientStore(state => state.removeClient);
-  const handleDeleteClient = id => {
-    removeClient(id);
+  const userToken = localStorage.getItem("user");
+  const userData = JSON.parse(userToken).username;
+
+  const { data } = useQuery(["Clients"], () => getClients(userData));
+
+  const handleRemoveClient = async clientId => {
+    const removeSpecificClient = await removeClient(userData, clientId);
   };
 
   return (
@@ -32,35 +35,38 @@ const ClientTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {clients.map((client, idx) => (
-            <TableRow>
-              <TableCell className="font-medium">{idx + 1}</TableCell>
-              <TableCell>
-                {client.firstName + " "}
-                {client.lastName}
-              </TableCell>
-              <TableCell>{client.phoneNumber}</TableCell>
-              <TableCell>{/* KOD DO WIZYT */}</TableCell>
-              <TableCell className="text-right">
-                <EditClientForm
-                  selectedClient={{
-                    id: client.id,
-                    firstName: client.firstName,
-                    lastName: client.lastName,
-                    phoneNumber: client.phoneNumber,
-                    emailAddress: client.mailAddress,
-                    birthDay: client.birthDay,
-                  }}
-                />
-                <Button
-                  variant="link"
-                  onClick={() => handleDeleteClient(client.id)}
-                >
-                  Usuń
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {data
+            ? data.map((client, idx) => (
+                <TableRow key={client.id}>
+                  <TableCell className="font-medium">{idx + 1}</TableCell>
+                  <TableCell>
+                    {client.firstName + " "}
+                    {client.lastName}
+                  </TableCell>
+                  <TableCell>{client.phoneNumber}</TableCell>
+                  <TableCell>{/* KOD DO WIZYT */}</TableCell>
+                  <TableCell className="text-right">
+                    <EditClientForm
+                      clientId={client.id}
+                      selectedClient={{
+                        id: client.id,
+                        firstName: client.firstName,
+                        lastName: client.lastName,
+                        phoneNumber: client.phoneNumber,
+                        emailAddress: client.mailAddress,
+                        birthDay: client.birthDay,
+                      }}
+                    />
+                    <Button
+                      variant="link"
+                      onClick={() => handleRemoveClient(client.id)}
+                    >
+                      Usuń
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            : null}
         </TableBody>
       </Table>
     </div>
