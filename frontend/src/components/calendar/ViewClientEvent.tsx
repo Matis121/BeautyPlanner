@@ -8,13 +8,25 @@ import { Button } from "@/components/ui/button";
 import { useEventStore, useServiceStore } from "../../stores/store";
 import { useToast } from "@/components/ui/use-toast";
 
-const ViewClientEvent = props => {
-  const events = useEventStore(state => state.events);
-  const removeEvent = useEventStore(state => state.removeEvent);
-  const services = useServiceStore(state => state.services);
+import { getUserServices, getEvents, removeEvent } from "../../api/User";
+import { useQuery } from "react-query";
+import { Key } from "lucide-react";
 
-  const handleEventActions = () => {
-    removeEvent(props.clickedEventId);
+const ViewClientEvent = props => {
+  const userToken = localStorage.getItem("user");
+  const userData = JSON.parse(userToken).username;
+
+  const { data: servicesData } = useQuery(["Hours"], () =>
+    getUserServices(userData)
+  );
+  const { data: eventsData } = useQuery(["Events"], () => getEvents(userData));
+
+  const handleEventActions = async () => {
+    console.log(props.clickedEventId);
+    const removeSpecificEvent = await removeEvent(
+      userData,
+      props.clickedEventId
+    );
     props.setOpenViewClientEvent(false);
     toastEvent();
   };
@@ -33,59 +45,65 @@ const ViewClientEvent = props => {
         open={props.openViewClientEvent}
         onOpenChange={props.setOpenViewClientEvent}
       >
-        {events.map(event => (
-          <div key={event.id}>
-            {event.id === props.clickedEventId ? (
-              <>
-                {event.freeTime === false ? (
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>Szczegóły wizyty</DialogTitle>
-                    </DialogHeader>
-                    <>
-                      <p>
-                        Klient:{" "}
-                        <span className=" font-semibold">{event.title}</span>
-                      </p>
-                      <p>
-                        Usługa:{" "}
-                        <span className=" font-semibold">
-                          {event.description}
-                        </span>
-                      </p>
-                      {services.map(service => (
+        {eventsData
+          ? eventsData.map(event => (
+              <div key={event.id}>
+                {event.id === props.clickedEventId ? (
+                  <>
+                    {event.freeTime === false ? (
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Szczegóły wizyty</DialogTitle>
+                        </DialogHeader>
                         <>
-                          {service.name === event.description ? (
-                            <>
-                              <p>
-                                Koszt wizyty:{" "}
-                                <span className="font-semibold">
-                                  {service.price + "zł"}
-                                </span>
-                              </p>
-                            </>
-                          ) : null}
+                          <p>
+                            Klient:{" "}
+                            <span className=" font-semibold">
+                              {event.title}
+                            </span>
+                          </p>
+                          <p>
+                            Usługa:{" "}
+                            <span className=" font-semibold">
+                              {event.description}
+                            </span>
+                          </p>
+                          {servicesData
+                            ? servicesData.map(service => (
+                                <div key={service.id}>
+                                  {service.name === event.description ? (
+                                    <>
+                                      <p>
+                                        Koszt wizyty:{" "}
+                                        <span className="font-semibold">
+                                          {service.price + "zł"}
+                                        </span>
+                                      </p>
+                                    </>
+                                  ) : null}
+                                </div>
+                              ))
+                            : null}
                         </>
-                      ))}
-                    </>
-                    <Button type="button" onClick={handleEventActions}>
-                      Usuń wizyte
-                    </Button>
-                  </DialogContent>
-                ) : (
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>Czas wolny</DialogTitle>
-                    </DialogHeader>
-                    <Button type="button" onClick={handleEventActions}>
-                      Usuń czas wolny
-                    </Button>
-                  </DialogContent>
-                )}
-              </>
-            ) : null}
-          </div>
-        ))}
+                        <Button type="button" onClick={handleEventActions}>
+                          Usuń wizyte
+                        </Button>
+                      </DialogContent>
+                    ) : (
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Czas wolny</DialogTitle>
+                        </DialogHeader>
+                        <Button type="button" onClick={handleEventActions}>
+                          Usuń czas wolny
+                        </Button>
+                      </DialogContent>
+                    )}
+                  </>
+                ) : null}
+              </div>
+            ))
+          : null}
       </Dialog>
     </div>
   );

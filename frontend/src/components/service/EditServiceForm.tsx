@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useServiceStore } from "../../stores/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,11 +19,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { addNewService } from "../../api/User";
+import { editService } from "../../api/User";
 
-const ServiceForm = props => {
+const EditServiceForm = props => {
   const [open, setOpen] = useState(false);
-  const addService = useServiceStore(state => state.addService);
   const [durationService, setDurationService] = useState();
 
   const userToken = localStorage.getItem("user");
@@ -37,6 +35,7 @@ const ServiceForm = props => {
     resetField,
     formState: { errors },
   } = useForm({});
+
   const errorValue = "Uzupełnij pole";
 
   const onSubmit = async () => {
@@ -47,7 +46,7 @@ const ServiceForm = props => {
       price: getValues("price"),
     };
 
-    const res = await addNewService(userData, serviceStructure);
+    const res = await editService(userData, props.serviceId, serviceStructure);
 
     const resetValues = () => {
       resetField("name");
@@ -55,7 +54,6 @@ const ServiceForm = props => {
       resetField("price");
     };
 
-    addService(serviceStructure);
     resetValues();
     setOpen(false);
   };
@@ -69,7 +67,7 @@ const ServiceForm = props => {
     <div className="p-4">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">Dodaj usługę</Button>
+          <Button variant="link">Edytuj</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -98,20 +96,11 @@ const ServiceForm = props => {
                 <Label htmlFor="duration" className="text-right">
                   Czas trwania
                 </Label>
-                {/* <Input
-                  id="duration"
-                  {...register("duration", { required: true })}
-                  className={`col-span-3  ${
-                    errors.duration ? "border-red-500" : "null"
-                  }`}
-                  placeholder={`${errors.duration ? errorValue : ""}`}
-                  maxLength={25}
-                /> */}
                 <Select onValueChange={e => setDurationService(e)}>
                   <SelectTrigger className="col-span-2">
                     <SelectValue placeholder="Czas trwania" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="overflow-y-auto max-h-[13rem]">
                     <SelectGroup>
                       {durationServiceTable.map(time => (
                         <SelectItem key={time} value={`${time}`}>
@@ -127,6 +116,7 @@ const ServiceForm = props => {
                   Cena
                 </Label>
                 <Input
+                  type="number"
                   id="price"
                   {...register("price", { required: true })}
                   className={`col-span-3  ${
@@ -154,4 +144,4 @@ const ServiceForm = props => {
   );
 };
 
-export default ServiceForm;
+export default EditServiceForm;

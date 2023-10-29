@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useClientStore, useServiceStore } from "../../stores/store";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Select,
@@ -23,9 +22,19 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import ClientForm from "../client/ClientForm";
 
+import { getClients, getUserServices } from "../../api/User";
+import { useQuery } from "react-query";
+
 const AddNewEventToCalendar = props => {
-  const clients = useClientStore(state => state.clients);
-  const services = useServiceStore(state => state.services);
+  const userToken = localStorage.getItem("user");
+  const userData = JSON.parse(userToken).username;
+
+  const { data: clientsData } = useQuery(["Clients"], () =>
+    getClients(userData)
+  );
+  const { data: servicesData } = useQuery(["Services"], () =>
+    getUserServices(userData)
+  );
 
   const [eventTitle, setEventTitle] = useState("");
   const [eventDescription, setEventDescription] = useState("");
@@ -73,14 +82,6 @@ const AddNewEventToCalendar = props => {
     }
   });
 
-  // useEffect(() => {
-  //   props.setNewEvent({ ...props.newEvent, description: eventDescription });
-  // }, [eventDescription]);
-
-  // useEffect(() => {
-  //   props.setNewEvent({ ...props.newEvent, freeTime: freeTime });
-  // }, [freeTime]);
-
   return (
     <div className="">
       <Dialog open={props.openNewEvent} onOpenChange={props.setOpenNewEvent}>
@@ -110,16 +111,20 @@ const AddNewEventToCalendar = props => {
                       <SelectTrigger className="col-span-2">
                         <SelectValue placeholder="Wybierz klienta" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="overflow-y-auto max-h-[13rem]">
                         <SelectGroup>
-                          {clients.map(client => (
-                            <SelectItem
-                              key={client.id}
-                              value={client.firstName + " " + client.lastName}
-                            >
-                              {client.firstName + " " + client.lastName}
-                            </SelectItem>
-                          ))}
+                          {clientsData
+                            ? clientsData.map(client => (
+                                <SelectItem
+                                  key={client.id}
+                                  value={
+                                    client.firstName + " " + client.lastName
+                                  }
+                                >
+                                  {client.firstName + " " + client.lastName}
+                                </SelectItem>
+                              ))
+                            : null}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -133,13 +138,18 @@ const AddNewEventToCalendar = props => {
                       <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Wybierz usługę" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="overflow-y-auto max-h-[13rem]">
                         <SelectGroup>
-                          {services.map(service => (
-                            <SelectItem key={service.id} value={service.name}>
-                              {service.name}
-                            </SelectItem>
-                          ))}
+                          {servicesData
+                            ? servicesData.map(service => (
+                                <SelectItem
+                                  key={service.id}
+                                  value={service.name}
+                                >
+                                  {service.name}
+                                </SelectItem>
+                              ))
+                            : null}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
