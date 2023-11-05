@@ -6,24 +6,28 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import BasicLayout from "@/layout/BasicLayout";
 import "../myCalendarStyles.css"; // Import your custom styles
-
-import { useEventStore } from "../stores/store";
-import ViewClientEvent from "@/components/calendar/ViewClientEvent";
-
-import { getHours, getEvents, addEvent } from "../api/User";
 import { useQuery } from "react-query";
 
+import ViewClientEvent from "@/components/calendar/ViewClientEvent";
+
+import { getHours, getEvents } from "../api/User";
+
 const Calendar = () => {
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
 
+  // USE STATE
   const [clickedEventId, setClickedEventId] = useState("");
   const [openNewEvent, setOpenNewEvent] = useState(false);
   const [openViewClientEvent, setOpenViewClientEvent] = useState(false);
-  const [newEvent, setNewEvent] = useState({});
   const [businessHours, setBusinessHours] = useState();
 
-  const { data: hoursData } = useQuery(["Hours"], () => getHours(userData), {
+  // VALUES TO CREATE NEW EVENT
+  const [startTimeEvent, setStartTimeEvent] = useState("");
+
+  // FETCHING HOURS
+  const { data: hoursData } = useQuery(["hours"], () => getHours(userData), {
     onSuccess: data => {
       const activeHours = hoursData
         .filter(hour => hour.active === true)
@@ -35,12 +39,11 @@ const Calendar = () => {
       setBusinessHours(activeHours);
     },
   });
-  const { data: eventsData } = useQuery(["Events"], () => getEvents(userData));
 
-  const handleAddEvents = async () => {
-    const res = await addEvent(userData, newEvent);
-  };
+  // FETCHING EVENTS
+  const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
 
+  // CUSTOM EVENT CONTENT
   const eventContent = arg => {
     let bgEventColor;
 
@@ -74,6 +77,7 @@ const Calendar = () => {
     );
   };
 
+  // HANDLE NEW EVENT POSITION
   // const handleEventDrop = eventDropInfo => {
   //   const updatedEvents = events.map(event => {
   //     if (event.id == eventDropInfo.event.id) {
@@ -86,21 +90,13 @@ const Calendar = () => {
   //   });
   // };
 
-  if (!hoursData) {
-    console.log(hoursData);
-    console.log("siema");
-    return;
-  }
-
   return (
     <BasicLayout>
       <div className="p-4">
         <AddNewEventToCalendar
           setOpenNewEvent={setOpenNewEvent}
           openNewEvent={openNewEvent}
-          setNewEvent={setNewEvent}
-          newEvent={newEvent}
-          handleAddEvents={handleAddEvents}
+          startTimeEvent={startTimeEvent}
         />
         <ViewClientEvent
           openViewClientEvent={openViewClientEvent}
@@ -167,12 +163,8 @@ const Calendar = () => {
             console.log(eventDropInfo);
           }}
           select={function (start) {
-            setNewEvent({
-              ...newEvent,
-              start: start.startStr,
-              end: start.endStr,
-              id: crypto.randomUUID(),
-            });
+            setStartTimeEvent(start.startStr);
+            setEndTimeEvent(start.endStr);
             setOpenNewEvent(true);
           }}
           eventClick={function (info) {

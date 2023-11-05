@@ -8,9 +8,12 @@ import { editActiveHours, getHours } from "../api/User";
 import { useQuery } from "react-query";
 
 const Home = () => {
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
-  const { data } = useQuery(["Hours"], () => getHours(userData));
+
+  // FETCH DATA
+  const { data } = useQuery(["hours"], () => getHours(userData));
 
   const [newValues, setNewValues] = useState();
 
@@ -18,6 +21,7 @@ const Home = () => {
     setNewValues(data);
   }, [data]);
 
+  // TOAST
   const { toast } = useToast();
   const toastEvent = () => {
     toast({
@@ -37,7 +41,6 @@ const Home = () => {
     } else {
       updatedHours[idx][field] = e.target.value;
     }
-    // Uaktualnienie stanu
     setNewValues(updatedHours);
   };
 

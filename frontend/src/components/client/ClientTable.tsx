@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import EditClientForm from "./EditClientForm";
 import { getClients, removeClient } from "../../api/User";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 
 import {
   Table,
@@ -13,13 +13,29 @@ import {
 } from "@/components/ui/table";
 
 const ClientTable = () => {
+   // QUERY CLIENT
+  const queryClient = useQueryClient();
+
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
 
-  const { data } = useQuery(["Clients"], () => getClients(userData));
+  // FETCH DATA
+  const { data } = useQuery(["clients"], () => getClients(userData));
 
+
+  // MUTATION
+  const removeClientMutation = useMutation(clientId =>
+    removeClient(userData, clientId)
+  );
+  
   const handleRemoveClient = async clientId => {
-    const removeSpecificClient = await removeClient(userData, clientId);
+    try {
+      await removeClientMutation.mutateAsync(clientId);
+      queryClient.invalidateQueries("clients");
+    } catch (error) {
+      console.error("Error removing service:", error);
+    }
   };
 
   return (

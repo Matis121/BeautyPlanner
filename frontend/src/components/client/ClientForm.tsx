@@ -8,14 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useCustomForm from "@/hooks/useClientForm";
@@ -71,23 +63,6 @@ const ClientForm = props => {
                   className="col-span-3"
                   maxLength={25}
                 />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="gender" className="text-right">
-                  Płeć
-                </Label>
-                <Select>
-                  <SelectTrigger className="w-[200px]">
-                    <SelectValue placeholder="Wybierz płeć" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup {...register("gender")}>
-                      <SelectItem value="woman">Kobieta</SelectItem>
-                      <SelectItem value="man">Mężczyzna</SelectItem>
-                      <SelectItem value="kid">Dziecko</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="phoneNumber" className="text-right">
