@@ -5,38 +5,48 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useEventStore, useServiceStore } from "../../stores/store";
 import { useToast } from "@/components/ui/use-toast";
 
 import { getUserServices, getEvents, removeEvent } from "../../api/User";
-import { useQuery } from "react-query";
-import { Key } from "lucide-react";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 
 const ViewClientEvent = props => {
+  // QUERY CLIENT
+  const queryClient = useQueryClient();
+
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
 
-  const { data: servicesData } = useQuery(["Hours"], () =>
+  // FETCH DATA
+  const { data: servicesData } = useQuery(["hours"], () =>
     getUserServices(userData)
   );
-  const { data: eventsData } = useQuery(["Events"], () => getEvents(userData));
+  const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
 
-  const handleEventActions = async () => {
-    console.log(props.clickedEventId);
-    const removeSpecificEvent = await removeEvent(
-      userData,
-      props.clickedEventId
-    );
-    props.setOpenViewClientEvent(false);
-    toastEvent();
-  };
-
+  // TOAST
   const { toast } = useToast();
   const toastEvent = () => {
     toast({
       title: "Zadanie wykonane!",
       description: "Wizyta została usunięte z kalendarza.",
     });
+  };
+
+  // MUTATION
+  const removeEventMutation = useMutation(() =>
+    removeEvent(userData, props.clickedEventId)
+  );
+  
+  const handleEventActions = async () => {
+    try {
+      await removeEventMutation.mutateAsync();
+      queryClient.invalidateQueries("events");
+      props.setOpenViewClientEvent(false);
+      toastEvent();
+    } catch (error) {
+      console.error("Error while deleting an event:", error);
+    }
   };
 
   return (

@@ -11,20 +11,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { editClient } from "../../api/User";
+import { useMutation, useQueryClient } from "react-query";
 
 const EditClientForm = props => {
-  const [open, setOpen] = useState(false);
+  // QUERY CLIENT
+  const queryClient = useQueryClient();
+
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
+
+  const [open, setOpen] = useState(false);
 
   const {
     register,
@@ -35,6 +33,7 @@ const EditClientForm = props => {
   } = useForm({});
   const errorValue = "Uzupełnij pole";
 
+  // RESET FUNCTION
   const resetValues = () => {
     resetField("firstName");
     resetField("lastName");
@@ -43,6 +42,12 @@ const EditClientForm = props => {
     resetField("emailAddress");
     resetField("birthDay");
   };
+
+
+  // MUTATION
+  const editClientMutation = useMutation(clientStructure =>
+    editClient(userData, props.clientId, clientStructure)
+  );
 
   const onSubmit = async () => {
     const clientStructure = {
@@ -54,10 +59,14 @@ const EditClientForm = props => {
       birthDay: getValues("birthDay"),
     };
 
-    const res = await editClient(userData, props.clientId, clientStructure);
-
-    resetValues();
-    setOpen(false);
+    try {
+      await editClientMutation.mutateAsync(clientStructure);
+      resetValues();
+      setOpen(false);
+      queryClient.invalidateQueries("clients");
+    } catch (error) {
+      console.error("Error editing client:", error);
+    }
   };
 
   return (
@@ -99,23 +108,6 @@ const EditClientForm = props => {
                 className="col-span-3"
                 maxLength={25}
               />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="gender" className="text-right">
-                Płeć
-              </Label>
-              <Select>
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Wybierz płeć" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup {...register("gender")}>
-                    <SelectItem value="woman">Kobieta</SelectItem>
-                    <SelectItem value="man">Mężczyzna</SelectItem>
-                    <SelectItem value="kid">Dziecko</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="phoneNumber" className="text-right">

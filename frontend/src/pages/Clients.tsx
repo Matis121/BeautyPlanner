@@ -5,9 +5,12 @@ import { getClients } from "../api/User";
 import { useQuery } from "react-query";
 
 const Clients = () => {
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
-  const { data } = useQuery(["Clients"], () => getClients(userData));
+
+  // FETCH DATA
+  const { data } = useQuery(["clients"], () => getClients(userData));
 
   if (!data) {
     return null;

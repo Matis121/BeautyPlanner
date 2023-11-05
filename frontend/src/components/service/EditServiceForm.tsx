@@ -20,13 +20,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { editService } from "../../api/User";
+import { useMutation, useQueryClient } from "react-query";
 
 const EditServiceForm = props => {
-  const [open, setOpen] = useState(false);
-  const [durationService, setDurationService] = useState();
+  // QUERY CLIENT
+  const queryClient = useQueryClient();
 
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
+
+  // USE STATE
+  const [open, setOpen] = useState(false);
+  const [durationService, setDurationService] = useState();
 
   const {
     register,
@@ -36,7 +42,17 @@ const EditServiceForm = props => {
     formState: { errors },
   } = useForm({});
 
+  const resetValues = () => {
+    resetField("name");
+    resetField("duration");
+    resetField("price");
+  };
+
   const errorValue = "Uzupełnij pole";
+
+  const editServiceMutation = useMutation(serviceStructure =>
+    editService(userData, props.serviceId, serviceStructure)
+  );
 
   const onSubmit = async () => {
     const serviceStructure = {
@@ -46,16 +62,14 @@ const EditServiceForm = props => {
       price: getValues("price"),
     };
 
-    const res = await editService(userData, props.serviceId, serviceStructure);
-
-    const resetValues = () => {
-      resetField("name");
-      resetField("duration");
-      resetField("price");
-    };
-
-    resetValues();
-    setOpen(false);
+    try {
+      await editServiceMutation.mutateAsync(serviceStructure);
+      resetValues();
+      setOpen(false);
+      queryClient.invalidateQueries("services");
+    } catch (error) {
+      console.error("Error editing client:", error);
+    }
   };
 
   const durationServiceTable = Array.from(

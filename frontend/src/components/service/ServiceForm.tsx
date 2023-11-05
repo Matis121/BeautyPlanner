@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useServiceStore } from "../../stores/store";
+import { useQueryClient, useMutation } from "react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,12 +23,16 @@ import {
 import { addNewService } from "../../api/User";
 
 const ServiceForm = props => {
-  const [open, setOpen] = useState(false);
-  const addService = useServiceStore(state => state.addService);
-  const [durationService, setDurationService] = useState();
+  // QUERY CLIENT
+  const queryClient = useQueryClient();
 
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
+
+  // USE STATE
+  const [open, setOpen] = useState(false);
+  const [durationService, setDurationService] = useState();
 
   const {
     register,
@@ -39,6 +43,16 @@ const ServiceForm = props => {
   } = useForm({});
   const errorValue = "Uzupełnij pole";
 
+  const resetValues = () => {
+    resetField("name");
+    resetField("duration");
+    resetField("price");
+  };
+
+  const addNewServiceMutation = useMutation(serviceStructure =>
+    addNewService(userData, serviceStructure)
+  );
+
   const onSubmit = async () => {
     const serviceStructure = {
       id: crypto.randomUUID(),
@@ -47,23 +61,32 @@ const ServiceForm = props => {
       price: getValues("price"),
     };
 
-    const res = await addNewService(userData, serviceStructure);
-
-    const resetValues = () => {
-      resetField("name");
-      resetField("duration");
-      resetField("price");
-    };
-
-    addService(serviceStructure);
-    resetValues();
-    setOpen(false);
+    try {
+      await addNewServiceMutation.mutateAsync(serviceStructure);
+      resetValues();
+      setOpen(false);
+      queryClient.invalidateQueries("services");
+    } catch (error) {
+      console.error("Error adding new service:", error);
+    }
   };
 
   const durationServiceTable = Array.from(
-    { length: 13 },
+    { length: 49 },
     (_, index) => index * 5
   );
+
+  const formatTime = time => {
+    const hours = Math.floor(time / 60);
+    const minutes = time % 60;
+    if (time === 0) {
+      return `0`;
+    }
+    if (time % 60 === 0) {
+      return `${hours} h`;
+    }
+    return time > 60 ? `${hours} h ${minutes} min` : `${time} min`;
+  };
 
   return (
     <div className="p-4">
@@ -106,7 +129,7 @@ const ServiceForm = props => {
                     <SelectGroup>
                       {durationServiceTable.map(time => (
                         <SelectItem key={time} value={`${time}`}>
-                          {time + "min"}
+                          {formatTime(time)}
                         </SelectItem>
                       ))}
                     </SelectGroup>

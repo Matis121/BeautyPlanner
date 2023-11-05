@@ -1,16 +1,20 @@
-import { useClientStore } from "@/stores/store";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { addNewClient } from "../api/User";
+import { useQueryClient, useMutation } from "react-query";
 
 const useClientForm = () => {
-  const [open, setOpen] = useState(false);
-  const addClient = useClientStore(state => state.addClient);
-  const { toast } = useToast();
+  // QUERY CLIENT
+  const queryClient = useQueryClient();
 
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
+
+  // USE STATE
+  const [open, setOpen] = useState(false);
+  const { toast } = useToast();
 
   const {
     register,
@@ -21,6 +25,7 @@ const useClientForm = () => {
   } = useForm({});
   const errorValue = "Uzupełnij pole";
 
+  // RESET FUNCTION
   const resetValues = () => {
     resetField("firstName");
     resetField("lastName");
@@ -30,12 +35,19 @@ const useClientForm = () => {
     resetField("birthDay");
   };
 
+  // TOAST
   const toastClientAdded = () => {
     toast({
       title: "Zadanie wykonane!",
       description: "Osoba została dodana do bazy klientów.",
     });
   };
+
+
+  // MUTATION
+  const addNewClientMutation = useMutation(clientStructure =>
+    addNewClient(userData, clientStructure)
+  );
 
   const onSubmit = async () => {
     const clientStructure = {
@@ -49,9 +61,15 @@ const useClientForm = () => {
       visits: {},
     };
 
-    const res = await addNewClient(userData, clientStructure);
+    try {
+      await addNewClientMutation.mutateAsync(clientStructure);
+      resetValues();
+      setOpen(false);
+      queryClient.invalidateQueries("clients");
+    } catch (error) {
+      console.error("Error adding new service:", error);
+    }
 
-    addClient(clientStructure);
     resetValues();
     toastClientAdded();
     setOpen(false);

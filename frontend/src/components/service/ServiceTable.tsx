@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 import { getUserServices, removeService } from "../../api/User";
 
 import { Button } from "@/components/ui/button";
@@ -13,14 +13,29 @@ import {
 import EditServiceForm from "./EditServiceForm";
 
 const ServiceTable = () => {
+  // QUERY CLIENT
+  const queryClient = useQueryClient();
+
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
 
-  const { data } = useQuery(["Services"], () => getUserServices(userData));
-  console.log(data);
+  // FETCH DATA
+  const { data } = useQuery(["services"], () => getUserServices(userData));
+
+
+  // MUTATION
+  const removeServiceMutation = useMutation(serviceId =>
+    removeService(userData, serviceId)
+  );
 
   const handleRemoveService = async serviceId => {
-    const removeSpecificService = await removeService(userData, serviceId);
+    try {
+      await removeServiceMutation.mutateAsync(serviceId);
+      queryClient.invalidateQueries("services");
+    } catch (error) {
+      console.error("Error removing service:", error);
+    }
   };
 
   return (

@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { addEvent } from "../../api/User";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -23,23 +24,34 @@ import { Switch } from "@/components/ui/switch";
 import ClientForm from "../client/ClientForm";
 
 import { getClients, getUserServices } from "../../api/User";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 
 const AddNewEventToCalendar = props => {
+  // QUERY CLIENT
+  const queryClient = useQueryClient();
+
+  // USER DATA
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
 
-  const { data: clientsData } = useQuery(["Clients"], () =>
-    getClients(userData)
-  );
-  const { data: servicesData } = useQuery(["Services"], () =>
-    getUserServices(userData)
-  );
-
+  // EVENT VALUES
   const [eventTitle, setEventTitle] = useState("");
   const [eventDescription, setEventDescription] = useState("");
   const [freeTime, setFreeTime] = useState(false);
 
+  // VARIABLES FOR END TIME EVENT
+  const [serviceDuration, setServiceDuration] = useState(null);
+  const startTimeStr = props.startTimeEvent;
+
+  // FETCH DATA
+  const { data: clientsData } = useQuery(["clients"], () =>
+    getClients(userData)
+  );
+  const { data: servicesData } = useQuery(["services"], () =>
+    getUserServices(userData)
+  );
+
+  // TOAST
   const { toast } = useToast();
   const toastEvent = () => {
     toast({
@@ -48,39 +60,61 @@ const AddNewEventToCalendar = props => {
     });
   };
 
+  // RESET FUNCTION
   const resetValues = () => {
     setEventTitle("");
     setEventDescription("");
     setFreeTime(false);
   };
 
-  const addNewEvent = () => {
+  // MUTATION
+  const addNewEventMutation = useMutation(eventStructure =>
+    addEvent(userData, eventStructure)
+  );
+
+  const newHandleAddEvents = async () => {
+    let eventStructure;
     if (freeTime === false && eventTitle === "") {
       return;
     }
-    props.handleAddEvents();
-    props.setOpenNewEvent(false);
-    resetValues();
-    toastEvent();
-  };
-
-  useEffect(() => {
+    const endTimeEvent = new Date(startTimeStr);
+    console.log(endTimeEvent);
+    endTimeEvent.setMinutes(
+      endTimeEvent.getMinutes() + parseFloat(serviceDuration)
+    );
+    console.log(typeof serviceDuration);
+    console.log(endTimeEvent);
+    const formattedDate = endTimeEvent.toISOString();
+    console.log(formattedDate);
     if (freeTime === true) {
-      props.setNewEvent({
-        ...props.newEvent,
+      eventStructure = {
+        id: crypto.randomUUID(),
+        start: props.startTimeEvent,
+        end: formattedDate,
         title: "🌴 CZAS WOLNY 🌴",
         description: "",
         freeTime: freeTime,
-      });
+      };
     } else {
-      props.setNewEvent({
-        ...props.newEvent,
+      eventStructure = {
+        id: crypto.randomUUID(),
+        start: props.startTimeEvent,
+        end: formattedDate,
         title: eventTitle,
         description: eventDescription,
         freeTime: freeTime,
-      });
+      };
     }
-  });
+    try {
+      await addNewEventMutation.mutateAsync(eventStructure);
+      queryClient.invalidateQueries("events");
+      resetValues();
+      toastEvent();
+      props.setOpenNewEvent(false);
+    } catch (error) {
+      console.error("Error adding new service:", error);
+    }
+  };
 
   return (
     <div className="">
@@ -134,7 +168,15 @@ const AddNewEventToCalendar = props => {
                     <Label htmlFor="lastName" className="text-right">
                       Usługa
                     </Label>
-                    <Select onValueChange={e => setEventDescription(e)}>
+                    <Select
+                      onValueChange={e => {
+                        const selectedServiceData = servicesData.find(
+                          service => service.name === e
+                        );
+                        setServiceDuration(selectedServiceData.duration);
+                        setEventDescription(selectedServiceData.name);
+                      }}
+                    >
                       <SelectTrigger className="col-span-3">
                         <SelectValue placeholder="Wybierz usługę" />
                       </SelectTrigger>
@@ -175,7 +217,7 @@ const AddNewEventToCalendar = props => {
               >
                 Anuluj
               </Button>
-              <Button type="button" onClick={addNewEvent}>
+              <Button type="button" onClick={newHandleAddEvents}>
                 Dodaj
               </Button>
             </div>
