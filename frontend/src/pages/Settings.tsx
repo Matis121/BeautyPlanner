@@ -15,7 +15,7 @@ const Home = () => {
   // FETCH DATA
   const { data } = useQuery(["hours"], () => getHours(userData));
 
-  const [newValues, setNewValues] = useState();
+  const [newValues, setNewValues] = useState([]);
 
   useEffect(() => {
     setNewValues(data);

@@ -29,7 +29,7 @@ const Calendar = () => {
   // FETCHING HOURS
   const { data: hoursData } = useQuery(["hours"], () => getHours(userData), {
     onSuccess: data => {
-      const activeHours = hoursData
+      const activeHours = data
         .filter(hour => hour.active === true)
         .map(hour => ({
           daysOfWeek: hour.dayOfWeek,
@@ -164,7 +164,6 @@ const Calendar = () => {
           }}
           select={function (start) {
             setStartTimeEvent(start.startStr);
-            setEndTimeEvent(start.endStr);
             setOpenNewEvent(true);
           }}
           eventClick={function (info) {

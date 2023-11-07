@@ -19,7 +19,7 @@ const ViewClientEvent = props => {
   const userData = JSON.parse(userToken).username;
 
   // FETCH DATA
-  const { data: servicesData } = useQuery(["hours"], () =>
+  const { data: servicesData } = useQuery(["services"], () =>
     getUserServices(userData)
   );
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
@@ -37,7 +37,7 @@ const ViewClientEvent = props => {
   const removeEventMutation = useMutation(() =>
     removeEvent(userData, props.clickedEventId)
   );
-  
+
   const handleEventActions = async () => {
     try {
       await removeEventMutation.mutateAsync();
@@ -56,8 +56,8 @@ const ViewClientEvent = props => {
         onOpenChange={props.setOpenViewClientEvent}
       >
         {eventsData
-          ? eventsData.map(event => (
-              <div key={event.id}>
+          ? eventsData.map((event, idx) => (
+              <div key={idx}>
                 {event.id === props.clickedEventId ? (
                   <>
                     {event.freeTime === false ? (
@@ -79,8 +79,8 @@ const ViewClientEvent = props => {
                             </span>
                           </p>
                           {servicesData
-                            ? servicesData.map(service => (
-                                <div key={service.id}>
+                            ? servicesData.map((service, idx) => (
+                                <div key={idx}>
                                   {service.name === event.description ? (
                                     <>
                                       <p>
