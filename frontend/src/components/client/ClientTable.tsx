@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 
 const ClientTable = () => {
-   // QUERY CLIENT
+  // QUERY CLIENT
   const queryClient = useQueryClient();
 
   // USER DATA
@@ -21,14 +21,13 @@ const ClientTable = () => {
   const userData = JSON.parse(userToken).username;
 
   // FETCH DATA
-  const { data } = useQuery(["clients"], () => getClients(userData));
-
+  const { data, isLoading } = useQuery(["clients"], () => getClients(userData));
 
   // MUTATION
   const removeClientMutation = useMutation(clientId =>
     removeClient(userData, clientId)
   );
-  
+
   const handleRemoveClient = async clientId => {
     try {
       await removeClientMutation.mutateAsync(clientId);
@@ -47,7 +46,7 @@ const ClientTable = () => {
             <TableHead>Imię Nazwisko</TableHead>
             <TableHead>Telefon</TableHead>
             <TableHead>Wizyty</TableHead>
-            <TableHead className="text-right"></TableHead>
+            <TableHead className="text-right">Edytuj / Usuń</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

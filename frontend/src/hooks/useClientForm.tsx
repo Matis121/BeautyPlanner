@@ -14,7 +14,6 @@ const useClientForm = () => {
 
   // USE STATE
   const [open, setOpen] = useState(false);
-  const { toast } = useToast();
 
   const {
     register,
@@ -36,13 +35,13 @@ const useClientForm = () => {
   };
 
   // TOAST
+  const { toast } = useToast();
   const toastClientAdded = () => {
     toast({
       title: "Zadanie wykonane!",
       description: "Osoba została dodana do bazy klientów.",
     });
   };
-
 
   // MUTATION
   const addNewClientMutation = useMutation(clientStructure =>

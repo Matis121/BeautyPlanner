@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { addNewService } from "../../api/User";
+import { useToast } from "@/components/ui/use-toast";
 
 const ServiceForm = props => {
   // QUERY CLIENT
@@ -49,6 +50,14 @@ const ServiceForm = props => {
     resetField("price");
   };
 
+  const { toast } = useToast();
+  const handleToast = () => {
+    toast({
+      title: "Zadanie wykonane!",
+      description: "Usługa została dodana do bazy.",
+    });
+  };
+
   const addNewServiceMutation = useMutation(serviceStructure =>
     addNewService(userData, serviceStructure)
   );
@@ -63,9 +72,10 @@ const ServiceForm = props => {
 
     try {
       await addNewServiceMutation.mutateAsync(serviceStructure);
-      resetValues();
-      setOpen(false);
       queryClient.invalidateQueries("services");
+      setOpen(false);
+      resetValues();
+      handleToast();
     } catch (error) {
       console.error("Error adding new service:", error);
     }

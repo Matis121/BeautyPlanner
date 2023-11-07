@@ -24,6 +24,14 @@ const EditClientForm = props => {
 
   const [open, setOpen] = useState(false);
 
+  // FORM EDIT VALUES
+  const [firstName, setfirstName] = useState(props.selectedClient.firstName);
+  const [lastName, setLastName] = useState(props.selectedClient.lastName);
+  const [phoneNumber, setPhoneNumber] = useState(
+    props.selectedClient.phoneNumber
+  );
+  const [email, setEmail] = useState(props.selectedClient.mailAddress);
+
   const {
     register,
     handleSubmit,
@@ -42,7 +50,6 @@ const EditClientForm = props => {
     resetField("emailAddress");
     resetField("birthDay");
   };
-
 
   // MUTATION
   const editClientMutation = useMutation(clientStructure =>
@@ -95,6 +102,8 @@ const EditClientForm = props => {
                 }`}
                 placeholder={`${errors.firstName ? errorValue : ""}`}
                 maxLength={20}
+                value={firstName}
+                onChange={e => setfirstName(e.target.value)}
               />
             </div>
             <div className="grid grid-col-1 text-center"></div>
@@ -107,6 +116,8 @@ const EditClientForm = props => {
                 {...register("lastName")}
                 className="col-span-3"
                 maxLength={25}
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -119,6 +130,8 @@ const EditClientForm = props => {
                 className="col-span-3"
                 type="number"
                 maxLength={15}
+                value={phoneNumber}
+                onChange={e => setPhoneNumber(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -134,6 +147,8 @@ const EditClientForm = props => {
                   },
                 })}
                 className="col-span-3"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">

@@ -23,7 +23,6 @@ const ServiceTable = () => {
   // FETCH DATA
   const { data } = useQuery(["services"], () => getUserServices(userData));
 
-
   // MUTATION
   const removeServiceMutation = useMutation(serviceId =>
     removeService(userData, serviceId)
@@ -58,7 +57,7 @@ const ServiceTable = () => {
                   <TableCell>{service.name + " "}</TableCell>
                   <TableCell>{service.duration} min</TableCell>
                   <TableCell>{service.price} zł</TableCell>
-                  <TableCell className="text-right flex items-center justify-end">
+                  <TableCell className="text-right">
                     <EditServiceForm
                       serviceId={service.id}
                       name={service.name}

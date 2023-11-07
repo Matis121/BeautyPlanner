@@ -33,7 +33,9 @@ const Clients = () => {
               <ClientForm />
             </div>
           ) : (
-            <ClientTable />
+            <>
+              <ClientTable />
+            </>
           )}
         </section>
       </BasicLayout>
