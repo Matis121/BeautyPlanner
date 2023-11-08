@@ -102,7 +102,7 @@ const ServiceForm = props => {
     <div className="p-4">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">Dodaj usługę</Button>
+          <Button>Dodaj usługę</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

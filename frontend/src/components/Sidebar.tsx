@@ -1,61 +1,47 @@
 import { NavLink } from "react-router-dom";
 import {
-  LuCalendarDays,
+  LuCalendarRange,
   LuUsers,
   LuWrench,
   LuLineChart,
   LuSettings,
 } from "react-icons/lu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
-
   return (
     <>
-      <nav className="flex flex-col justify-between items-center bg-neutral-800 h-screen w-26 z-10 px-2 py-5">
-        <div className="flex flex-col items-center">
-          <Avatar
-            onClick={handleLogout}
-            className="shadow-md hover:cursor-pointer hover:shadow-xl hover:scale-105 mb-6"
-          >
-            <AvatarImage src="https://lh6.googleusercontent.com/-rHKzuuteqoc/AAAAAAAAAAI/AAAAAAAAAAA/fK12yfqT0TM/s44-w44-h44-p-k-no-ns-nd/photo.jpg" />
-            <AvatarFallback></AvatarFallback>
-          </Avatar>
+      <nav className="flex flex-col justify-between items-start h-screen w-48 z-10 px-4 py-5 border-r border-gray-200">
+        <div className="flex flex-col items-start gap-6">
+          <p className="logo font-semibold text-xl mb-4">BeautyPlanner</p>
+          <p className="text-xs font-bold uppercase text-gray-500">Wizyty</p>
           <NavLink
             to="/calendar"
-            className="my-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-gray-300"
+            className="flex justify-center items-center text-gray-400 hover:cursor-pointer hover:text-gray-500"
           >
-            <LuCalendarDays size={28} />
-            <span className="mt-1 font-normal text-xs">Kalendarz</span>
+            <LuCalendarRange size={25} className="mr-3" />
+            <span className="font-normal">Kalendarz</span>
           </NavLink>
           <NavLink
             to="/clients"
-            className="my-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-gray-300"
+            className="flex justify-center items-center text-gray-400 hover:cursor-pointer hover:text-gray-500"
           >
-            <LuUsers size={28} />
-            <span className="mt-1 font-normal text-xs">Klienci</span>
+            <LuUsers size={25} className="mr-3" />
+            <span className="font-normal">Klienci</span>
           </NavLink>
           <NavLink
             to="/services"
-            className="my-4 flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-gray-300"
+            className="flex justify-center items-center text-gray-400 hover:cursor-pointer hover:text-gray-500"
           >
-            <LuWrench size={28} />
-            <span className="mt-1 font-normal text-xs">Usługi</span>
+            <LuWrench size={25} className="mr-3" />
+            <span className="font-normal">Usługi</span>
           </NavLink>
         </div>
         <NavLink
           to="/settings"
-          className="flex flex-col justify-center items-center text-white hover:cursor-pointer hover:text-gray-300"
+          className="flex justify-center items-center text-gray-400 hover:cursor-pointer hover:text-gray-500"
         >
-          <LuSettings size={28} />
-          <span className="mt-1 font-normal text-xs">Ustawienia</span>
+          <LuSettings size={25} className="mr-3" />
+          <span className=" font-normal">Ustawienia</span>
         </NavLink>
       </nav>
     </>

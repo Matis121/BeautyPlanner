@@ -27,7 +27,7 @@ const ClientForm = props => {
     <div className={`${props.noPadding ? "p-0" : "p-4"}`}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">Dodaj klienta</Button>
+          <Button>Dodaj klienta</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
