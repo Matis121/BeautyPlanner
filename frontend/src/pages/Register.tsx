@@ -9,8 +9,14 @@ import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import i18next from "i18next";
+import { zodI18nMap } from "zod-i18n-map";
+import translation from "zod-i18n-map/locales/pl/zod.json";
 
 const Register = () => {
+  // UseState to show error from API after submit form
+  const [submitError, setSubmitError] = useState("");
+
   // TOAST
   const { toast } = useToast();
   const toastEvent = () => {
@@ -19,7 +25,16 @@ const Register = () => {
     });
   };
 
-  // ZOD
+  // ZOD TRANSLATION
+  i18next.init({
+    lng: "pl",
+    resources: {
+      pl: { zod: translation },
+    },
+  });
+  z.setErrorMap(zodI18nMap);
+
+  // ZOD WITH REACT HOOK FORM
   const schema = z
     .object({
       username: z.string().min(4).max(30),
@@ -47,6 +62,7 @@ const Register = () => {
       reset();
     } else {
       console.log(res.error);
+      setSubmitError(res.error);
     }
   };
 
@@ -82,6 +98,11 @@ const Register = () => {
                 {errors.username.message}
               </p>
             )}
+            {submitError ? (
+              <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
+                {submitError}
+              </p>
+            ) : null}
             <Input
               className=" mb-3"
               placeholder="Hasło"

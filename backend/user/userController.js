@@ -39,7 +39,7 @@ const register = async (req, res, next) => {
 
   if (userExists) {
     res.json({
-      error: "Username already taken.",
+      error: "Nazwa użytkownika jest już zajęta.",
     });
   } else {
     user

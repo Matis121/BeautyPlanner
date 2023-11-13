@@ -78,14 +78,10 @@ const AddNewEventToCalendar = props => {
       return;
     }
     const endTimeEvent = new Date(startTimeStr);
-    console.log(endTimeEvent);
     endTimeEvent.setMinutes(
       endTimeEvent.getMinutes() + parseFloat(serviceDuration)
     );
-    console.log(typeof serviceDuration);
-    console.log(endTimeEvent);
     const formattedDate = endTimeEvent.toISOString();
-    console.log(formattedDate);
     if (freeTime === true) {
       eventStructure = {
         id: crypto.randomUUID(),

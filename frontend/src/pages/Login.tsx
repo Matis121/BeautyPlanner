@@ -6,27 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "../api/User";
 import { useState, useEffect } from "react";
 import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const loggedIn = localStorage.getItem("user") !== null;
-
-  async function handleLogin() {
-    const payload = {
-      username,
-      password,
-    };
-
-    const user = await postLogin(payload);
-    if (user.token) {
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/");
-    } else {
-      toastEvent();
-    }
-  }
 
   useEffect(() => {
     if (loggedIn) {
@@ -34,12 +19,34 @@ const Login = () => {
     }
   }, [loggedIn, navigate]);
 
+  // TOAST
   const { toast } = useToast();
   const toastEvent = () => {
     toast({
       title: "Błąd",
       description: "Podałeś nieprawidłowe dane do logowania",
     });
+  };
+
+  // ZOD WITH REACT HOOK FORM
+  const schema = z.object({
+    username: z.string(),
+    password: z.string(),
+  });
+
+  const { register, handleSubmit } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  // LOGIN TO APP
+  const submitData = async data => {
+    const user = await postLogin(data);
+    if (user.token) {
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate("/");
+    } else {
+      toastEvent();
+    }
   };
 
   return (
@@ -63,23 +70,24 @@ const Login = () => {
           <p className="text-sm text-muted-foreground mb-6">
             Wpisz nazwę użytkownika oraz ustawione wcześniej hasło
           </p>
-          <Input
-            onChange={e => setUsername(e.target.value)}
-            value={username}
-            id="username"
-            className=" mb-4"
-            placeholder="Nazwa użytkownika"
-          />
-          <Input
-            onChange={e => setPassword(e.target.value)}
-            value={password}
-            id="password"
-            placeholder="Hasło"
-            type="password"
-          />
-          <Button onClick={handleLogin} className="mt-6 self-end">
-            Zaloguj się
-          </Button>
+          <form
+            onSubmit={handleSubmit(submitData)}
+            className="w-full flex flex-col"
+          >
+            <Input
+              {...register("username")}
+              className="mb-4"
+              placeholder="Nazwa użytkownika"
+            />
+            <Input
+              {...register("password")}
+              placeholder="Hasło"
+              type="password"
+            />
+            <Button type="submit" className="mt-6 self-end">
+              Zaloguj się
+            </Button>
+          </form>
         </div>
       </div>
     </section>
