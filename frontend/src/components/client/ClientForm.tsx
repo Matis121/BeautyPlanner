@@ -37,73 +37,60 @@ const ClientForm = props => {
               bazy.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="firstName" className="text-right">
-                  Imię*
-                </Label>
-                <Input
-                  id="firstName"
-                  {...register("firstName", { required: true })}
-                  className={`col-span-3  ${
-                    errors.firstName ? "border-red-500" : "null"
-                  }`}
-                  placeholder={`${errors.firstName ? errorValue : ""}`}
-                  maxLength={20}
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="lastName" className="text-right">
-                  Nazwisko
-                </Label>
-                <Input
-                  id="lastName"
-                  {...register("lastName")}
-                  className="col-span-3"
-                  maxLength={25}
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="phoneNumber" className="text-right">
-                  Telefon
-                </Label>
-                <Input
-                  id="phoneNumber"
-                  {...register("phoneNumber")}
-                  className="col-span-3"
-                  type="number"
-                  maxLength={15}
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="emailAddress" className="text-right">
-                  E-mail
-                </Label>
-                <Input
-                  id="emailAddress"
-                  {...register("emailAddress", {
-                    pattern: {
-                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                      message: "Invalid email format",
-                    },
-                  })}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="birthDay" className="text-right">
-                  Data urodzenia
-                </Label>
-                <Input
-                  id="birthDay"
-                  {...register("birthDay")}
-                  className="col-span-3"
-                  type="date"
-                />
-              </div>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col items-start gap-4 py-4"
+          >
+            <Input
+              placeholder="Imię *"
+              id="firstName"
+              {...register("firstName", { required: true })}
+              className={`col-span-3  ${
+                errors.firstName ? "border-red-500" : "null"
+              }`}
+              maxLength={20}
+            />
+            <Input
+              placeholder="Nazwisko"
+              id="lastName"
+              {...register("lastName")}
+              className="col-span-3"
+              maxLength={25}
+            />
+            <Input
+              placeholder="Telefon"
+              id="phoneNumber"
+              {...register("phoneNumber")}
+              className="col-span-3"
+              type="number"
+              maxLength={15}
+            />
+            <Input
+              placeholder="E-mail"
+              id="emailAddress"
+              {...register("emailAddress", {
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Invalid email format",
+                },
+              })}
+              className="col-span-3"
+            />
+            <div className="w-full">
+              <Label
+                htmlFor="birthDay"
+                className=" text-xs font-normal text-gray-500"
+              >
+                Data urodzenia
+              </Label>
+              <Input
+                id="birthDay"
+                {...register("birthDay")}
+                className="col-span-3 text-gray-500"
+                type="date"
+              />
             </div>
-            <div className="flex justify-end gap-4">
+            <div className="flex self-end gap-4">
               <Button
                 variant="outline"
                 type="button"

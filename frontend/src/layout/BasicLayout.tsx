@@ -6,7 +6,7 @@ const BasicLayout = ({ children }) => {
   return (
     <div className="flex w-full h-screen overflow-hidden">
       <Sidebar />
-      <div className="flex flex-col w-full bg-neutral-100">
+      <div className="flex flex-col w-full bg-gray-100">
         <NotivicationBar />
         {children}
         <Toaster />

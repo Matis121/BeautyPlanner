@@ -20,7 +20,7 @@ const Services = () => {
     <>
       <BasicLayout>
         <section
-          className={`flex flex-col w-full h-full bg-neutral-100 ${
+          className={`flex flex-col w-full h-full bg-gray-100 ${
             data.length === 0 ? "items-center justify-center" : ""
           }`}
         >
