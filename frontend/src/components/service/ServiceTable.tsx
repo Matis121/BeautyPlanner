@@ -38,7 +38,7 @@ const ServiceTable = () => {
   };
 
   return (
-    <div className="overflow-y-auto mb-20 m-4 shadow-md max-h-full">
+    <div className="overflow-y-auto mb-20 m-4 hadow-sm max-h-full">
       <Table className="bg-white rounded-md">
         <TableHeader>
           <TableRow>
@@ -54,9 +54,15 @@ const ServiceTable = () => {
             ? data.map((service: any, idx: number) => (
                 <TableRow key={service.id}>
                   <TableCell className="font-medium">{idx + 1}</TableCell>
-                  <TableCell>{service.name + " "}</TableCell>
-                  <TableCell>{service.duration} min</TableCell>
-                  <TableCell>{service.price} zł</TableCell>
+                  <TableCell>
+                    <p>{service.name}</p>
+                  </TableCell>
+                  <TableCell>
+                    <p>{service.duration} min</p>
+                  </TableCell>
+                  <TableCell>
+                    <p>{service.price} zł</p>
+                  </TableCell>
                   <TableCell className="text-right">
                     <EditServiceForm
                       serviceId={service.id}

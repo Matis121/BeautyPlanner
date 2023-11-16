@@ -105,62 +105,46 @@ const EditServiceForm = props => {
             Wypełnij formularz, aby dodać nową usługę.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Nazwa
-              </Label>
-              <Input
-                id="name"
-                {...register("name", { required: true })}
-                className={`col-span-3  ${
-                  errors.name ? "border-red-500" : "null"
-                }`}
-                placeholder={`${errors.name ? errorValue : ""}`}
-                maxLength={30}
-                value={serviceName}
-                onChange={e => setServiceName(e.target.value)}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="duration" className="text-right">
-                Czas trwania
-              </Label>
-              <Select onValueChange={e => setDurationService(e)}>
-                <SelectTrigger className="col-span-2">
-                  <SelectValue placeholder="Czas trwania" />
-                </SelectTrigger>
-                <SelectContent className="overflow-y-auto max-h-[13rem]">
-                  <SelectGroup>
-                    {durationServiceTable.map(time => (
-                      <SelectItem key={time} value={`${time}`}>
-                        {formatTime(time)}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="price" className="text-right">
-                Cena
-              </Label>
-              <Input
-                type="number"
-                id="price"
-                {...register("price", { required: true })}
-                className={`col-span-3  ${
-                  errors.price ? "border-red-500" : "null"
-                }`}
-                placeholder={`${errors.price ? errorValue : ""}`}
-                maxLength={25}
-                value={servicePrice}
-                onChange={e => setServicePrice(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col items-start gap-4 py-4"
+        >
+          <Input
+            id="name"
+            {...register("name", { required: true })}
+            className={`col-span-3  ${errors.name ? "border-red-500" : "null"}`}
+            maxLength={30}
+            value={serviceName}
+            onChange={e => setServiceName(e.target.value)}
+            placeholder="Nazwa usługi"
+          />
+          <Select onValueChange={e => setDurationService(e)}>
+            <SelectTrigger className="col-span-2 text-gray-500">
+              <SelectValue placeholder="Czas trwania" />
+            </SelectTrigger>
+            <SelectContent className="overflow-y-auto max-h-[13rem]">
+              <SelectGroup>
+                {durationServiceTable.map(time => (
+                  <SelectItem key={time} value={`${time}`}>
+                    {formatTime(time)}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Input
+            type="number"
+            id="price"
+            {...register("price", { required: true })}
+            className={`col-span-3  ${
+              errors.price ? "border-red-500" : "null"
+            }`}
+            maxLength={25}
+            value={servicePrice}
+            onChange={e => setServicePrice(e.target.value)}
+            placeholder="Cena"
+          />
+          <div className="flex self-end gap-4">
             <Button
               variant="outline"
               type="button"

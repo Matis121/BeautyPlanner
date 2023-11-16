@@ -38,12 +38,12 @@ const ClientTable = () => {
   };
 
   return (
-    <div className="overflow-y-auto mb-20 m-4 shadow-md max-h-full">
+    <div className="overflow-y-auto mb-20 m-4 shadow-sm max-h-full rounded-xl bg-gray-50">
       <Table className="bg-white rounded-md">
         <TableHeader>
           <TableRow>
             <TableHead>LP</TableHead>
-            <TableHead>Imię Nazwisko</TableHead>
+            <TableHead>Imię i nazwisko</TableHead>
             <TableHead>Telefon</TableHead>
             <TableHead>Wizyty</TableHead>
             <TableHead className="text-right">Edytuj / Usuń</TableHead>
@@ -55,11 +55,27 @@ const ClientTable = () => {
                 <TableRow key={client.id}>
                   <TableCell className="font-medium">{idx + 1}</TableCell>
                   <TableCell>
-                    {client.firstName + " "}
-                    {client.lastName}
+                    <p>
+                      {client.firstName + " "}
+                      {client.lastName}
+                    </p>
                   </TableCell>
-                  <TableCell>{client.phoneNumber}</TableCell>
-                  <TableCell>{/* KOD DO WIZYT */}</TableCell>
+                  <TableCell>
+                    {client.phoneNumber ? (
+                      <p>
+                        <span className="text-gray-700 font-semibold">
+                          +48{" "}
+                        </span>
+                        {client.phoneNumber}
+                      </p>
+                    ) : (
+                      <p className="text-gray-400">Nie podano</p>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {/* KOD DO WIZYT */}{" "}
+                    <p className="text-gray-400">Brak wizyt</p>
+                  </TableCell>
                   <TableCell className="text-right">
                     <EditClientForm
                       clientId={client.id}

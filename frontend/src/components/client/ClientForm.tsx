@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useCustomForm from "@/hooks/useClientForm";
+import { useState } from "react";
 
 const ClientForm = props => {
   const {
@@ -23,12 +24,29 @@ const ClientForm = props => {
     onSubmit,
   } = useCustomForm();
 
+  // VALIDATE NUMBER MAXLENGTH
+  const [phoneInput, setPhoneInput] = useState("");
+
+  const handleNumberLenght = e => {
+    if (e.target.value.length > e.target.maxLength) {
+      const truncatedValue = e.target.value.slice(0, 9);
+      setPhoneInput(truncatedValue);
+      return;
+    }
+    setPhoneInput(e.target.value);
+  };
+
   return (
     <div className={`${props.noPadding ? "p-0" : "p-4"}`}>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button>Dodaj klienta</Button>
-        </DialogTrigger>
+        <div className="py-6 px-12 bg-gray-50 rounded-xl shadow-sm flex items-center">
+          <span className="text-2xl font-semibold leading-6 text-gray-700 mr-6">
+            Klienci
+          </span>
+          <DialogTrigger asChild>
+            <Button>Dodaj klienta</Button>
+          </DialogTrigger>
+        </div>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Podstawowe dane klienta</DialogTitle>
@@ -62,8 +80,11 @@ const ClientForm = props => {
               id="phoneNumber"
               {...register("phoneNumber")}
               className="col-span-3"
+              maxLength={9}
               type="number"
-              maxLength={15}
+              inputMode="numeric"
+              onChange={handleNumberLenght}
+              value={phoneInput}
             />
             <Input
               placeholder="E-mail"
@@ -75,6 +96,7 @@ const ClientForm = props => {
                 },
               })}
               className="col-span-3"
+              maxLength={45}
             />
             <div className="w-full">
               <Label
