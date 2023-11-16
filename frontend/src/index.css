@@ -144,3 +144,7 @@ tr {
   border: none !important;
   color: white !important;
 }
+/* CALENDAR EVENT */
+.fc-event-main:hover {
+  cursor: pointer;
+}
