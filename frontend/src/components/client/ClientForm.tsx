@@ -39,14 +39,9 @@ const ClientForm = props => {
   return (
     <div className={`${props.noPadding ? "p-0" : "p-4"}`}>
       <Dialog open={open} onOpenChange={setOpen}>
-        <div className="py-6 px-12 bg-gray-50 rounded-xl shadow-sm flex items-center">
-          <span className="text-2xl font-semibold leading-6 text-gray-700 mr-6">
-            Klienci
-          </span>
-          <DialogTrigger asChild>
-            <Button>Dodaj klienta</Button>
-          </DialogTrigger>
-        </div>
+        <DialogTrigger asChild>
+          <Button>Dodaj klienta</Button>
+        </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Podstawowe dane klienta</DialogTitle>

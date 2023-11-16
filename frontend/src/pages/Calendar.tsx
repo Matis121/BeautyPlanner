@@ -76,102 +76,80 @@ const Calendar = () => {
       </div>
     );
   };
-
-  // HANDLE NEW EVENT POSITION
-  // const handleEventDrop = eventDropInfo => {
-  //   const updatedEvents = events.map(event => {
-  //     if (event.id == eventDropInfo.event.id) {
-  //       const newEventValues = {
-  //         start: eventDropInfo.event.start,
-  //         end: eventDropInfo.event.end,
-  //       };
-  //       editEvent(event.id, newEventValues);
-  //     }
-  //   });
-  // };
-
   return (
     <BasicLayout>
-      <div className="p-4">
-        <AddNewEventToCalendar
-          setOpenNewEvent={setOpenNewEvent}
-          openNewEvent={openNewEvent}
-          startTimeEvent={startTimeEvent}
-        />
-        <ViewClientEvent
-          openViewClientEvent={openViewClientEvent}
-          setOpenViewClientEvent={setOpenViewClientEvent}
-          clickedEventId={clickedEventId}
-        />
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView={"timeGridWeek"}
-          locale={"pl-PL"}
-          allDaySlot={false}
-          buttonText={{
-            today: "dzisiaj",
-            month: "miesiąc",
-            week: "tydzień",
-            day: "dzień",
-          }}
-          headerToolbar={{
-            start: "prev,next today",
-            center: "title",
-            end: "dayGridMonth,timeGridWeek,timeGridDay",
-          }}
-          views={{
-            dayGrid: {
-              titleFormat: {
-                year: "numeric",
-                month: "long",
-                day: "2-digit",
-              },
+      <AddNewEventToCalendar
+        setOpenNewEvent={setOpenNewEvent}
+        openNewEvent={openNewEvent}
+        startTimeEvent={startTimeEvent}
+      />
+      <ViewClientEvent
+        openViewClientEvent={openViewClientEvent}
+        setOpenViewClientEvent={setOpenViewClientEvent}
+        clickedEventId={clickedEventId}
+      />
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView={"timeGridWeek"}
+        locale={"pl-PL"}
+        allDaySlot={false}
+        buttonText={{
+          today: "dzisiaj",
+          month: "miesiąc",
+          week: "tydzień",
+          day: "dzień",
+        }}
+        headerToolbar={{
+          start: "prev,next today",
+          center: "title",
+          end: "dayGridMonth,timeGridWeek,timeGridDay",
+        }}
+        views={{
+          dayGrid: {
+            titleFormat: {
+              month: "long",
+              day: "2-digit",
             },
-            timeGridWeek: {
-              titleFormat: {
-                year: "numeric",
-                month: "long",
-                day: "2-digit",
-              },
+          },
+          timeGridWeek: {
+            titleFormat: {
+              month: "long",
+              day: "2-digit",
             },
-            timeGridDay: {
-              titleFormat: {
-                year: "numeric",
-                month: "long",
-                day: "2-digit",
-                weekday: "long",
-              },
+          },
+          timeGridDay: {
+            titleFormat: {
+              month: "long",
+              day: "2-digit",
+              weekday: "long",
             },
-          }}
-          firstDay={1}
-          businessHours={businessHours}
-          slotLabelFormat={{
-            hour: "numeric",
-            minute: "2-digit",
-            omitZeroMinute: false,
-            meridiem: false,
-            hour12: false,
-          }}
-          slotLabelInterval="01:00"
-          slotDuration="00:15:00"
-          height={"97vh"}
-          events={eventsData}
-          eventContent={eventContent}
-          selectable={true}
-          editable={true}
-          eventDrop={function (eventDropInfo) {
-            console.log(eventDropInfo);
-          }}
-          select={function (start) {
-            setStartTimeEvent(start.startStr);
-            setOpenNewEvent(true);
-          }}
-          eventClick={function (info) {
-            setClickedEventId(info.event._def.publicId);
-            setOpenViewClientEvent(true);
-          }}
-        />
-      </div>
+          },
+        }}
+        firstDay={1}
+        businessHours={businessHours}
+        slotLabelFormat={{
+          hour: "numeric",
+          minute: "2-digit",
+          omitZeroMinute: false,
+          meridiem: false,
+          hour12: false,
+        }}
+        slotLabelInterval="01:00"
+        slotDuration="00:15:00"
+        height={"90vh"}
+        events={eventsData}
+        eventContent={eventContent}
+        selectable={true}
+        // editable={true}
+        select={function (start) {
+          setStartTimeEvent(start.startStr);
+          setOpenNewEvent(true);
+        }}
+        eventClick={function (info) {
+          setClickedEventId(info.event._def.publicId);
+          setOpenViewClientEvent(true);
+        }}
+      />
     </BasicLayout>
   );
 };

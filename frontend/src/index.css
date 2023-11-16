@@ -93,10 +93,54 @@ nav a.active:hover {
   );
 }
 
+/* CALENDAR */
+.fc {
+  width: 100%;
+}
+
+.fc-view {
+  background-color: white;
+  color: rgb(110, 110, 110);
+}
+
 .fc-non-business {
-  backdrop-filter: brightness(90%) !important;
+  backdrop-filter: brightness(85%) !important;
 }
 
 .fc-timegrid-slot-label-cushion {
   font-weight: 500;
+}
+
+/* CALENDAR TOP */
+.fc-toolbar {
+  padding: 1.5rem 3rem;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.fc-toolbar-title {
+  font-size: 1.5em !important;
+  color: rgb(68, 68, 68);
+}
+
+tr {
+  height: 45px !important;
+}
+
+/* CALENDAR BUTTONS */
+.fc-button {
+  background-color: #7c3aede6 !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 0.25em !important;
+}
+
+.fc-button-group {
+  gap: 0.5rem;
+}
+
+.fc-button:disabled {
+  background-color: gray !important;
+  border: none !important;
+  color: white !important;
 }

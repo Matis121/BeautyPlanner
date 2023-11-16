@@ -17,29 +17,17 @@ const Clients = () => {
   }
 
   return (
-    <>
-      <BasicLayout>
-        <section
-          className={`flex flex-col w-full h-full bg-gray-100 ${
-            data.length === 0 ? "items-center justify-center" : ""
-          }`}
-        >
-          {data.length > 0 ? <ClientForm /> : null}
-          {data.length === 0 ? (
-            <div className="flex flex-col justify-center items-center p-12 rounded-xl">
-              <p className=" text-2xl font-light text-neutral-600">
-                Dodaj pierwszego klienta do bazy
-              </p>
-              <ClientForm />
-            </div>
-          ) : (
-            <>
-              <ClientTable />
-            </>
-          )}
-        </section>
-      </BasicLayout>
-    </>
+    <BasicLayout>
+      <section className="flex flex-col w-full h-full gap-6">
+        <div className="py-2 px-12 bg-white rounded-xl shadow-sm flex items-center">
+          <span className="text-2xl font-semibold leading-6 text-gray-700 mr-6">
+            Klienci
+          </span>
+          <ClientForm />
+        </div>
+        {data.length > 0 ? <ClientTable /> : ""}
+      </section>
+    </BasicLayout>
   );
 };
 

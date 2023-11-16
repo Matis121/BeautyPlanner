@@ -38,8 +38,8 @@ const ServiceTable = () => {
   };
 
   return (
-    <div className="overflow-y-auto mb-20 m-4 hadow-sm max-h-full">
-      <Table className="bg-white rounded-md">
+    <div className="overflow-y-auto shadow-sm rounded-xl">
+      <Table className="bg-white">
         <TableHeader>
           <TableRow>
             <TableHead>LP</TableHead>

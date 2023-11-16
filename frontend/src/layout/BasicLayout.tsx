@@ -8,7 +8,7 @@ const BasicLayout = ({ children }) => {
       <Sidebar />
       <div className="flex flex-col w-full bg-gray-100">
         <NotivicationBar />
-        {children}
+        <div className="flex p-6 w-full">{children}</div>
         <Toaster />
       </div>
     </div>
