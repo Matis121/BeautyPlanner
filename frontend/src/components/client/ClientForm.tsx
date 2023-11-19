@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useCustomForm from "@/hooks/useClientForm";
 import { useState } from "react";
+import { LuUserPlus } from "react-icons/lu";
 
 const ClientForm = props => {
   const {
@@ -37,10 +38,20 @@ const ClientForm = props => {
   };
 
   return (
-    <div className={`${props.noPadding ? "p-0" : "p-4"}`}>
+    <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button>Dodaj klienta</Button>
+          {props.customButton ? (
+            <Button
+              variant="link"
+              className="w-full gap-1 flex items-center justify-center p-0"
+            >
+              <LuUserPlus size={20} />
+              Dodaj nowego klienta
+            </Button>
+          ) : (
+            <Button>Dodaj klienta</Button>
+          )}
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

@@ -63,21 +63,21 @@ const ViewClientEvent = props => {
                     {event.freeTime === false ? (
                       <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
-                          <DialogTitle>Szczegóły wizyty</DialogTitle>
+                          <DialogTitle>Rezerwacja</DialogTitle>
                         </DialogHeader>
-                        <>
-                          <p>
-                            Klient:{" "}
-                            <span className=" font-semibold">
-                              {event.title}
+                        <section className="flex flex-col gap-2">
+                          <div className="border-b">
+                            <span className=" text-md font-normal text-gray-500">
+                              Klient
                             </span>
-                          </p>
-                          <p>
-                            Usługa:{" "}
-                            <span className=" font-semibold">
-                              {event.description}
+                            <p>{event.title}</p>
+                          </div>
+                          <div className="border-b">
+                            <span className=" text-md font-normal text-gray-500">
+                              Usługa
                             </span>
-                          </p>
+                            <p>{event.description}</p>
+                          </div>
                           {servicesData
                             ? servicesData.map((service, idx) => (
                                 <div key={idx}>
@@ -94,7 +94,7 @@ const ViewClientEvent = props => {
                                 </div>
                               ))
                             : null}
-                        </>
+                        </section>
                         <Button type="button" onClick={handleEventActions}>
                           Usuń wizyte
                         </Button>

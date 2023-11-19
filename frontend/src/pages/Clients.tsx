@@ -19,7 +19,7 @@ const Clients = () => {
   return (
     <BasicLayout>
       <section className="flex flex-col w-full h-full gap-6">
-        <div className="py-2 px-12 bg-white rounded-xl shadow-sm flex items-center">
+        <div className="py-6 px-12 bg-white rounded-xl shadow-sm flex items-center">
           <span className="text-2xl font-semibold leading-6 text-gray-700 mr-6">
             Klienci
           </span>

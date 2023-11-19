@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Select,
@@ -21,6 +20,7 @@ import { addEvent } from "../../api/User";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import ClientForm from "../client/ClientForm";
 
 import { getClients, getUserServices } from "../../api/User";
@@ -121,7 +121,7 @@ const AddNewEventToCalendar = props => {
           </DialogHeader>
           <form>
             <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
+              <div className="flex items-center gap-2">
                 <Label htmlFor="firstName" className="text-right">
                   Czas wolny
                 </Label>
@@ -133,11 +133,14 @@ const AddNewEventToCalendar = props => {
               </div>
               {freeTime === false ? (
                 <>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="firstName" className="text-right">
+                  <div className="-mb-4">
+                    <Label
+                      htmlFor="firstName"
+                      className="text-xs font-normal text-gray-500"
+                    >
                       Klient
                     </Label>
-                    <Select onValueChange={e => setEventTitle(e)}>
+                    <Select onValueChange={e => setEventTitle(e)} required>
                       <SelectTrigger className="col-span-2">
                         <SelectValue placeholder="Wybierz klienta" />
                       </SelectTrigger>
@@ -158,10 +161,13 @@ const AddNewEventToCalendar = props => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                    <ClientForm noPadding />
+                    <ClientForm customButton />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="lastName" className="text-right">
+                  <div>
+                    <Label
+                      htmlFor="lastName"
+                      className="text-xs font-normal text-gray-500"
+                    >
                       Usługa
                     </Label>
                     <Select
@@ -192,15 +198,27 @@ const AddNewEventToCalendar = props => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="gender" className="text-right">
-                      Opis
+                  <div>
+                    <Label
+                      htmlFor="lastName"
+                      className="text-xs font-normal text-gray-500"
+                    >
+                      Czas
                     </Label>
-                    <Input
-                      className="col-span-3"
-                      type="number"
-                      maxLength={15}
-                    />
+                    <div className="flex gap-2 items-center">
+                      <Input type="time" className="w-fit" />
+                      <span className="w-5 h-px bg-gray-500"></span>
+                      <Input type="time" className="w-fit" />
+                    </div>
+                  </div>
+                  <div>
+                    <Label
+                      htmlFor="gender"
+                      className="text-xs font-normal text-gray-500"
+                    >
+                      Notatka
+                    </Label>
+                    <Textarea className="max-h-40" />
                   </div>
                 </>
               ) : null}

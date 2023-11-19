@@ -99,7 +99,7 @@ const ServiceForm = props => {
   };
 
   return (
-    <div className="p-4">
+    <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>Dodaj usługę</Button>
