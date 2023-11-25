@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { addNewClient } from "../api/User";
@@ -15,24 +15,18 @@ const useClientForm = () => {
   // USE STATE
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    reset();
+  }, [open]);
+
   const {
     register,
     handleSubmit,
     getValues,
-    resetField,
+    reset,
     formState: { errors },
   } = useForm({});
   const errorValue = "Uzupełnij pole";
-
-  // RESET FUNCTION
-  const resetValues = () => {
-    resetField("firstName");
-    resetField("lastName");
-    resetField("gender");
-    resetField("phoneNumber");
-    resetField("emailAddress");
-    resetField("birthDay");
-  };
 
   // TOAST
   const { toast } = useToast();
@@ -62,14 +56,11 @@ const useClientForm = () => {
 
     try {
       await addNewClientMutation.mutateAsync(clientStructure);
-      resetValues();
       setOpen(false);
       queryClient.invalidateQueries("clients");
     } catch (error) {
       console.error("Error adding new service:", error);
     }
-
-    resetValues();
     toastClientAdded();
     setOpen(false);
   };

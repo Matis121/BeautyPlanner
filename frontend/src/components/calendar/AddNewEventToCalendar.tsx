@@ -15,6 +15,23 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { addEvent } from "../../api/User";
 
 import { Label } from "@/components/ui/label";
@@ -34,55 +51,56 @@ const AddNewEventToCalendar = props => {
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
 
-  // EVENT VALUES
-  const [selectClient, setSelectClient] = useState("");
-  const [selectService, setSelectService] = useState("");
+  // VARIABLE - FREE TIME
   const [freeTime, setFreeTime] = useState(false);
 
-  // VARIABLES FOR END TIME EVENT
+  // VARIABLE - ENTRY TIME FOR EVENT
   const startTimeStr = new Date(props.startTimeEvent);
 
-  // VARIABLES FOR EVENT START AND END TIME
+  // VARIABLES - HANDLE EVENT TIME
   const [eventStartTime, setEventStartTime] = useState("");
   const [eventEndTime, setEventEndTime] = useState("");
+  const [eventStartTimeForFreeTime, setEventStartTimeForFreeTime] =
+    useState("");
+  const [eventEndTimeForFreeTime, setEventEndTimeForFreeTime] = useState("");
 
-  // VALIDATION ERROR STATES
-  const [clientError, setClientError] = useState(false);
-  const [serviceError, setServiceError] = useState(false);
-  const [timeError, setTimeError] = useState({ start: false, end: false });
+  // VARIABLE - HANDLE COMBOBOX
+  // values
+  const [client, setClient] = useState("");
+  const [service, setService] = useState("");
+  // open and close
+  const [openClient, setOpenClient] = useState(false);
+  const [openService, setOpenService] = useState(false);
 
   // HANDLERS
-  const handleEventTime = duration => {
+  // HANDLE - EVENT DURATION
+  const handleEventDuration = duration => {
     const date = new Date(startTimeStr);
     function addMinutes(date, minutes) {
       const newDate = new Date(date.getTime());
-
       // Calculate hours and remaining minutes
       const hoursToAdd = Math.floor(minutes / 60);
       const remainingMinutes = minutes % 60;
-
       // Adjust hours
       newDate.setHours(newDate.getHours() + hoursToAdd);
-
       // Adjust minutes
       newDate.setMinutes(newDate.getMinutes() + remainingMinutes);
-
       return newDate;
     }
     const endTime = addMinutes(date, duration);
-
     const options = {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false, // Use 24-hour format
     };
-    const formattedStartTime = startTimeStr.toLocaleTimeString(
-      "pl-pl",
-      options
-    );
-    const formattedEndTime = endTime.toLocaleTimeString("pl-pl", options);
-    setEventStartTime(formattedStartTime);
-    setEventEndTime(formattedEndTime);
+    setEventStartTime(startTimeStr.toLocaleTimeString("pl-pl", options));
+    setEventEndTime(endTime.toLocaleTimeString("pl-pl", options));
+  };
+
+  // HANDLE - FREE DAY
+  const handleFreeDay = () => {
+    setEventStartTimeForFreeTime(eventStartTimeForFreeTime ? "" : "00:00");
+    setEventEndTimeForFreeTime(eventEndTimeForFreeTime ? "" : "23:59");
   };
 
   // FETCH DATA
@@ -103,51 +121,72 @@ const AddNewEventToCalendar = props => {
   };
 
   // RESET FUNCTION
-  const resetValues = value => {
-    if (value !== "without-free") {
-      setFreeTime(false);
-    }
-    setSelectClient("");
-    setSelectService("");
+  const resetValues = () => {
+    // form for event
+    reset();
+    setClient("");
+    setService("");
     setEventStartTime("");
     setEventEndTime("");
-    setClientError(false);
-    setServiceError(false);
-    setTimeError(prev => ({ ...prev, start: false, end: false }));
+    // form for free day
+    resetFreeTime();
+    setEventStartTimeForFreeTime("");
+    setEventEndTimeForFreeTime("");
+    setFreeTime(false);
   };
+
+  // RESET ON CLOSE FORM
+  useEffect(() => {
+    if (props.openNewEvent) {
+      resetValues();
+    }
+  }, [props.openNewEvent]);
+
+  // ZOD FORM
+  const isValidTime = (value: string): boolean => {
+    const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    return regex.test(value);
+  };
+
+  const schemaEvent = z.object({
+    clientEvent: z.string(),
+    serviceEvent: z.string(),
+    startTimeEvent: z.string().refine(value => isValidTime(value)),
+    endTimeEvent: z.any().refine(value => isValidTime(value)),
+    note: z.any(),
+  });
+  const schemaFreeTime = z.object({
+    startTimeEvent: z.string().refine(value => isValidTime(value)),
+    endTimeEvent: z.any().refine(value => isValidTime(value)),
+    note: z.any(),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(schemaEvent) });
+
+  const {
+    register: registerFreeTime,
+    handleSubmit: handleSubmitFreeTime,
+    reset: resetFreeTime,
+    formState: { errors: errorsFreeTime },
+  } = useForm({ resolver: zodResolver(schemaFreeTime) });
 
   // MUTATION
   const addNewEventMutation = useMutation(eventStructure =>
     addEvent(userData, eventStructure)
   );
 
-  // MAIN ADD NEW EVENT FUNCTION
-  const newHandleAddEvents = async () => {
+  // CREATE NEW EVENT
+  const handleAddEvents = async data => {
     let eventStructure;
-
-    //VALIDATION FUNCTIONS
-    if (freeTime === false && (selectClient === "" || selectService === "")) {
-      if (selectClient === "") {
-        setClientError(true);
-      }
-      if (selectService === "") {
-        setServiceError(true);
-      }
-      return;
-    }
-    if (freeTime === true && (eventStartTime === "" || eventEndTime === "")) {
-      if (eventStartTime === "") {
-        setTimeError(prev => ({ ...prev, start: true }));
-      }
-      if (eventEndTime === "") {
-        setTimeError(prev => ({ ...prev, end: true }));
-      }
-      return;
-    }
-
     // CREATE TIME AND DATE
     const startDateStr = new Date(startTimeStr);
     const endDateStr = new Date(startTimeStr);
+
     function createFinalDate(selectDate, timeValue) {
       const [hours, minutes] = timeValue.split(":").map(Number);
       selectDate.setHours(hours);
@@ -155,28 +194,31 @@ const AddNewEventToCalendar = props => {
       console.log(selectDate);
     }
 
-    createFinalDate(startDateStr, eventStartTime);
-    createFinalDate(endDateStr, eventEndTime);
-
     // CREATING FINAL STRUCTURE FOR REQUEST
     if (freeTime === true) {
+      createFinalDate(startDateStr, eventStartTimeForFreeTime);
+      createFinalDate(endDateStr, eventEndTimeForFreeTime);
       eventStructure = {
         id: crypto.randomUUID(),
         start: startDateStr,
         end: endDateStr,
         title: "🌴 CZAS WOLNY 🌴",
-        description: "",
+        service: "",
         freeTime: freeTime,
       };
     } else {
+      createFinalDate(startDateStr, eventStartTime);
+      createFinalDate(endDateStr, eventEndTime);
       eventStructure = {
         id: crypto.randomUUID(),
         start: startDateStr,
         end: endDateStr,
-        title: selectClient,
-        description: selectService,
+        title: client,
+        service: service,
+        description: data.note,
         freeTime: freeTime,
       };
+      console.log(data);
     }
     // CREATE MUTATION AND REQUEST
     try {
@@ -190,142 +232,141 @@ const AddNewEventToCalendar = props => {
     }
   };
 
-  // RESET ON CLOSE FORM
-  useEffect(() => {
-    if (props.openNewEvent) {
-      resetValues();
-    }
-  }, [props.openNewEvent]);
-
-  // FREE DAY
-  const handleFreeDay = () => {
-    setEventStartTime(eventStartTime ? "" : "00:00");
-    setEventEndTime(eventEndTime ? "" : "23:59");
-    setTimeError(prev => ({ ...prev, start: false, end: false }));
-  };
-
   return (
-    <div className="">
-      <Dialog open={props.openNewEvent} onOpenChange={props.setOpenNewEvent}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="flex gap-6">
-              <button
-                className={freeTime ? `opacity-50` : `opacity-100`}
-                onClick={() => {
-                  setFreeTime(false);
-                  resetValues("without-free");
-                }}
-              >
-                Nowa wizyta
-              </button>
-              <button
-                className={freeTime ? `opacity-100` : `opacity-50`}
-                onClick={() => {
-                  setFreeTime(true);
-                  resetValues("without-free");
-                }}
-              >
-                Czas wolny
-              </button>
-            </DialogTitle>
-          </DialogHeader>
-          <form>
-            <div className="grid gap-4 py-4">
-              {freeTime === false ? (
-                <>
-                  <div className="-mb-4">
-                    <Label
-                      htmlFor="firstName"
-                      className="text-xs font-normal text-gray-500"
+    <Dialog open={props.openNewEvent} onOpenChange={props.setOpenNewEvent}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle className="flex gap-6">
+            <button
+              className={freeTime ? `opacity-50` : `opacity-100`}
+              onClick={() => {
+                setFreeTime(false);
+              }}
+            >
+              Nowa wizyta
+            </button>
+            <button
+              className={freeTime ? `opacity-100` : `opacity-50`}
+              onClick={() => {
+                setFreeTime(true);
+              }}
+            >
+              Czas wolny
+            </button>
+          </DialogTitle>
+        </DialogHeader>
+        <div className="py-4">
+          {freeTime === false ? (
+            <form
+              onSubmit={handleSubmit(handleAddEvents)}
+              className="grid gap-4"
+            >
+              <div className="-mb-4">
+                <Label
+                  htmlFor="firstName"
+                  className="text-xs font-normal text-gray-500"
+                >
+                  Klient
+                </Label>
+                <Popover open={openClient} onOpenChange={setOpenClient}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={`w-full justify-between text-muted-foreground ${
+                        errors.clientEvent
+                          ? " border-red-500 text-red-500"
+                          : "border-input"
+                      }`}
                     >
-                      Klient
-                    </Label>
-                    <Select
-                      onValueChange={e => {
-                        setSelectClient(e);
-                        setClientError(false);
-                      }}
-                    >
-                      <SelectTrigger
-                        className={
-                          clientError
-                            ? ` border-red-500 text-red-500`
-                            : `border-input`
-                        }
-                      >
-                        <SelectValue placeholder="Wybierz klienta" />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-[13rem]">
-                        <SelectGroup>
-                          {clientsData
-                            ? clientsData.map(client => (
-                                <SelectItem
-                                  key={client.id}
-                                  value={
-                                    client.firstName + " " + client.lastName
+                      {client ? client : "Wybierz Klienta"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-0">
+                    <Command>
+                      <CommandInput placeholder="Wyszukaj klienta..." />
+                      <CommandEmpty>Brak klienta.</CommandEmpty>
+                      <CommandGroup>
+                        {clientsData
+                          ? clientsData.map(element => (
+                              <CommandItem
+                                key={element.id}
+                                value={
+                                  element.firstName + " " + element.lastName
+                                }
+                                onSelect={() => {
+                                  setClient(
+                                    element.firstName + " " + element.lastName
+                                  );
+                                  setOpenClient(false);
+                                  {
+                                    register("clientEvent", {
+                                      value: element.firstName,
+                                    });
                                   }
-                                >
-                                  {client.firstName + " " + client.lastName}
-                                </SelectItem>
-                              ))
-                            : null}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <ClientForm customButton />
-                  </div>
-                  <div>
-                    <Label
-                      htmlFor="lastName"
-                      className="text-xs font-normal text-gray-500"
+                                }}
+                              >
+                                {element.firstName + " " + element.lastName}
+                              </CommandItem>
+                            ))
+                          : null}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <ClientForm customButton />
+              </div>
+              <div>
+                <Label
+                  htmlFor="lastName"
+                  className="text-xs font-normal text-gray-500"
+                >
+                  Usługa
+                </Label>
+                <Popover open={openService} onOpenChange={setOpenService}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={`w-full justify-between text-muted-foreground ${
+                        errors.serviceEvent
+                          ? " border-red-500 text-red-500"
+                          : "border-input"
+                      }`}
                     >
-                      Usługa
-                    </Label>
-                    <Select
-                      onValueChange={e => {
-                        const selectedServiceData = servicesData.find(
-                          service => service.name === e
-                        );
-                        setSelectService(selectedServiceData.name);
-                        handleEventTime(selectedServiceData.duration);
-                        setServiceError(false);
-                      }}
-                    >
-                      <SelectTrigger
-                        className={
-                          serviceError
-                            ? ` border-red-500 text-red-500`
-                            : `border-input`
-                        }
-                      >
-                        <SelectValue placeholder="Wybierz usługę" />
-                      </SelectTrigger>
-                      <SelectContent className="overflow-y-auto max-h-[13rem]">
-                        <SelectGroup>
-                          {servicesData
-                            ? servicesData.map(service => (
-                                <SelectItem
-                                  key={service.id}
-                                  value={service.name}
-                                >
-                                  {service.name}
-                                </SelectItem>
-                              ))
-                            : null}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </>
-              ) : (
-                <div className="flex items-center gap-2 mr-4">
-                  <Label htmlFor="firstName" className="text-right">
-                    Cały dzień
-                  </Label>
-                  <Switch className="mr-4 col-span-2" onClick={handleFreeDay} />
-                </div>
-              )}
+                      {service ? service : "Wybierz usługę"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-0">
+                    <Command>
+                      <CommandInput placeholder="Wyszukaj usługe..." />
+                      <CommandEmpty>Brak usługi.</CommandEmpty>
+                      <CommandGroup>
+                        {servicesData
+                          ? servicesData.map(element => (
+                              <CommandItem
+                                key={element.id}
+                                value={element.name}
+                                onSelect={() => {
+                                  setService(element.name);
+                                  setOpenService(false);
+                                  handleEventDuration(element.duration);
+                                  {
+                                    register("serviceEvent", {
+                                      value: element.name,
+                                    });
+                                  }
+                                }}
+                              >
+                                {element.name}
+                              </CommandItem>
+                            ))
+                          : null}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
               <div>
                 <Label
                   htmlFor="lastName"
@@ -336,29 +377,29 @@ const AddNewEventToCalendar = props => {
                 <div className="flex gap-2 items-center">
                   <Input
                     type="time"
+                    {...register("startTimeEvent")}
                     className={`w-fit ${
-                      timeError.start
+                      errors.startTimeEvent
                         ? "border-red-500 text-red-500"
                         : "border-input"
                     }`}
                     value={eventStartTime}
                     onChange={e => {
                       setEventStartTime(e.target.value);
-                      setTimeError(prev => ({ ...prev, start: false }));
                     }}
                   />
                   <span className="w-5 h-px bg-gray-500"></span>
                   <Input
                     type="time"
+                    {...register("endTimeEvent")}
                     className={`w-fit ${
-                      timeError.end
+                      errors.startTimeEvent
                         ? "border-red-500 text-red-500"
                         : "border-input"
                     }`}
                     value={eventEndTime}
                     onChange={e => {
                       setEventEndTime(e.target.value);
-                      setTimeError(prev => ({ ...prev, end: false }));
                     }}
                   />
                 </div>
@@ -370,25 +411,91 @@ const AddNewEventToCalendar = props => {
                 >
                   Notatka
                 </Label>
-                <Textarea className="max-h-40" />
+                <Textarea className="max-h-40" {...register("note")} />
               </div>
-            </div>
-            <div className="flex justify-end gap-4">
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => props.setOpenNewEvent(false)}
-              >
-                Anuluj
-              </Button>
-              <Button type="button" onClick={newHandleAddEvents}>
-                Dodaj
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </div>
+              <div className="flex justify-end gap-4">
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => props.setOpenNewEvent(false)}
+                >
+                  Anuluj
+                </Button>
+                <Button type="submit">Dodaj</Button>
+              </div>
+            </form>
+          ) : (
+            <form
+              onSubmit={handleSubmitFreeTime(handleAddEvents)}
+              className="grid gap-4"
+            >
+              <div className="flex items-center gap-2 mr-4">
+                <Label htmlFor="firstName" className="text-right">
+                  Cały dzień
+                </Label>
+                <Switch className="mr-4 col-span-2" onClick={handleFreeDay} />
+              </div>
+              <div>
+                <Label
+                  htmlFor="lastName"
+                  className="text-xs font-normal text-gray-500"
+                >
+                  Czas
+                </Label>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    type="time"
+                    {...registerFreeTime("startTimeEvent")}
+                    className={`w-fit ${
+                      errorsFreeTime.startTimeEvent
+                        ? "border-red-500 text-red-500"
+                        : "border-input"
+                    }`}
+                    value={eventStartTimeForFreeTime}
+                    onChange={e => {
+                      setEventStartTimeForFreeTime(e.target.value);
+                    }}
+                  />
+                  <span className="w-5 h-px bg-gray-500"></span>
+                  <Input
+                    type="time"
+                    {...registerFreeTime("endTimeEvent")}
+                    className={`w-fit ${
+                      errorsFreeTime.startTimeEvent
+                        ? "border-red-500 text-red-500"
+                        : "border-input"
+                    }`}
+                    value={eventEndTimeForFreeTime}
+                    onChange={e => {
+                      setEventEndTimeForFreeTime(e.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
+                <Label
+                  htmlFor="gender"
+                  className="text-xs font-normal text-gray-500"
+                >
+                  Notatka
+                </Label>
+                <Textarea className="max-h-40" {...registerFreeTime("note")} />
+              </div>
+              <div className="flex justify-end gap-4">
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => props.setOpenNewEvent(false)}
+                >
+                  Anuluj
+                </Button>
+                <Button type="submit">Dodaj</Button>
+              </div>
+            </form>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

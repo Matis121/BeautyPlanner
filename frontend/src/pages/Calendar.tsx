@@ -48,7 +48,7 @@ const Calendar = () => {
     let bgEventColor;
 
     if (arg.event.extendedProps.freeTime === false) {
-      bgEventColor = "bg-black";
+      bgEventColor = "bg-blue-200";
     } else {
       bgEventColor = "bg-red-400";
     }
@@ -67,12 +67,24 @@ const Calendar = () => {
     }
 
     return (
-      <div className={`overflow-hidden h-full ${bgEventColor} border-none`}>
-        {arg.timeText}
-        <br></br>
-        <strong>{arg.event.title}</strong>
-        <br></br>
-        <i>{arg.event.extendedProps.description}</i>
+      <div
+        className={`overflow-hidden h-full ${bgEventColor} border-none flex flex-col gap-1 text-black`}
+      >
+        <div className="bg-white flex items-center justify-center opacity-90">
+          {arg.timeText}
+        </div>
+        <div className="px-1 flex flex-col gap-1">
+          <strong>{arg.event.title}</strong>
+          <p className="p-1 bg-blue-800 w-full text-white rounded-md flex items-center">
+            {arg.event.extendedProps.service}
+          </p>
+          {arg.event.extendedProps.description ? (
+            <div className="p-1  bg-red-200 w-full text-black rounded-md flex flex-col border-red-500">
+              <span className="text-xs font-semibold">Notatka</span>
+              <i>{arg.event.extendedProps.description}</i>
+            </div>
+          ) : null}
+        </div>
       </div>
     );
   };
@@ -140,6 +152,7 @@ const Calendar = () => {
         events={eventsData}
         eventContent={eventContent}
         selectable={true}
+        nowIndicator={true}
         // editable={true}
         select={function (start) {
           setStartTimeEvent(start.startStr);

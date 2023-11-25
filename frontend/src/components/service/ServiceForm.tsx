@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient, useMutation } from "react-query";
 import { Button } from "@/components/ui/button";
@@ -35,20 +35,18 @@ const ServiceForm = props => {
   const [open, setOpen] = useState(false);
   const [durationService, setDurationService] = useState();
 
+  useEffect(() => {
+    reset();
+  }, [open]);
+
   const {
     register,
     handleSubmit,
     getValues,
-    resetField,
+    reset,
     formState: { errors },
   } = useForm({});
   const errorValue = "Uzupełnij pole";
-
-  const resetValues = () => {
-    resetField("name");
-    resetField("duration");
-    resetField("price");
-  };
 
   const { toast } = useToast();
   const handleToast = () => {
@@ -74,7 +72,6 @@ const ServiceForm = props => {
       await addNewServiceMutation.mutateAsync(serviceStructure);
       queryClient.invalidateQueries("services");
       setOpen(false);
-      resetValues();
       handleToast();
     } catch (error) {
       console.error("Error adding new service:", error);
