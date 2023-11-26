@@ -67,7 +67,11 @@ const AddNewEventToCalendar = props => {
   // VARIABLE - HANDLE COMBOBOX
   // values
   const [client, setClient] = useState("");
+  const [clientId, setClientId] = useState("");
   const [service, setService] = useState("");
+  const [serviceId, setServiceId] = useState("");
+  const [servicePrice, setServicePrice] = useState("");
+
   // open and close
   const [openClient, setOpenClient] = useState(false);
   const [openService, setOpenService] = useState(false);
@@ -183,9 +187,13 @@ const AddNewEventToCalendar = props => {
   // CREATE NEW EVENT
   const handleAddEvents = async data => {
     let eventStructure;
-    // CREATE TIME AND DATE
+    // CREATE TIME VALUE
     const startDateStr = new Date(startTimeStr);
     const endDateStr = new Date(startTimeStr);
+    // CREATE DATE VALUE
+    const dateObject = new Date(startTimeStr);
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const dateEvent = dateObject.toLocaleString("en-US", options);
 
     function createFinalDate(selectDate, timeValue) {
       const [hours, minutes] = timeValue.split(":").map(Number);
@@ -203,7 +211,7 @@ const AddNewEventToCalendar = props => {
         start: startDateStr,
         end: endDateStr,
         title: "🌴 CZAS WOLNY 🌴",
-        service: "",
+        serviceName: "",
         freeTime: freeTime,
       };
     } else {
@@ -211,12 +219,17 @@ const AddNewEventToCalendar = props => {
       createFinalDate(endDateStr, eventEndTime);
       eventStructure = {
         id: crypto.randomUUID(),
+        date: dateEvent,
         start: startDateStr,
         end: endDateStr,
         title: client,
-        service: service,
+        clientId: clientId,
+        serviceId: serviceId,
+        serviceName: service,
+        servicePrice: servicePrice,
         description: data.note,
         freeTime: freeTime,
+        eventStatus: "created",
       };
       console.log(data);
     }
@@ -298,6 +311,7 @@ const AddNewEventToCalendar = props => {
                                   setClient(
                                     element.firstName + " " + element.lastName
                                   );
+                                  setClientId(element.id);
                                   setOpenClient(false);
                                   {
                                     register("clientEvent", {
@@ -349,6 +363,8 @@ const AddNewEventToCalendar = props => {
                                 value={element.name}
                                 onSelect={() => {
                                   setService(element.name);
+                                  setServiceId(element.id);
+                                  setServicePrice(element.price);
                                   setOpenService(false);
                                   handleEventDuration(element.duration);
                                   {

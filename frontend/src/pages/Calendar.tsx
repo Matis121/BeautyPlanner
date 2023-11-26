@@ -9,6 +9,8 @@ import "../myCalendarStyles.css"; // Import your custom styles
 import { useQuery } from "react-query";
 
 import ViewClientEvent from "@/components/calendar/ViewClientEvent";
+import { LuClock8 } from "react-icons/lu";
+import { LuUser } from "react-icons/lu";
 
 import { getHours, getEvents } from "../api/User";
 
@@ -19,6 +21,7 @@ const Calendar = () => {
 
   // USE STATE
   const [clickedEventId, setClickedEventId] = useState("");
+  const [eventClientId, setEventClientId] = useState("");
   const [openNewEvent, setOpenNewEvent] = useState(false);
   const [openViewClientEvent, setOpenViewClientEvent] = useState(false);
   const [businessHours, setBusinessHours] = useState();
@@ -70,13 +73,17 @@ const Calendar = () => {
       <div
         className={`overflow-hidden h-full ${bgEventColor} border-none flex flex-col gap-1 text-black`}
       >
-        <div className="bg-white flex items-center justify-center opacity-90">
+        <div className="bg-white flex items-center opacity-90 gap-2 px-1">
+          <LuClock8 />
           {arg.timeText}
         </div>
         <div className="px-1 flex flex-col gap-1">
-          <strong>{arg.event.title}</strong>
+          <strong className="flex items-center gap-1">
+            <LuUser size={16} />
+            {arg.event.title}
+          </strong>
           <p className="p-1 bg-blue-800 w-full text-white rounded-md flex items-center">
-            {arg.event.extendedProps.service}
+            {arg.event.extendedProps.serviceName}
           </p>
           {arg.event.extendedProps.description ? (
             <div className="p-1  bg-red-200 w-full text-black rounded-md flex flex-col border-red-500">
@@ -99,6 +106,7 @@ const Calendar = () => {
         openViewClientEvent={openViewClientEvent}
         setOpenViewClientEvent={setOpenViewClientEvent}
         clickedEventId={clickedEventId}
+        eventClientId={eventClientId}
       />
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -159,6 +167,7 @@ const Calendar = () => {
           setOpenNewEvent(true);
         }}
         eventClick={function (info) {
+          setEventClientId(info.event.extendedProps.clientId);
           setClickedEventId(info.event._def.publicId);
           setOpenViewClientEvent(true);
         }}
