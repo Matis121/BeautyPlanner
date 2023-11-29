@@ -191,3 +191,17 @@ export async function removeEvent(username, eventId) {
     throw error;
   }
 }
+export async function finalizeEvent(username, eventId, finalizedEventData) {
+  try {
+    const response = await axios.post("http://localhost:5000/finalizeEvent", {
+      username,
+      eventId,
+      finalizedEventData,
+    });
+    console.log(response.data);
+    return response.data.message; // Assuming the response contains a 'message' field
+  } catch (error) {
+    console.error("Error while editing event:", error);
+    throw error;
+  }
+}

@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useQueryClient, useMutation } from "react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -138,6 +137,7 @@ const ServiceForm = props => {
             <Input
               placeholder="Cena"
               type="number"
+              step="any"
               id="price"
               {...register("price", { required: true })}
               className={`col-span-3  ${

@@ -50,22 +50,19 @@ const Calendar = () => {
   const eventContent = arg => {
     let bgEventColor;
 
-    if (arg.event.extendedProps.freeTime === false) {
-      bgEventColor = "bg-blue-200";
-    } else {
-      bgEventColor = "bg-red-400";
+    if (arg.event.extendedProps.freeTime === true) {
+      bgEventColor = "bg-purple-400";
     }
 
-    if (arg.event.extendedProps.status) {
-      switch (arg.event.extendedProps.status) {
-        case "confirmed":
-          bgEventColor = "";
-        case "done":
-          bgEventColor = "";
-        case "canceled":
-          bgEventColor = "";
-        default:
-          bgEventColor = "";
+    if (arg.event.extendedProps.eventStatus) {
+      if (arg.event.extendedProps.eventStatus === "created") {
+        bgEventColor = "bg-blue-200";
+      }
+      if (arg.event.extendedProps.eventStatus === "finalized") {
+        bgEventColor = "bg-green-200";
+      }
+      if (arg.event.extendedProps.eventStatus === "canceled") {
+        bgEventColor = "bg-red-300";
       }
     }
 
@@ -82,9 +79,11 @@ const Calendar = () => {
             <LuUser size={16} />
             {arg.event.title}
           </strong>
-          <p className="p-1 bg-blue-800 w-full text-white rounded-md flex items-center">
-            {arg.event.extendedProps.serviceName}
-          </p>
+          {arg.event.extendedProps.serviceName ? (
+            <p className="p-1 bg-blue-800 w-full text-white rounded-md flex items-center">
+              {arg.event.extendedProps.serviceName}
+            </p>
+          ) : null}
           {arg.event.extendedProps.description ? (
             <div className="p-1  bg-red-200 w-full text-black rounded-md flex flex-col border-red-500">
               <span className="text-xs font-semibold">Notatka</span>

@@ -321,6 +321,40 @@ const removeEvent = async (req, res, next) => {
       .json({ error: "Failed to remove client.", details: error.message });
   }
 };
+const finalizeEvent = async (req, res, next) => {
+  const { username, eventId, finalizedEventData } = req.body;
+
+  try {
+    const filter = {
+      username: username,
+      "events.id": eventId,
+    };
+
+    const update = { $set: {} };
+
+    // Iterate over the fields in finalizedEventData and set them individually
+    for (const key in finalizedEventData) {
+      update.$set[`events.$.${key}`] = finalizedEventData[key];
+    }
+
+    const options = {
+      new: true,
+    };
+
+    const user = await User.findOneAndUpdate(filter, update, options).exec();
+
+    if (user) {
+      return res.json({ events: user.events });
+    } else {
+      return res.json({ error: "client or user not found" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to finalize event.",
+      details: error.message,
+    });
+  }
+};
 
 module.exports = {
   register,
@@ -338,4 +372,5 @@ module.exports = {
   addEvent,
   getEvents,
   removeEvent,
+  finalizeEvent,
 };

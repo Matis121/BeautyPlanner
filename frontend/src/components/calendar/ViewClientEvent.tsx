@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
 
 import {
   AlertDialog,
@@ -19,7 +20,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import { getEvents, removeEvent, getClients } from "../../api/User";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+import {
+  getEvents,
+  removeEvent,
+  getClients,
+  finalizeEvent,
+} from "../../api/User";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 
 import { LuPhone } from "react-icons/lu";
@@ -42,6 +51,9 @@ const ViewClientEvent = props => {
   const userToken = localStorage.getItem("user");
   const userData = JSON.parse(userToken).username;
 
+  const [servicePrice, setServicePrice] = useState("");
+  const [eventStatus, setEventStatus] = useState("finalized");
+
   // FETCH DATA
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
 
@@ -58,12 +70,29 @@ const ViewClientEvent = props => {
     });
   };
 
-  console.log(props.eventClientId);
-
   // MUTATION
   const removeEventMutation = useMutation(() =>
     removeEvent(userData, props.clickedEventId)
   );
+
+  const finalizeEventMutation = useMutation(eventStructure =>
+    finalizeEvent(userData, props.clickedEventId, eventStructure)
+  );
+
+  const handleFinalizeEvent = async () => {
+    const eventStructure = {
+      servicePrice: servicePrice,
+      eventStatus: eventStatus,
+    };
+    console.log(eventStructure);
+    try {
+      await finalizeEventMutation.mutateAsync(eventStructure);
+      queryClient.invalidateQueries("events");
+      props.setOpenViewClientEvent(false);
+    } catch (error) {
+      console.error("Error editing event:", error);
+    }
+  };
 
   const handleEventActions = async () => {
     try {
@@ -148,10 +177,24 @@ const ViewClientEvent = props => {
                               <LuTag />
                               Status
                             </span>
-                            <p className="py-1 px-2 bg-green-200 w-fit rounded-md text-green-900 flex items-center gap-1 text-base">
+                            <p
+                              className={`"py-1 px-2 w-fit rounded-md flex items-center gap-1 text-base" ${
+                                event.eventStatus === "created"
+                                  ? "bg-blue-200 text-blue-900"
+                                  : event.eventStatus === "finalized"
+                                  ? "bg-green-200 text-green-900"
+                                  : event.eventStatus === "canceled"
+                                  ? "bg-red-200 text-red-900"
+                                  : ""
+                              }`}
+                            >
                               <LuCheckCircle2 />
                               {event.eventStatus === "created"
                                 ? "Potwierdzona"
+                                : event.eventStatus === "finalized"
+                                ? "Zakończona"
+                                : event.eventStatus === "canceled"
+                                ? "Anulowana"
                                 : ""}
                             </p>
                           </div>
@@ -197,7 +240,75 @@ const ViewClientEvent = props => {
                           </AlertDialog>
                           <Button variant="outline">Edytuj</Button>
                         </div>
-                        <Button>Finalizuj</Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger>
+                            <AlertDialogAction
+                              className="w-full"
+                              onClick={() => {
+                                setServicePrice(event.servicePrice);
+                                setEventStatus("finalized");
+                              }}
+                            >
+                              Finalizuj
+                            </AlertDialogAction>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Finalizacja wizyty
+                              </AlertDialogTitle>
+                              <AlertDialogDescription></AlertDialogDescription>
+                              <RadioGroup
+                                className="flex flex-col gap-4 py-4"
+                                defaultValue="option-one"
+                              >
+                                <div className="flex gap-6">
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem
+                                      value="option-one"
+                                      id="option-one"
+                                      onClick={() =>
+                                        setEventStatus("finalized")
+                                      }
+                                    />
+                                    <Label htmlFor="option-one">
+                                      Zakończona
+                                    </Label>
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem
+                                      value="option-two"
+                                      id="option-two"
+                                      onClick={() => setEventStatus("canceled")}
+                                    />
+                                    <Label htmlFor="option-two">
+                                      Anulowana
+                                    </Label>
+                                  </div>
+                                </div>
+                              </RadioGroup>
+                              <div>
+                                <label htmlFor="price">Cena Wizyty</label>
+                                <Input
+                                  id="price"
+                                  placeholder="Cena wizyty [PLN]"
+                                  value={servicePrice}
+                                  type="number"
+                                  disabled={eventStatus === "canceled"}
+                                  onChange={e =>
+                                    setServicePrice(e.target.value)
+                                  }
+                                />
+                              </div>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Anuluj</AlertDialogCancel>
+                              <AlertDialogAction onClick={handleFinalizeEvent}>
+                                Finalizuj
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </DialogContent>
                     ) : (
                       <DialogContent className="sm:max-w-[425px]">
