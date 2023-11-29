@@ -214,9 +214,9 @@ const EditEvent = props => {
             <button>Edycja wizyty</button>
           </DialogTitle>
         </DialogHeader>
-        <div className="py-4">
+        <div className="py-6">
           <form onSubmit={handleSubmit(handleAddEvents)} className="grid gap-4">
-            <div className="-mb-4">
+            <div>
               <Label
                 htmlFor="firstName"
                 className="text-xs font-normal text-gray-500"
@@ -268,7 +268,6 @@ const EditEvent = props => {
                   </Command>
                 </PopoverContent>
               </Popover>
-              <ClientForm customButton />
             </div>
             <div>
               <Label
