@@ -42,6 +42,7 @@ import { LuClipboardEdit } from "react-icons/lu";
 import { LuCheckCircle2 } from "react-icons/lu";
 
 import { useState } from "react";
+import EditEvent from "./EditEvent";
 
 const ViewClientEvent = props => {
   // QUERY CLIENT
@@ -238,7 +239,14 @@ const ViewClientEvent = props => {
                               </AlertDialogFooter>
                             </AlertDialogContent>
                           </AlertDialog>
-                          <Button variant="outline">Edytuj</Button>
+                          <EditEvent
+                            eventId={event.id}
+                            eventStart={event.start}
+                            eventDescription={event.description}
+                            eventStatus={event.eventStatus}
+                            serviceId={event.serviceId}
+                            clientId={event.clientId}
+                          />
                         </div>
                         <AlertDialog>
                           <AlertDialogTrigger>

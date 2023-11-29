@@ -355,6 +355,28 @@ const finalizeEvent = async (req, res, next) => {
     });
   }
 };
+const editEvent = async (req, res, next) => {
+  const { username, eventId, updatedValue } = req.body;
+  console.log(username, eventId, updatedValue);
+  try {
+    const filter = { username: username, "events.id": eventId };
+    const update = { $set: { "events.$": updatedValue } };
+    const user = await User.findOneAndUpdate(filter, update, {
+      new: true,
+    }).exec();
+
+    if (user) {
+      return res.json({ clients: user.clients });
+    } else {
+      return res.json({ error: "client or user not found" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to update client.",
+      details: error.message,
+    });
+  }
+};
 
 module.exports = {
   register,
@@ -373,4 +395,5 @@ module.exports = {
   getEvents,
   removeEvent,
   finalizeEvent,
+  editEvent,
 };

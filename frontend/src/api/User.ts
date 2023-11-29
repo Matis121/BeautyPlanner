@@ -205,3 +205,17 @@ export async function finalizeEvent(username, eventId, finalizedEventData) {
     throw error;
   }
 }
+export async function editEvent(username, eventId, updatedValue) {
+  try {
+    const response = await axios.post("http://localhost:5000/editEvent", {
+      username,
+      eventId,
+      updatedValue,
+    });
+    console.log(response.data);
+    return response.data.message; // Assuming the response contains a 'message' field
+  } catch (error) {
+    console.error("Error while editing service:", error);
+    throw error;
+  }
+}

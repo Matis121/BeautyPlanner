@@ -155,14 +155,15 @@ const AddNewEventToCalendar = props => {
   const schemaEvent = z.object({
     clientEvent: z.string(),
     serviceEvent: z.string(),
-    startTimeEvent: z.string().refine(value => isValidTime(value)),
-    endTimeEvent: z.any().refine(value => isValidTime(value)),
-    note: z.any(),
+    startTimeEvent: z.any(),
+    endTimeEvent: z.any(),
+    note: z.string(),
   });
+
   const schemaFreeTime = z.object({
     startTimeEvent: z.string().refine(value => isValidTime(value)),
     endTimeEvent: z.any().refine(value => isValidTime(value)),
-    note: z.any(),
+    note: z.string(),
   });
 
   const {
@@ -231,7 +232,6 @@ const AddNewEventToCalendar = props => {
         freeTime: freeTime,
         eventStatus: "created",
       };
-      console.log(data);
     }
     // CREATE MUTATION AND REQUEST
     try {
@@ -409,7 +409,7 @@ const AddNewEventToCalendar = props => {
                     type="time"
                     {...register("endTimeEvent")}
                     className={`w-fit ${
-                      errors.startTimeEvent
+                      errors.endTimeEvent
                         ? "border-red-500 text-red-500"
                         : "border-input"
                     }`}

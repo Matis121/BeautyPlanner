@@ -19,6 +19,7 @@ userRouter.get("/getEvents", userController.getEvents);
 userRouter.post("/addEvent", userController.addEvent);
 userRouter.delete("/removeEvent", userController.removeEvent);
 userRouter.post("/finalizeEvent", userController.finalizeEvent);
+userRouter.post("/editEvent", userController.editEvent);
 // Active hours
 userRouter.get("/getHours", userController.getHours);
 userRouter.post("/editActiveHours", userController.editActiveHours);
