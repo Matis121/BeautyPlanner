@@ -14,6 +14,11 @@ userRouter.post("/addClient", userController.addClient);
 userRouter.get("/getClients", userController.getClients);
 userRouter.delete("/removeClient", userController.removeClient);
 userRouter.post("/editClient", userController.editClient);
+userRouter.post("/addVisitToClient", userController.addVisitToClient);
+userRouter.delete(
+  "/removeVisitFromClient",
+  userController.removeVisitFromClient
+);
 // Events
 userRouter.get("/getEvents", userController.getEvents);
 userRouter.post("/addEvent", userController.addEvent);

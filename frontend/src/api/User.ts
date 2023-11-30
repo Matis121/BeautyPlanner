@@ -124,6 +124,38 @@ export async function editClient(username, clientId, updatedValue) {
     throw error;
   }
 }
+export async function addVisitToClient(username, event) {
+  try {
+    const obj = {
+      username,
+      event,
+    };
+    let response = await axios.post(
+      "http://localhost:5000/addVisitToClient",
+      obj
+    );
+    console.log(response);
+    let data = response.data;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export async function removeVisitFromClient(username, eventId, clientId) {
+  try {
+    const response = await axios.delete(
+      "http://localhost:5000/removeVisitFromClient",
+      {
+        data: { username, eventId, clientId },
+      }
+    );
+    console.log(response.data);
+    return response.data.message; // Assuming the response contains a 'message' field
+  } catch (error) {
+    console.error("Error while removing service:", error);
+    throw error;
+  }
+}
 
 // ACTIVE HOURS
 export async function editActiveHours(username, updatedValue) {
@@ -198,7 +230,6 @@ export async function finalizeEvent(username, eventId, finalizedEventData) {
       eventId,
       finalizedEventData,
     });
-    console.log(response.data);
     return response.data.message; // Assuming the response contains a 'message' field
   } catch (error) {
     console.error("Error while editing event:", error);
@@ -212,7 +243,6 @@ export async function editEvent(username, eventId, updatedValue) {
       eventId,
       updatedValue,
     });
-    console.log(response.data);
     return response.data.message; // Assuming the response contains a 'message' field
   } catch (error) {
     console.error("Error while editing service:", error);

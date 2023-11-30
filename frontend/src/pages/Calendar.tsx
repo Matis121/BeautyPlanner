@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddNewEventToCalendar from "../components/calendar/AddNewEventToCalendar";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -12,7 +12,7 @@ import ViewClientEvent from "@/components/calendar/ViewClientEvent";
 import { LuClock8 } from "react-icons/lu";
 import { LuUser } from "react-icons/lu";
 
-import { getHours, getEvents } from "../api/User";
+import { getHours, getEvents, getClients } from "../api/User";
 
 const Calendar = () => {
   // USER DATA
@@ -46,6 +46,11 @@ const Calendar = () => {
   // FETCHING EVENTS
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
 
+  // FETCHING CLIENTS
+  const { data: clientsData } = useQuery(["clients"], () =>
+    getClients(userData)
+  );
+
   // CUSTOM EVENT CONTENT
   const eventContent = arg => {
     let bgEventColor;
@@ -70,9 +75,14 @@ const Calendar = () => {
       <div
         className={`overflow-hidden h-full ${bgEventColor} border-none flex flex-col gap-1 text-black`}
       >
-        <div className="bg-white flex items-center opacity-90 gap-2 px-1">
-          <LuClock8 />
-          {arg.timeText}
+        <div className="bg-white flex items-center justify-between opacity-90 gap-2 px-1">
+          <div className="flex items-center gap-2">
+            <LuClock8 />
+            {arg.timeText}
+          </div>
+          {arg.event.extendedProps.newClient === true ? (
+            <span className=" text-red-600 font-semibold">Pierwsza wizyta</span>
+          ) : null}
         </div>
         <div className="px-1 flex flex-col gap-1">
           <strong className="flex items-center gap-1">

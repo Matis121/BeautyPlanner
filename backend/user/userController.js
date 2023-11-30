@@ -181,7 +181,6 @@ const getClients = async (req, res, next) => {
 };
 const removeClient = async (req, res, next) => {
   const { username, clientId } = req.body;
-  console.log(username, clientId);
   try {
     const user = await User.findOne({ username }).exec();
     if (user) {
@@ -218,11 +217,79 @@ const editClient = async (req, res, next) => {
     });
   }
 };
+const addVisitToClient = async (req, res, next) => {
+  const { event } = req.body;
+  const { username } = req.body;
+  try {
+    const user = await User.findOne({ username }).exec();
+
+    if (user) {
+      // Find the correct client using the clientId from the event
+      const client = user.clients.find(client => client.id === event.clientId);
+
+      if (client) {
+        // Update the visits array using the positional operator $
+        await User.updateOne(
+          { username, "clients.id": event.clientId },
+          { $push: { "clients.$.visits": event.id } }
+        );
+
+        // Fetch the updated user
+        const updatedUser = await User.findOne({ username });
+
+        // Return the updated events array
+        return res.json({ events: updatedUser.events });
+      } else {
+        return res.json({ error: "Client not found" });
+      }
+    } else {
+      return res.json({ error: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to add visit",
+      details: error.message,
+    });
+  }
+};
+const removeVisitFromClient = async (req, res, next) => {
+  const { eventId, clientId, username } = req.body;
+  try {
+    const user = await User.findOne({ username }).exec();
+
+    if (user) {
+      // Find the correct client using the clientId from the event
+      const client = user.clients.find(client => client.id === clientId);
+
+      if (client) {
+        // Remove the specified visit (event.id) from the visits array
+        await User.updateOne(
+          { username, "clients.id": clientId },
+          { $pull: { "clients.$.visits": eventId } }
+        );
+
+        // Fetch the updated user
+        const updatedUser = await User.findOne({ username });
+
+        // Return the updated events array
+        return res.json({ events: updatedUser.events });
+      } else {
+        return res.json({ error: "Client not found" });
+      }
+    } else {
+      return res.json({ error: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to remove visit",
+      details: error.message,
+    });
+  }
+};
 
 //ACTIVE HOURS
 const editActiveHours = async (req, res, next) => {
   const { username, updatedValue } = req.body;
-  console.log(updatedValue);
   try {
     const filter = { username: username };
     const update = { $set: { activeHours: updatedValue } };
@@ -264,6 +331,7 @@ const getHours = async (req, res, next) => {
 
 //EVENTS
 const addEvent = async (req, res, next) => {
+  const { event } = req.body;
   const { username } = req.body;
   try {
     const user = await User.findOneAndUpdate(
@@ -305,7 +373,6 @@ const getEvents = async (req, res, next) => {
 };
 const removeEvent = async (req, res, next) => {
   const { username, eventId } = req.body;
-  console.log(username, eventId);
   try {
     const user = await User.findOne({ username }).exec();
     if (user) {
@@ -357,7 +424,6 @@ const finalizeEvent = async (req, res, next) => {
 };
 const editEvent = async (req, res, next) => {
   const { username, eventId, updatedValue } = req.body;
-  console.log(username, eventId, updatedValue);
   try {
     const filter = { username: username, "events.id": eventId };
     const update = { $set: { "events.$": updatedValue } };
@@ -396,4 +462,6 @@ module.exports = {
   removeEvent,
   finalizeEvent,
   editEvent,
+  addVisitToClient,
+  removeVisitFromClient,
 };

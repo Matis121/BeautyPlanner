@@ -51,7 +51,7 @@ const useClientForm = () => {
       phoneNumber: getValues("phoneNumber"),
       mailAddress: getValues("emailAddress"),
       birthDay: getValues("birthDay"),
-      visits: {},
+      visits: [],
     };
 
     try {

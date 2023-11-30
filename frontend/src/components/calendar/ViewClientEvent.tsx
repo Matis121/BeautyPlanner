@@ -28,6 +28,7 @@ import {
   removeEvent,
   getClients,
   finalizeEvent,
+  removeVisitFromClient,
 } from "../../api/User";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 
@@ -41,7 +42,7 @@ import { LuBanknote } from "react-icons/lu";
 import { LuClipboardEdit } from "react-icons/lu";
 import { LuCheckCircle2 } from "react-icons/lu";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditEvent from "./EditEvent";
 
 const ViewClientEvent = props => {
@@ -54,6 +55,7 @@ const ViewClientEvent = props => {
 
   const [servicePrice, setServicePrice] = useState("");
   const [eventStatus, setEventStatus] = useState("finalized");
+  const [clientId, setClientId] = useState("123");
 
   // FETCH DATA
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
@@ -71,9 +73,24 @@ const ViewClientEvent = props => {
     });
   };
 
+  //
+  useEffect(() => {
+    if (eventsData) {
+      eventsData.map(element => {
+        if (element.id === props.clickedEventId) {
+          setClientId(element.clientId);
+        }
+      });
+    }
+  }, [eventsData, props.clickedEventId]);
+
   // MUTATION
   const removeEventMutation = useMutation(() =>
     removeEvent(userData, props.clickedEventId)
+  );
+
+  const removeVisitFromClientMutation = useMutation(() =>
+    removeVisitFromClient(userData, props.clickedEventId, clientId)
   );
 
   const finalizeEventMutation = useMutation(eventStructure =>
@@ -85,7 +102,6 @@ const ViewClientEvent = props => {
       servicePrice: servicePrice,
       eventStatus: eventStatus,
     };
-    console.log(eventStructure);
     try {
       await finalizeEventMutation.mutateAsync(eventStructure);
       queryClient.invalidateQueries("events");
@@ -98,7 +114,9 @@ const ViewClientEvent = props => {
   const handleEventActions = async () => {
     try {
       await removeEventMutation.mutateAsync();
+      await removeVisitFromClientMutation.mutateAsync();
       queryClient.invalidateQueries("events");
+      queryClient.invalidateQueries("clients");
       props.setOpenViewClientEvent(false);
       toastEvent();
     } catch (error) {

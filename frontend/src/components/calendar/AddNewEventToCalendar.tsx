@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -32,7 +24,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { addEvent } from "../../api/User";
+import { addEvent, addVisitToClient } from "../../api/User";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -184,9 +176,21 @@ const AddNewEventToCalendar = props => {
   const addNewEventMutation = useMutation(eventStructure =>
     addEvent(userData, eventStructure)
   );
+  const addVisitToClientMutation = useMutation(eventStructure =>
+    addVisitToClient(userData, eventStructure)
+  );
 
   // CREATE NEW EVENT
   const handleAddEvents = async data => {
+    let isCheckNewClient = false; // Initialize the variable
+
+    // EXECUTE NEW CLIENT CHECK
+    clientsData.forEach(element => {
+      if (element.id === clientId && element.visits.length === 0) {
+        isCheckNewClient = true;
+      }
+    });
+
     let eventStructure;
     // CREATE TIME VALUE
     const startDateStr = new Date(startTimeStr);
@@ -200,7 +204,6 @@ const AddNewEventToCalendar = props => {
       const [hours, minutes] = timeValue.split(":").map(Number);
       selectDate.setHours(hours);
       selectDate.setMinutes(minutes);
-      console.log(selectDate);
     }
 
     // CREATING FINAL STRUCTURE FOR REQUEST
@@ -231,12 +234,15 @@ const AddNewEventToCalendar = props => {
         description: data.note,
         freeTime: freeTime,
         eventStatus: "created",
+        newClient: isCheckNewClient,
       };
     }
     // CREATE MUTATION AND REQUEST
     try {
       await addNewEventMutation.mutateAsync(eventStructure);
+      await addVisitToClientMutation.mutateAsync(eventStructure);
       queryClient.invalidateQueries("events");
+      queryClient.invalidateQueries("clients");
       resetValues();
       toastEvent();
       props.setOpenNewEvent(false);

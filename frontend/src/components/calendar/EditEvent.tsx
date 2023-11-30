@@ -169,7 +169,6 @@ const EditEvent = props => {
       const [hours, minutes] = timeValue.split(":").map(Number);
       selectDate.setHours(hours);
       selectDate.setMinutes(minutes);
-      console.log(selectDate);
     }
 
     // CREATING FINAL STRUCTURE FOR REQUEST
