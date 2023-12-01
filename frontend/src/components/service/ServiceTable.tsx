@@ -46,7 +46,6 @@ const ServiceTable = () => {
             <TableHead>Nazwa</TableHead>
             <TableHead>Czas trwania</TableHead>
             <TableHead>Cena</TableHead>
-            <TableHead className="text-right">Edytuj / Usuń</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

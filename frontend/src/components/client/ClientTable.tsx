@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import EditClientForm from "./EditClientForm";
 import { getClients, removeClient } from "../../api/User";
 import { useQuery, useQueryClient, useMutation } from "react-query";
+import { LuFileClock } from "react-icons/lu";
+import { Link } from "react-router-dom";
 
 import {
   Table,
@@ -46,7 +48,6 @@ const ClientTable = () => {
             <TableHead>Imię i nazwisko</TableHead>
             <TableHead>Telefon</TableHead>
             <TableHead>Wizyty</TableHead>
-            <TableHead className="text-right">Edytuj / Usuń</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -73,8 +74,19 @@ const ClientTable = () => {
                     )}
                   </TableCell>
                   <TableCell>
-                    {/* KOD DO WIZYT */}{" "}
-                    <p className="text-gray-400">Brak wizyt</p>
+                    {client.visits.length ? (
+                      <div className="flex items-center gap-3">
+                        <Link to={`/clients/${client.id}`}>
+                          <LuFileClock
+                            size={22}
+                            className=" text-gray-500 hover:text-black cursor-pointer"
+                          />
+                        </Link>
+                        <p className="">{client.visits.length}</p>
+                      </div>
+                    ) : (
+                      <p className="text-gray-400">Brak wizyt</p>
+                    )}
                   </TableCell>
                   <TableCell className="text-right">
                     <EditClientForm

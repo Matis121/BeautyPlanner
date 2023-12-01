@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./privateRoute/PrivateRoute";
+import ClientVisitHistory from "./components/client/ClientVisitHistory";
 
 function App() {
   return (
@@ -36,6 +37,14 @@ function App() {
           element={
             <PrivateRoute>
               <Clients />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/clients/:clientId"
+          element={
+            <PrivateRoute>
+              <ClientVisitHistory />
             </PrivateRoute>
           }
         />
