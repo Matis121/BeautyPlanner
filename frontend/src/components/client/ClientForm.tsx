@@ -23,10 +23,9 @@ const ClientForm = props => {
     errors,
     errorValue,
     onSubmit,
+    setPhoneInput,
+    phoneInput,
   } = useCustomForm();
-
-  // VALIDATE NUMBER MAXLENGTH
-  const [phoneInput, setPhoneInput] = useState("");
 
   const handleNumberLenght = e => {
     if (e.target.value.length > e.target.maxLength) {

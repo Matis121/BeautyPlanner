@@ -14,9 +14,12 @@ const useClientForm = () => {
 
   // USE STATE
   const [open, setOpen] = useState(false);
+  // VALIDATE NUMBER MAXLENGTH
+  const [phoneInput, setPhoneInput] = useState("");
 
   useEffect(() => {
     reset();
+    setPhoneInput("");
   }, [open]);
 
   const {
@@ -73,6 +76,8 @@ const useClientForm = () => {
     errors,
     errorValue,
     onSubmit,
+    phoneInput,
+    setPhoneInput,
   };
 };
 
