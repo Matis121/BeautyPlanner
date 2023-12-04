@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddNewEventToCalendar from "../components/calendar/AddNewEventToCalendar";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -13,6 +13,12 @@ import { LuClock8 } from "react-icons/lu";
 import { LuUser } from "react-icons/lu";
 
 import { getHours, getEvents, getClients } from "../api/User";
+
+// SMALL CALENDAR
+import MiniCalendar from "@/components/calendar/MiniCalendar";
+import { LuCalendarDays } from "react-icons/lu";
+import { useContext } from "react";
+import { SmallCalendarContext } from "@/Contexts/SmallCalendarContext";
 
 const Calendar = () => {
   // USER DATA
@@ -50,6 +56,10 @@ const Calendar = () => {
   const { data: clientsData } = useQuery(["clients"], () =>
     getClients(userData)
   );
+
+  // SMALL CALENDAR
+  const { toggleSmallCalendar, setToggleSmallCalendar } =
+    useContext(SmallCalendarContext);
 
   // CUSTOM EVENT CONTENT
   const eventContent = arg => {
@@ -104,83 +114,99 @@ const Calendar = () => {
       </div>
     );
   };
+
+  const calendarButtonContent = toggleSmallCalendar ? <LuCalendarDays /> : null;
+
   return (
     <BasicLayout>
-      <AddNewEventToCalendar
-        setOpenNewEvent={setOpenNewEvent}
-        openNewEvent={openNewEvent}
-        startTimeEvent={startTimeEvent}
-      />
-      <ViewClientEvent
-        openViewClientEvent={openViewClientEvent}
-        setOpenViewClientEvent={setOpenViewClientEvent}
-        clickedEventId={clickedEventId}
-        eventClientId={eventClientId}
-      />
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView={"timeGridWeek"}
-        locale={"pl-PL"}
-        allDaySlot={false}
-        buttonText={{
-          today: "dzisiaj",
-          month: "miesiąc",
-          week: "tydzień",
-          day: "dzień",
-        }}
-        headerToolbar={{
-          start: "prev,next today",
-          center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay",
-        }}
-        views={{
-          dayGrid: {
-            titleFormat: {
-              month: "long",
-              day: "2-digit",
-            },
-          },
-          timeGridWeek: {
-            titleFormat: {
-              month: "long",
-              day: "2-digit",
-            },
-          },
-          timeGridDay: {
-            titleFormat: {
-              month: "long",
-              day: "2-digit",
-              weekday: "long",
-            },
-          },
-        }}
-        firstDay={1}
-        businessHours={businessHours}
-        slotLabelFormat={{
-          hour: "numeric",
-          minute: "2-digit",
-          omitZeroMinute: false,
-          meridiem: false,
-          hour12: false,
-        }}
-        slotLabelInterval="01:00"
-        slotDuration="00:15:00"
-        height={"90vh"}
-        events={eventsData}
-        eventContent={eventContent}
-        selectable={true}
-        nowIndicator={true}
-        // editable={true}
-        select={function (start) {
-          setStartTimeEvent(start.startStr);
-          setOpenNewEvent(true);
-        }}
-        eventClick={function (info) {
-          setEventClientId(info.event.extendedProps.clientId);
-          setClickedEventId(info.event._def.publicId);
-          setOpenViewClientEvent(true);
-        }}
-      />
+      <div className="flex w-full gap-4">
+        <MiniCalendar />
+        <div className="w-full">
+          <AddNewEventToCalendar
+            setOpenNewEvent={setOpenNewEvent}
+            openNewEvent={openNewEvent}
+            startTimeEvent={startTimeEvent}
+          />
+          <ViewClientEvent
+            openViewClientEvent={openViewClientEvent}
+            setOpenViewClientEvent={setOpenViewClientEvent}
+            clickedEventId={clickedEventId}
+            eventClientId={eventClientId}
+          />
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView={"timeGridWeek"}
+            locale={"pl-PL"}
+            allDaySlot={false}
+            buttonText={{
+              today: "dzisiaj",
+              month: "miesiąc",
+              week: "tydzień",
+              day: "dzień",
+            }}
+            customButtons={{
+              miniCalendarButton: {
+                text: `📅`,
+                click: function () {
+                  setToggleSmallCalendar(!toggleSmallCalendar);
+                },
+              },
+            }}
+            headerToolbar={{
+              start: "miniCalendarButton prev,next today",
+              center: "title",
+              end: "dayGridMonth,timeGridWeek,timeGridDay",
+            }}
+            views={{
+              dayGrid: {
+                titleFormat: {
+                  month: "long",
+                  day: "2-digit",
+                },
+              },
+              timeGridWeek: {
+                titleFormat: {
+                  month: "long",
+                  day: "2-digit",
+                },
+              },
+              timeGridDay: {
+                titleFormat: {
+                  month: "long",
+                  day: "2-digit",
+                  weekday: "long",
+                },
+              },
+            }}
+            firstDay={1}
+            businessHours={businessHours}
+            slotLabelFormat={{
+              hour: "numeric",
+              minute: "2-digit",
+              omitZeroMinute: false,
+              meridiem: false,
+              hour12: false,
+            }}
+            slotLabelInterval="01:00"
+            slotDuration="00:15:00"
+            height={"90vh"}
+            events={eventsData}
+            eventContent={eventContent}
+            selectable={true}
+            nowIndicator={true}
+            // editable={true}
+            select={function (start) {
+              setStartTimeEvent(start.startStr);
+              setOpenNewEvent(true);
+            }}
+            eventClick={function (info) {
+              setEventClientId(info.event.extendedProps.clientId);
+              setClickedEventId(info.event._def.publicId);
+              setOpenViewClientEvent(true);
+            }}
+          />
+        </div>
+      </div>
     </BasicLayout>
   );
 };

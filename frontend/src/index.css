@@ -99,8 +99,13 @@ nav a.active:hover {
 }
 
 .fc-view {
+  border-radius: 5px;
+  border: none !important;
   background-color: white;
   color: rgb(110, 110, 110);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 .fc-non-business {
@@ -129,13 +134,12 @@ tr {
 
 /* CALENDAR BUTTONS */
 .fc-button {
+  min-height: 33.5px !important;
   background-color: white !important;
   color: rgb(107, 114, 128) !important;
   border: 1px solid rgb(107, 114, 128) !important;
-  /* color: white !important; */
   border-radius: 0.25em !important;
   padding: 0.2rem 0.5rem !important;
-  /* box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.1); */
   box-shadow:
     rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
     rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
