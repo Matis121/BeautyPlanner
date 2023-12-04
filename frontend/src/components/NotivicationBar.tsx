@@ -50,21 +50,21 @@ const NotivicationBar = () => {
       ) : (
         <button
           onClick={() => setWrapMenu(!wrapMenu)}
-          className="flex items-center gap-1 logo font-semibold"
+          className="flex items-center gap-1 text-gray-600 text-md hover:text-gray-400 transition-all"
         >
           {wrapMenu ? (
-            <LuPanelLeftOpen size={25} />
+            <LuPanelLeftOpen size={22} />
           ) : (
-            <LuPanelLeftClose size={25} />
+            <LuPanelLeftClose size={22} />
           )}
           {wrapMenu ? "Rozwiń" : "Zwiń"}
         </button>
       )}
 
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center">
+        <DropdownMenuTrigger className="flex items-center hover:text-gray-500 transition-all">
           <p className="flex items-center">
-            <span className="purple">
+            <span className="">
               <LuUser size={20} className="mr-1" />
             </span>
             {userData}
@@ -72,7 +72,10 @@ const NotivicationBar = () => {
           <LuChevronDown size={15} className="ml-1" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={handleLogout}>
+          <DropdownMenuItem
+            onClick={handleLogout}
+            className="hover:cursor-pointer"
+          >
             Wyloguj się
           </DropdownMenuItem>
         </DropdownMenuContent>
