@@ -40,7 +40,7 @@ const ClientTable = () => {
   };
 
   return (
-    <div className="overflow-y-auto shadow-sm rounded-xl">
+    <div className="overflow-y-auto shadow-md rounded-md">
       <Table className="bg-white">
         <TableHeader>
           <TableRow>

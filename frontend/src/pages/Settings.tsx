@@ -55,7 +55,7 @@ const Home = () => {
   return (
     <BasicLayout>
       <section className="bg-gray-100 w-full h-full">
-        <div className="m-4 p-6 bg-white w-full rounded-xl">
+        <div className="m-4 p-6 bg-white w-full rounded-md">
           <div className="flex flex-col items-center justify-center">
             <h1 className="m-4 text-xl font-bold">Zmień godziny pracy</h1>
             {data
