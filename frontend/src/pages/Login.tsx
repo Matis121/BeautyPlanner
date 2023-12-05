@@ -51,14 +51,17 @@ const Login = () => {
 
   return (
     <section className="flex">
-      <div className="w-1/2 h-screen linear-gradient">
+      <div className="w-1/2 h-screen linear-gradient hidden md:block">
         <div className="p-10 w-fit">
           <p className="logo font-bold text-2xl p-4 bg-white rounded-lg">
             BeautyPlanner
           </p>
         </div>
       </div>
-      <div className="w-1/2 h-screen flex items-center justify-center flex-col relative">
+      <div className="w-full h-screen flex items-center justify-center flex-col relative md:w-1/2">
+        <p className="logo font-bold text-2xl absolute top-6 left-6 md:hidden">
+          BeautyPlanner
+        </p>
         <Toaster />
         <Link to="/register" className="absolute top-6 right-6">
           <Button variant="link">Stwórz konto</Button>
