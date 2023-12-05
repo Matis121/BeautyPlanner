@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddNewEventToCalendar from "../components/calendar/AddNewEventToCalendar";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -12,11 +12,10 @@ import ViewClientEvent from "@/components/calendar/ViewClientEvent";
 import { LuClock8 } from "react-icons/lu";
 import { LuUser } from "react-icons/lu";
 
-import { getHours, getEvents, getClients } from "../api/User";
+import { getHours, getEvents } from "../api/User";
 
 // SMALL CALENDAR
 import MiniCalendar from "@/components/calendar/MiniCalendar";
-import { LuCalendarDays } from "react-icons/lu";
 import { useContext } from "react";
 import { SmallCalendarContext } from "@/Contexts/SmallCalendarContext";
 
@@ -35,6 +34,24 @@ const Calendar = () => {
   // VALUES TO CREATE NEW EVENT
   const [startTimeEvent, setStartTimeEvent] = useState("");
 
+  // SMALL CALENDAR
+  const { toggleSmallCalendar, setToggleSmallCalendar } =
+    useContext(SmallCalendarContext);
+
+  // CHANGING DATE BY SMALL CALENDAR
+  const [date, setDate] = useState(new Date());
+  const calendarRef = useRef();
+
+  useEffect(() => {
+    if (date === undefined) {
+      return;
+    }
+    // Check if the ref has a current value and if the FullCalendar API is available
+    if (calendarRef.current && calendarRef.current.getApi) {
+      calendarRef.current.getApi().gotoDate(date);
+    }
+  }, [date]);
+
   // FETCHING HOURS
   const { data: hoursData } = useQuery(["hours"], () => getHours(userData), {
     onSuccess: data => {
@@ -51,15 +68,6 @@ const Calendar = () => {
 
   // FETCHING EVENTS
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
-
-  // FETCHING CLIENTS
-  const { data: clientsData } = useQuery(["clients"], () =>
-    getClients(userData)
-  );
-
-  // SMALL CALENDAR
-  const { toggleSmallCalendar, setToggleSmallCalendar } =
-    useContext(SmallCalendarContext);
 
   // CUSTOM EVENT CONTENT
   const eventContent = arg => {
@@ -115,12 +123,10 @@ const Calendar = () => {
     );
   };
 
-  const calendarButtonContent = toggleSmallCalendar ? <LuCalendarDays /> : null;
-
   return (
     <BasicLayout>
       <div className="flex w-full gap-4">
-        <MiniCalendar />
+        <MiniCalendar date={date} setDate={setDate} />
         <div className="w-full">
           <AddNewEventToCalendar
             setOpenNewEvent={setOpenNewEvent}
@@ -134,6 +140,7 @@ const Calendar = () => {
             eventClientId={eventClientId}
           />
           <FullCalendar
+            ref={calendarRef}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView={"timeGridWeek"}
             locale={"pl-PL"}
@@ -194,7 +201,6 @@ const Calendar = () => {
             eventContent={eventContent}
             selectable={true}
             nowIndicator={true}
-            // editable={true}
             select={function (start) {
               setStartTimeEvent(start.startStr);
               setOpenNewEvent(true);

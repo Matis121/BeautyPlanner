@@ -17,7 +17,7 @@ import { useState } from "react";
 function App() {
   const [wrapMenu, setWrapMenu] = useState(false);
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false);
-  const [toggleSmallCalendar, setToggleSmallCalendar] = useState(false);
+  const [toggleSmallCalendar, setToggleSmallCalendar] = useState(true);
 
   return (
     <>

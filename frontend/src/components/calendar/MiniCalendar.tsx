@@ -3,8 +3,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { useContext } from "react";
 import { SmallCalendarContext } from "@/Contexts/SmallCalendarContext";
 
-const MiniCalendar = () => {
-  const [date, setDate] = useState("");
+const MiniCalendar = props => {
   const { toggleSmallCalendar } = useContext(SmallCalendarContext);
 
   return (
@@ -15,8 +14,8 @@ const MiniCalendar = () => {
     >
       <Calendar
         mode="single"
-        selected={date}
-        onSelect={setDate}
+        selected={props.date}
+        onSelect={props.setDate}
         className="border bg-white shadow-md"
       />
     </div>
