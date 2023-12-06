@@ -1,9 +1,8 @@
 import "./App.css";
-import Home from "./pages/Home";
 import Clients from "./pages/Clients";
 import Services from "./pages/Services";
 import Calendar from "./pages/Calendar";
-import Settings from "./pages/Settings";
+import WorkHours from "./pages/WorkHours";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { Route, Routes } from "react-router-dom";
@@ -35,7 +34,7 @@ function App() {
                 path="/"
                 element={
                   <PrivateRoute>
-                    <Home />
+                    <Calendar />
                   </PrivateRoute>
                 }
               />
@@ -72,10 +71,10 @@ function App() {
                 }
               />
               <Route
-                path="/settings"
+                path="/work-hours"
                 element={
                   <PrivateRoute>
-                    <Settings />
+                    <WorkHours />
                   </PrivateRoute>
                 }
               />

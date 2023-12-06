@@ -6,6 +6,8 @@ import {
   LuSettings,
   LuX,
 } from "react-icons/lu";
+import { LuClock } from "react-icons/lu";
+import { LuBarChart3 } from "react-icons/lu";
 import { useContext } from "react";
 import { WrapMenuContext } from "@/Contexts/WrapMenuContext";
 import { MobileMenuContext } from "@/Contexts/MobileMenuContext";
@@ -33,43 +35,68 @@ const Sidebar = () => {
             />
           </button>
           <div className={`flex flex-col gap-6 items-start mt-8`}>
-            <p className="logo font-semibold text-xl mb-4">BeautyPlanner</p>
-            <p className="text-xs font-bold uppercase text-gray-400 transition-all">
-              Wizyty
-            </p>
             <NavLink
               to="/calendar"
               className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
-              <LuCalendarRange size={25} className="mr-3" />
-              <span className={`font-normal block`}>Kalendarz</span>
+              <p className="logo font-semibold text-xl mb-4">BeautyPlanner</p>
+            </NavLink>
+            <p className="text-xs font-bold uppercase text-gray-400 transition-all">
+              Wizyty
+            </p>
+            <NavLink
+              to="/calendar"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
+            >
+              <LuCalendarRange size={22} className="mr-3" />
+              <span className={`font-normal text-sm block`}>Kalendarz</span>
             </NavLink>
             <NavLink
               to="/clients"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
-              <LuUsers size={25} className="mr-3" />
-              <span className={`font-normal block`}>Klienci</span>
+              <LuUsers size={22} className="mr-3" />
+              <span className={`font-normal text-sm block`}>Klienci</span>
             </NavLink>
             <NavLink
               to="/services"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
-              <LuWrench size={25} className="mr-3" />
-              <span className={`font-normal block`}>Usługi</span>
+              <LuWrench size={22} className="mr-3" />
+              <span className={`font-normal text-sm block`}>Usługi</span>
+            </NavLink>
+            <NavLink
+              to="/statistics"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
+            >
+              <LuBarChart3 size={22} className="mr-3" />
+              <span className={`font-normal text-sm block`}>Statystyki</span>
+            </NavLink>
+            <p className="text-xs font-bold uppercase text-gray-400 transition-all">
+              Salon
+            </p>
+            <NavLink
+              to="/work-hours"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
+            >
+              <LuClock size={22} className="mr-3" />
+              <span className={`font-normal text-sm block`}>Godziny pracy</span>
             </NavLink>
           </div>
-          <NavLink
+          {/* <NavLink
             to="/settings"
-            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
+            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
             onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
           >
-            <LuSettings size={25} className="mr-3" />
-            <span className={`font-normal block`}>Ustawienia</span>
-          </NavLink>
+            <LuSettings size={22} className="mr-3" />
+            <span className={`font-normal text-sm block`}>Ustawienia</span>
+          </NavLink> */}
         </nav>
       ) : (
         <nav
@@ -82,52 +109,100 @@ const Sidebar = () => {
               wrapMenu ? "items-center" : "items-start"
             }`}
           >
-            <p className="logo font-semibold text-xl mb-4">
-              {wrapMenu ? "BP" : "BeautyPlanner"}
-            </p>
+            <NavLink
+              to="/calendar"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
+            >
+              <p className="logo font-semibold text-xl mb-4">
+                {wrapMenu ? "BP" : "BeautyPlanner"}
+              </p>
+            </NavLink>
             <p className="text-xs font-bold uppercase text-gray-400 transition-all">
               Wizyty
             </p>
             <NavLink
               to="/calendar"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
             >
               <LuCalendarRange
-                size={25}
+                size={22}
                 className={`${wrapMenu ? "" : "mr-3"}`}
               />
-              <span className={`font-normal ${wrapMenu ? "hidden" : "block"}`}>
+              <span
+                className={`font-normal text-sm ${
+                  wrapMenu ? "hidden" : "block"
+                }`}
+              >
                 Kalendarz
               </span>
             </NavLink>
             <NavLink
               to="/clients"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
             >
-              <LuUsers size={25} className={`${wrapMenu ? "" : "mr-3"}`} />
-              <span className={`font-normal ${wrapMenu ? "hidden" : "block"}`}>
+              <LuUsers size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
+              <span
+                className={`font-normal text-sm ${
+                  wrapMenu ? "hidden" : "block"
+                }`}
+              >
                 Klienci
               </span>
             </NavLink>
             <NavLink
               to="/services"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
             >
-              <LuWrench size={25} className={`${wrapMenu ? "" : "mr-3"}`} />
-              <span className={`font-normal ${wrapMenu ? "hidden" : "block"}`}>
+              <LuWrench size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
+              <span
+                className={`font-normal text-sm ${
+                  wrapMenu ? "hidden" : "block"
+                }`}
+              >
                 Usługi
               </span>
             </NavLink>
+            <NavLink
+              to="/statistics"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+            >
+              <LuBarChart3 size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
+              <span
+                className={`font-normal text-sm ${
+                  wrapMenu ? "hidden" : "block"
+                }`}
+              >
+                Statystyki
+              </span>
+            </NavLink>
+            <p className="text-xs font-bold uppercase text-gray-400 transition-all">
+              Salon
+            </p>
+            <NavLink
+              to="/work-hours"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+            >
+              <LuClock size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
+              <span
+                className={`font-normal text-sm ${
+                  wrapMenu ? "hidden" : "block"
+                }`}
+              >
+                Godziny pracy
+              </span>
+            </NavLink>
           </div>
-          <NavLink
+          {/* <NavLink
             to="/settings"
-            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
+            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
           >
-            <LuSettings size={25} className={`${wrapMenu ? "" : "mr-3"}`} />
-            <span className={`font-normal ${wrapMenu ? "hidden" : "block"}`}>
+            <LuSettings size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
+            <span
+              className={`font-normal text-sm ${wrapMenu ? "hidden" : "block"}`}
+            >
               Ustawienia
             </span>
-          </NavLink>
+          </NavLink> */}
         </nav>
       )}
     </>
