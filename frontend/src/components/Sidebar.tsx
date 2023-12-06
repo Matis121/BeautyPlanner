@@ -23,7 +23,7 @@ const Sidebar = () => {
     <>
       {isMobile ? (
         <nav
-          className={`absolute z-9999 bg-zinc-900 flex flex-col justify-between h-screen z-10 py-4 border-r border-gray-200 w-48 px-4 items-start transition-all ${
+          className={`absolute z-9999 bg-zinc-900 flex flex-col justify-between h-screen z-50 py-4 border-r border-gray-200 w-48 px-4 items-start transition-all ${
             toggleMobileMenu ? "ml-0" : "-ml-52"
           }`}
         >
@@ -69,14 +69,6 @@ const Sidebar = () => {
               <LuWrench size={22} className="mr-3" />
               <span className={`font-normal text-sm block`}>Usługi</span>
             </NavLink>
-            <NavLink
-              to="/statistics"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
-              onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
-            >
-              <LuBarChart3 size={22} className="mr-3" />
-              <span className={`font-normal text-sm block`}>Statystyki</span>
-            </NavLink>
             <p className="text-xs font-bold uppercase text-gray-400 transition-all">
               Salon
             </p>
@@ -87,6 +79,14 @@ const Sidebar = () => {
             >
               <LuClock size={22} className="mr-3" />
               <span className={`font-normal text-sm block`}>Godziny pracy</span>
+            </NavLink>
+            <NavLink
+              to="/statistics"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
+            >
+              <LuBarChart3 size={22} className="mr-3" />
+              <span className={`font-normal text-sm block`}>Statystyki</span>
             </NavLink>
           </div>
           {/* <NavLink
@@ -100,7 +100,7 @@ const Sidebar = () => {
         </nav>
       ) : (
         <nav
-          className={`bg-zinc-900 flex flex-col justify-between h-screen z-10 py-4 border-r border-gray-200 transition-all ${
+          className={`bg-zinc-900 flex flex-col justify-between h-screen py-4 border-r border-gray-200 transition-all z-50 ${
             wrapMenu ? "w-18 px-2 items-center " : "w-48 px-4 items-start"
           }`}
         >
@@ -162,19 +162,6 @@ const Sidebar = () => {
                 Usługi
               </span>
             </NavLink>
-            <NavLink
-              to="/statistics"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
-            >
-              <LuBarChart3 size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
-              <span
-                className={`font-normal text-sm ${
-                  wrapMenu ? "hidden" : "block"
-                }`}
-              >
-                Statystyki
-              </span>
-            </NavLink>
             <p className="text-xs font-bold uppercase text-gray-400 transition-all">
               Salon
             </p>
@@ -189,6 +176,19 @@ const Sidebar = () => {
                 }`}
               >
                 Godziny pracy
+              </span>
+            </NavLink>
+            <NavLink
+              to="/statistics"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+            >
+              <LuBarChart3 size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
+              <span
+                className={`font-normal text-sm ${
+                  wrapMenu ? "hidden" : "block"
+                }`}
+              >
+                Statystyki
               </span>
             </NavLink>
           </div>

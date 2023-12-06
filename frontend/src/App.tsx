@@ -2,6 +2,7 @@ import "./App.css";
 import Clients from "./pages/Clients";
 import Services from "./pages/Services";
 import Calendar from "./pages/Calendar";
+import Statistics from "./pages/Statistics";
 import WorkHours from "./pages/WorkHours";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -67,6 +68,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Services />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/statistics"
+                element={
+                  <PrivateRoute>
+                    <Statistics />
                   </PrivateRoute>
                 }
               />
