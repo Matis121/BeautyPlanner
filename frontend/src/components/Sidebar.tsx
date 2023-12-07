@@ -47,7 +47,7 @@ const Sidebar = () => {
             </p>
             <NavLink
               to="/calendar"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
               <LuCalendarRange size={22} className="mr-3" />
@@ -55,7 +55,7 @@ const Sidebar = () => {
             </NavLink>
             <NavLink
               to="/clients"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
               <LuUsers size={22} className="mr-3" />
@@ -63,7 +63,7 @@ const Sidebar = () => {
             </NavLink>
             <NavLink
               to="/services"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
               <LuWrench size={22} className="mr-3" />
@@ -74,7 +74,7 @@ const Sidebar = () => {
             </p>
             <NavLink
               to="/work-hours"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
               <LuClock size={22} className="mr-3" />
@@ -82,7 +82,7 @@ const Sidebar = () => {
             </NavLink>
             <NavLink
               to="/statistics"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
               <LuBarChart3 size={22} className="mr-3" />
@@ -91,7 +91,7 @@ const Sidebar = () => {
           </div>
           {/* <NavLink
             to="/settings"
-            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
             onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
           >
             <LuSettings size={22} className="mr-3" />
@@ -122,7 +122,7 @@ const Sidebar = () => {
             </p>
             <NavLink
               to="/calendar"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
             >
               <LuCalendarRange
                 size={22}
@@ -138,7 +138,7 @@ const Sidebar = () => {
             </NavLink>
             <NavLink
               to="/clients"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
             >
               <LuUsers size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
               <span
@@ -151,7 +151,7 @@ const Sidebar = () => {
             </NavLink>
             <NavLink
               to="/services"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
             >
               <LuWrench size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
               <span
@@ -167,7 +167,7 @@ const Sidebar = () => {
             </p>
             <NavLink
               to="/work-hours"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
             >
               <LuClock size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
               <span
@@ -180,7 +180,7 @@ const Sidebar = () => {
             </NavLink>
             <NavLink
               to="/statistics"
-              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+              className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
             >
               <LuBarChart3 size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
               <span
@@ -194,7 +194,7 @@ const Sidebar = () => {
           </div>
           {/* <NavLink
             to="/settings"
-            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all ml-2"
+            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
           >
             <LuSettings size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
             <span
