@@ -120,14 +120,21 @@ const ServiceForm = props => {
               }`}
               maxLength={30}
             />
-            <Select onValueChange={e => setDurationService(e)}>
+            <Select required onValueChange={e => setDurationService(e)}>
               <SelectTrigger className="col-span-2 text-gray-500">
-                <SelectValue placeholder="Czas trwania" />
+                <SelectValue
+                  placeholder="Czas trwania"
+                  className="text-black"
+                />
               </SelectTrigger>
               <SelectContent className="overflow-y-auto max-h-[13rem]">
                 <SelectGroup>
                   {durationServiceTable.map(time => (
-                    <SelectItem key={time} value={`${time}`}>
+                    <SelectItem
+                      key={time}
+                      value={`${time}`}
+                      className="hover:cursor-pointer"
+                    >
                       {formatTime(time)}
                     </SelectItem>
                   ))}
