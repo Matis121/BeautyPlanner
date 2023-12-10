@@ -1,6 +1,7 @@
 const User = require("./userModal");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 const secret = "ilovechicken";
 
@@ -8,53 +9,61 @@ const secret = "ilovechicken";
 const login = async (req, res, next) => {
   const { username, password } = req.body;
 
-  const user = await User.findOne({ username }).lean();
+  try {
+    const user = await User.findOne({ username }).lean();
 
-  if (!user) {
-    return res.json({ message: "Invalid username" });
-  }
+    if (!user) {
+      return res.json({ message: "Invalid username" });
+    }
 
-  if (password === user.password) {
-    const payload = {
-      id: user._id,
-      username: user.username,
-    };
-    const token = jwt.sign(payload, secret);
+    // if (!user.confirmed) {
+    //   return res.json({ message: "Please confirm your email to login" });
+    // }
 
-    return res.json({ token, username: user.username, id: user._id });
-  } else {
-    return res.json({ message: "Incorrect password" });
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (passwordMatch) {
+      const payload = {
+        id: user._id,
+        username: user.username,
+      };
+      const token = jwt.sign(payload, secret);
+
+      return res.json({ token, username: user.username, id: user._id });
+    } else {
+      return res.json({ message: "Incorrect password" });
+    }
+  } catch (error) {
+    return res.json({ error: "Login failed", details: error.message });
   }
 };
+
 const register = async (req, res, next) => {
   const { username, email, password } = req.body;
 
-  let user = new User({
-    username,
-    email,
-    password,
-  });
+  try {
+    const userExists = await User.findOne({ username }).exec();
 
-  const userExists = await User.findOne({ username: username }).exec();
+    if (userExists) {
+      return res.json({ error: "Nazwa użytkownika jest już zajęta." });
+    }
 
-  if (userExists) {
-    res.json({
-      error: "Nazwa użytkownika jest już zajęta.",
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      username,
+      email,
+      password: hashedPassword,
     });
-  } else {
-    user
-      .save()
-      .then(user => {
-        res.json({
-          success: "Account successfully created!",
-        });
-      })
-      .catch(error => {
-        res.json({
-          error: "User failed to add",
-          details: error.message,
-        });
-      });
+
+    await user.save();
+
+    return res.json({ success: "Account successfully created!" });
+  } catch (error) {
+    return res.json({
+      error: "User registration failed",
+      details: error.message,
+    });
   }
 };
 

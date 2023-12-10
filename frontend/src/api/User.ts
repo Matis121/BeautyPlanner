@@ -9,7 +9,7 @@ export async function registerUser(user) {
 export async function postLogin(user) {
   try {
     let response = await axios.post("http://localhost:5000/login", user);
-    console.log(response);
+    console.log(response.data);
     let data = response.data;
     return data;
   } catch (error) {
