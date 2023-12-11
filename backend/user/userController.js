@@ -6,6 +6,86 @@ const nodemailer = require("nodemailer");
 const secret = "ilovechicken";
 
 // LOGIN AND REGISTER
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "mateusz6246@gmail.com", // Zmień na swój adres e-mail
+    pass: "qnjn pwww lusi ssfc", // Zmień na hasło do twojego adresu e-mail
+  },
+});
+
+const register = async (req, res, next) => {
+  const { username, email, password } = req.body;
+  console.log(username, email, password);
+
+  try {
+    // Sprawdź, czy użytkownik istnieje
+    const userExists = await User.findOne({ username }).exec();
+    if (userExists) {
+      return res.json({ error: "Nazwa użytkownika jest już zajęta." });
+    }
+
+    // Utwórz nowego użytkownika
+    const user = new User({
+      username,
+      email,
+      password,
+    });
+
+    // Zapisz użytkownika w bazie danych
+    await user.save();
+
+    // Generuj token aktywacyjny
+    const activationToken = jwt.sign({ userId: user._id }, secret, {
+      expiresIn: "24h",
+    });
+
+    // Wyślij e-mail z linkiem aktywacyjnym
+    const activationLink = `localhost:5000/activate/${activationToken}`;
+    const mailOptions = {
+      from: "mateusz6246@gmail.com",
+      to: user.email,
+      subject: "Potwierdzenie rejestracji",
+      html: `<p>Kliknij <a href="${activationLink}">tutaj</a> aby aktywować konto.</p>`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.json({
+      success:
+        "Account successfully created! Check your email for activation instructions.",
+    });
+  } catch (error) {
+    res.json({
+      error: "User registration and activation failed",
+      details: error.message,
+    });
+  }
+};
+
+// Dodaj endpoint aktywacyjny
+const activateAccount = async (req, res, next) => {
+  const { token } = req.params;
+  console.log(token);
+
+  try {
+    const decodedToken = jwt.verify(token, secret);
+    const userId = decodedToken.userId;
+
+    // Aktywuj konto użytkownika
+    await User.findByIdAndUpdate(userId, { $set: { confirmed: true } });
+
+    res.json({
+      success: "Account successfully activated!",
+    });
+  } catch (error) {
+    res.json({
+      error: "Invalid or expired activation token.",
+    });
+  }
+};
+
 const login = async (req, res, next) => {
   const { username, password } = req.body;
 
@@ -38,34 +118,34 @@ const login = async (req, res, next) => {
   }
 };
 
-const register = async (req, res, next) => {
-  const { username, email, password } = req.body;
+// const register = async (req, res, next) => {
+//   const { username, email, password } = req.body;
 
-  try {
-    const userExists = await User.findOne({ username }).exec();
+//   try {
+//     const userExists = await User.findOne({ username }).exec();
 
-    if (userExists) {
-      return res.json({ error: "Nazwa użytkownika jest już zajęta." });
-    }
+//     if (userExists) {
+//       return res.json({ error: "Nazwa użytkownika jest już zajęta." });
+//     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+//     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({
-      username,
-      email,
-      password: hashedPassword,
-    });
+//     const user = new User({
+//       username,
+//       email,
+//       password: hashedPassword,
+//     });
 
-    await user.save();
+//     await user.save();
 
-    return res.json({ success: "Account successfully created!" });
-  } catch (error) {
-    return res.json({
-      error: "User registration failed",
-      details: error.message,
-    });
-  }
-};
+//     return res.json({ success: "Account successfully created!" });
+//   } catch (error) {
+//     return res.json({
+//       error: "User registration failed",
+//       details: error.message,
+//     });
+//   }
+// };
 
 // SERVICES
 const addService = async (req, res, next) => {
@@ -473,4 +553,5 @@ module.exports = {
   editEvent,
   addVisitToClient,
   removeVisitFromClient,
+  activateAccount,
 };

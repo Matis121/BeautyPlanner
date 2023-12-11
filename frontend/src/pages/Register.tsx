@@ -38,6 +38,7 @@ const Register = () => {
   const schema = z
     .object({
       username: z.string().min(4).max(30),
+      email: z.string().email(),
       password: z.string().min(5).max(20),
       confirmPassword: z.string().min(5).max(20),
     })
@@ -106,6 +107,16 @@ const Register = () => {
                 {submitError}
               </p>
             ) : null}
+            <Input
+              className=" mb-3"
+              placeholder="E-mail"
+              {...register("email")}
+            />
+            {errors.email && (
+              <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
+                {errors.email.message}
+              </p>
+            )}
             <Input
               className=" mb-3"
               placeholder="Hasło"
