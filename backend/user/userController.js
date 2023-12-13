@@ -10,8 +10,8 @@ const secret = "ilovechicken";
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "mateusz6246@gmail.com", // Zmień na swój adres e-mail
-    pass: "qnjn pwww lusi ssfc", // Zmień na hasło do twojego adresu e-mail
+    user: process.env.GMAIL_LOGIN, // Zmień na swój adres e-mail
+    pass: process.env.GMAIL_PASSWORD, // Zmień na hasło do twojego adresu e-mail
   },
 });
 
