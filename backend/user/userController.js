@@ -5,7 +5,81 @@ const nodemailer = require("nodemailer");
 
 const secret = "ilovechicken";
 
-// LOGIN AND REGISTER
+// LOGIN || REGISTER || ACTIVATE ACCOUNT || NEW PASSWORD
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_LOGIN, // Zmień na swój adres e-mail
+    pass: process.env.GMAIL_PASSWORD, // Zmień na hasło do twojego adresu e-mail
+  },
+});
+
+const register = async (req, res, next) => {
+  const { username, email, password } = req.body;
+
+  try {
+    // Sprawdź, czy użytkownik istnieje
+    const userExists = await User.findOne({ username }).exec();
+    if (userExists) {
+      return res.json({ error: "Nazwa użytkownika jest już zajęta." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    // Zapisz użytkownika w bazie danych
+    await user.save();
+
+    // Generuj token aktywacyjny
+    const activationToken = jwt.sign({ userId: user._id }, secret, {
+      expiresIn: "24h",
+    });
+
+    // Wyślij e-mail z linkiem aktywacyjnym
+    const activationLink = `localhost:5000/activate/${activationToken}`;
+    const mailOptions = {
+      from: "mateusz6246@gmail.com",
+      to: user.email,
+      subject: "Potwierdzenie rejestracji",
+      html: `<p>Kliknij w link aby aktytować konto: </p><a href="${activationLink}">${activationLink}</a>`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.json({
+      success:
+        "Account successfully created! Check your email for activation instructions.",
+    });
+  } catch (error) {
+    res.json({
+      error: "User registration and activation failed",
+      details: error.message,
+    });
+  }
+};
+const activateAccount = async (req, res, next) => {
+  const { token } = req.params;
+
+  try {
+    const decodedToken = jwt.verify(token, secret);
+    const userId = decodedToken.userId;
+
+    // Aktywuj konto użytkownika
+    await User.findByIdAndUpdate(userId, { $set: { confirmed: true } });
+
+    res.redirect("http://localhost:5173/login");
+  } catch (error) {
+    res.json({
+      error: "Invalid or expired activation token.",
+    });
+  }
+};
 const login = async (req, res, next) => {
   const { username, password } = req.body;
 
@@ -16,9 +90,9 @@ const login = async (req, res, next) => {
       return res.json({ message: "Invalid username" });
     }
 
-    // if (!user.confirmed) {
-    //   return res.json({ message: "Please confirm your email to login" });
-    // }
+    if (!user.confirmed) {
+      return res.json({ message: "Please confirm your email to login" });
+    }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -35,35 +109,6 @@ const login = async (req, res, next) => {
     }
   } catch (error) {
     return res.json({ error: "Login failed", details: error.message });
-  }
-};
-
-const register = async (req, res, next) => {
-  const { username, email, password } = req.body;
-
-  try {
-    const userExists = await User.findOne({ username }).exec();
-
-    if (userExists) {
-      return res.json({ error: "Nazwa użytkownika jest już zajęta." });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = new User({
-      username,
-      email,
-      password: hashedPassword,
-    });
-
-    await user.save();
-
-    return res.json({ success: "Account successfully created!" });
-  } catch (error) {
-    return res.json({
-      error: "User registration failed",
-      details: error.message,
-    });
   }
 };
 
@@ -473,4 +518,5 @@ module.exports = {
   editEvent,
   addVisitToClient,
   removeVisitFromClient,
+  activateAccount,
 };
