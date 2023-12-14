@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 
 const secret = "ilovechicken";
 
-// LOGIN AND REGISTER
+// LOGIN || REGISTER || ACTIVATE ACCOUNT || NEW PASSWORD
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -17,7 +17,6 @@ const transporter = nodemailer.createTransport({
 
 const register = async (req, res, next) => {
   const { username, email, password } = req.body;
-  console.log(username, email, password);
 
   try {
     // Sprawdź, czy użytkownik istnieje
@@ -26,11 +25,12 @@ const register = async (req, res, next) => {
       return res.json({ error: "Nazwa użytkownika jest już zajęta." });
     }
 
-    // Utwórz nowego użytkownika
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = new User({
       username,
       email,
-      password,
+      password: hashedPassword,
     });
 
     // Zapisz użytkownika w bazie danych
@@ -47,7 +47,7 @@ const register = async (req, res, next) => {
       from: "mateusz6246@gmail.com",
       to: user.email,
       subject: "Potwierdzenie rejestracji",
-      html: `<p>Kliknij <a href="${activationLink}">tutaj</a> aby aktywować konto.</p>`,
+      html: `<p>Kliknij w link aby aktytować konto: </p><a href="${activationLink}">${activationLink}</a>`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -63,11 +63,8 @@ const register = async (req, res, next) => {
     });
   }
 };
-
-// Dodaj endpoint aktywacyjny
 const activateAccount = async (req, res, next) => {
   const { token } = req.params;
-  console.log(token);
 
   try {
     const decodedToken = jwt.verify(token, secret);
@@ -76,16 +73,13 @@ const activateAccount = async (req, res, next) => {
     // Aktywuj konto użytkownika
     await User.findByIdAndUpdate(userId, { $set: { confirmed: true } });
 
-    res.json({
-      success: "Account successfully activated!",
-    });
+    res.redirect("http://localhost:5173/login");
   } catch (error) {
     res.json({
       error: "Invalid or expired activation token.",
     });
   }
 };
-
 const login = async (req, res, next) => {
   const { username, password } = req.body;
 
@@ -96,9 +90,9 @@ const login = async (req, res, next) => {
       return res.json({ message: "Invalid username" });
     }
 
-    // if (!user.confirmed) {
-    //   return res.json({ message: "Please confirm your email to login" });
-    // }
+    if (!user.confirmed) {
+      return res.json({ message: "Please confirm your email to login" });
+    }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -117,35 +111,6 @@ const login = async (req, res, next) => {
     return res.json({ error: "Login failed", details: error.message });
   }
 };
-
-// const register = async (req, res, next) => {
-//   const { username, email, password } = req.body;
-
-//   try {
-//     const userExists = await User.findOne({ username }).exec();
-
-//     if (userExists) {
-//       return res.json({ error: "Nazwa użytkownika jest już zajęta." });
-//     }
-
-//     const hashedPassword = await bcrypt.hash(password, 10);
-
-//     const user = new User({
-//       username,
-//       email,
-//       password: hashedPassword,
-//     });
-
-//     await user.save();
-
-//     return res.json({ success: "Account successfully created!" });
-//   } catch (error) {
-//     return res.json({
-//       error: "User registration failed",
-//       details: error.message,
-//     });
-//   }
-// };
 
 // SERVICES
 const addService = async (req, res, next) => {
