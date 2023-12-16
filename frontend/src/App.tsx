@@ -5,6 +5,8 @@ import Calendar from "./pages/Calendar";
 import Statistics from "./pages/Statistics";
 import WorkHours from "./pages/WorkHours";
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword";
 import Register from "./pages/Register";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./privateRoute/PrivateRoute";
@@ -31,6 +33,8 @@ function App() {
             <Routes>
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/forgotPassword" element={<ForgotPassword />} />
+              <Route path="/resetPassword/:token" element={<ResetPassword />} />
               <Route
                 path="/"
                 element={

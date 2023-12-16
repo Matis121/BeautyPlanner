@@ -87,7 +87,12 @@ const Login = () => {
               placeholder="Hasło"
               type="password"
             />
-            <Button type="submit" className="mt-6 self-end">
+            <Link to="/forgotPassword" className="self-center">
+              <Button className="mt-2" variant="link">
+                Zapomniałeś hasło?
+              </Button>
+            </Link>
+            <Button type="submit" className="mt-4 self-end">
               Zaloguj się
             </Button>
           </form>

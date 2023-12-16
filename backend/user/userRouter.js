@@ -3,6 +3,8 @@ const express = require("express");
 const userRouter = express.Router();
 
 userRouter.post("/register", userController.register);
+userRouter.post("/forgotPassword", userController.forgotPassword);
+userRouter.post("/resetPassword", userController.resetPassword);
 userRouter.get("/activate/:token", userController.activateAccount);
 userRouter.post("/login", userController.login);
 // Services

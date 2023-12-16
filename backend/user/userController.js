@@ -38,7 +38,7 @@ const register = async (req, res, next) => {
 
     // Generuj token aktywacyjny
     const activationToken = jwt.sign({ userId: user._id }, secret, {
-      expiresIn: "24h",
+      expiresIn: "1h",
     });
 
     // Wyślij e-mail z linkiem aktywacyjnym
@@ -61,6 +61,68 @@ const register = async (req, res, next) => {
       error: "User registration and activation failed",
       details: error.message,
     });
+  }
+};
+const forgotPassword = async (req, res, next) => {
+  const { email } = req.body;
+
+  const userExists = await User.findOne({ email }).exec();
+
+  if (!userExists) {
+    return res.json({ error: "Podany adres e-mail nie istanieje w bazie" });
+  }
+
+  const resetPasswordToken = jwt.sign({ userEmail: email }, secret, {
+    expiresIn: "1h",
+  });
+  const tokenWithoutDots = encodeURIComponent(
+    resetPasswordToken.replace(/\./g, "_")
+  );
+
+  // Wyślij e-mail z linkiem aktywacyjnym
+  const resetPasswordLink = `http://localhost:5173/resetPassword/${tokenWithoutDots}`;
+
+  const mailOptions = {
+    from: "mateusz6246@gmail.com",
+    to: email,
+    subject: "Potwierdzenie rejestracji",
+    html: `<p>Kliknij w link aby aktytować konto: </p><a href="${resetPasswordLink}">${resetPasswordLink}</a>`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return res.json({ success: "Wiadomość e-mail została  przesłana" });
+  } catch (error) {
+    return res.json({ error: "Wysyłka wiadomości nie powiodła się" });
+  }
+};
+const resetPassword = async (req, res, next) => {
+  const { passwords, token } = req.body;
+
+  const tokenFromURL = token.replace(/_/g, ".");
+  const decodeToken = decodeURIComponent(tokenFromURL);
+
+  try {
+    const decodedToken = jwt.verify(decodeToken, secret);
+    const userEmail = decodedToken.userEmail;
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(passwords.password, 10);
+
+    // Update the user's password in the database
+    const user = await User.findOneAndUpdate(
+      { email: userEmail },
+      { $set: { password: hashedPassword } },
+      { new: true }
+    ).exec();
+
+    if (user) {
+      return res.json({ success: "Password updated successfully" });
+    } else {
+      return res.json({ error: "Failed to update password" });
+    }
+  } catch (error) {
+    return res.json({ error: "Invalid or expired activation token." });
   }
 };
 const activateAccount = async (req, res, next) => {
@@ -519,4 +581,6 @@ module.exports = {
   addVisitToClient,
   removeVisitFromClient,
   activateAccount,
+  forgotPassword,
+  resetPassword,
 };

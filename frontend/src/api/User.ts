@@ -9,12 +9,27 @@ export async function registerUser(user) {
 export async function postLogin(user) {
   try {
     let response = await axios.post("http://localhost:5000/login", user);
-    console.log(response.data);
     let data = response.data;
     return data;
   } catch (error) {
     console.log(error);
   }
+}
+export async function forgotPassword(email) {
+  let response = await axios.post(
+    "http://localhost:5000/forgotPassword",
+    email
+  );
+  let data = response.data;
+  return data;
+}
+export async function resetPassword(passwords, token) {
+  let response = await axios.post("http://localhost:5000/resetPassword", {
+    passwords,
+    token,
+  });
+  let data = response.data;
+  return data;
 }
 
 // SERVICES
