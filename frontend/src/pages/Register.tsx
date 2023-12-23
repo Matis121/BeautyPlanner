@@ -58,11 +58,9 @@ const Register = () => {
   const submitData = async data => {
     const res = await registerUser(data);
     if (res.success) {
-      console.log(res.success);
       toastEvent();
       reset();
     } else {
-      console.log(res.error);
       setSubmitError(res.error);
     }
   };
@@ -142,11 +140,17 @@ const Register = () => {
             <Button className="w-full" type="submit">
               Utwórz konto
             </Button>
-            <div className="line my-8">
-              <span className="text-muted-foreground px-4 bg-white">
-                Utwórz konto przy pomocy
-              </span>
-            </div>
+          </form>
+          <div className="line my-8">
+            <span className="text-muted-foreground px-4 bg-white">
+              Utwórz konto przy pomocy
+            </span>
+          </div>
+          <form
+            action="http://localhost:5000/auth/google/"
+            method="get"
+            className="w-full"
+          >
             <Button className="w-full" variant="outline">
               <FcGoogle size={25} className="mr-2" />
               Google

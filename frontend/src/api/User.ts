@@ -15,6 +15,12 @@ export async function postLogin(user) {
     console.log(error);
   }
 }
+export async function logout() {
+  let response = await axios.get("http://localhost:5000/logout");
+  let data = response.data;
+  console.log(data);
+}
+
 export async function forgotPassword(email) {
   let response = await axios.post(
     "http://localhost:5000/forgotPassword",
@@ -28,6 +34,11 @@ export async function resetPassword(passwords, token) {
     passwords,
     token,
   });
+  let data = response.data;
+  return data;
+}
+export async function googleAuth() {
+  let response = await axios.get("http://localhost:5000/auth/google");
   let data = response.data;
   return data;
 }

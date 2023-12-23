@@ -4,10 +4,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { postLogin } from "../api/User";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FcGoogle } from "react-icons/fc";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -37,6 +39,27 @@ const Login = () => {
   const { register, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });
+
+  // FETCH DATA
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:5000/login/success",
+          {
+            withCredentials: true,
+          }
+        );
+        localStorage.setItem("user", JSON.stringify(data));
+        navigate("/");
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   // LOGIN TO APP
   const submitData = async data => {
@@ -94,6 +117,15 @@ const Login = () => {
             </Link>
             <Button type="submit" className="mt-4 self-end">
               Zaloguj się
+            </Button>
+            <div className="line my-8">
+              <span className="text-muted-foreground px-4 bg-white">
+                Zaloguj się przy pomocy
+              </span>
+            </div>
+            <Button className="w-full" variant="outline">
+              <FcGoogle size={25} className="mr-2" />
+              Google
             </Button>
           </form>
         </div>

@@ -64,12 +64,10 @@ const ResetPassword = () => {
   const submitData = async data => {
     const user = await resetPassword(data, token);
     if (user.success) {
-      console.log(user.success);
       toastEvent();
       reset();
       navigate("/login");
     } else {
-      console.log(user.error);
     }
   };
 

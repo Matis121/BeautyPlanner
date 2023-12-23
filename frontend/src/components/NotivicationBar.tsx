@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
+import { logout } from "./../api/User";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,6 @@ import {
 import { WrapMenuContext } from "@/Contexts/WrapMenuContext";
 import { MobileMenuContext } from "@/Contexts/MobileMenuContext";
 import { useContext } from "react";
-
 import {
   LuChevronDown,
   LuUser,
@@ -32,11 +31,9 @@ const NotivicationBar = () => {
   const isMobile = window.innerWidth <= 768;
 
   // LOGOUT
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("user");
-    navigate("/login");
+    window.location.href = "http://localhost:5000/logout";
   };
 
   return (

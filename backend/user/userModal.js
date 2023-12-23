@@ -55,8 +55,8 @@ const defaultActiveHours = [
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true },
-  password: { type: String, required: true },
-  confirmed: { type: Boolean, default: false },
+  password: { type: String },
+  confirmed: { type: Boolean },
   events: [],
   clients: [],
   services: [],
