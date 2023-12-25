@@ -118,11 +118,17 @@ const Login = () => {
             <Button type="submit" className="mt-4 self-end">
               Zaloguj się
             </Button>
-            <div className="line my-8">
-              <span className="text-muted-foreground px-4 bg-white">
-                Zaloguj się przy pomocy
-              </span>
-            </div>
+          </form>
+          <div className="line my-8">
+            <span className="text-muted-foreground px-4 bg-white">
+              Zaloguj się przy pomocy
+            </span>
+          </div>
+          <form
+            action="http://localhost:5000/auth/google/"
+            method="get"
+            className="w-full"
+          >
             <Button className="w-full" variant="outline">
               <FcGoogle size={25} className="mr-2" />
               Google
