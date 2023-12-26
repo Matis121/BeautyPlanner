@@ -6,9 +6,12 @@ import { SmallCalendarContext } from "@/Contexts/SmallCalendarContext";
 const MiniCalendar = props => {
   const { toggleSmallCalendar } = useContext(SmallCalendarContext);
 
+  // CHECK WIDTH
+  const isMobile = window.innerWidth <= 768;
+
   return (
     <div
-      className={` mt-[60px] ${
+      className={`${isMobile ? "absolute z-20 top-32" : "mt-[60px]"} ${
         toggleSmallCalendar ? "flex flex-col" : "hidden"
       }`}
     >

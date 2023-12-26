@@ -93,17 +93,19 @@ const Calendar = () => {
       <div
         className={`overflow-hidden h-full ${bgEventColor} border-none flex flex-col gap-1 text-black`}
       >
-        <div className="bg-white flex items-center justify-between opacity-90 gap-2 px-1">
+        <div className="bg-white flex items-center justify-between opacity-90 gap-2 px-1 py-1">
           <div className="flex items-center gap-2">
             <LuClock8 />
             {arg.timeText}
           </div>
           {arg.event.extendedProps.newClient === true ? (
-            <span className=" text-red-600 font-semibold">Pierwsza wizyta</span>
+            <span className="bg-red-500 text-white px-1 rounded-sm font-semibold absolute top-0 right-1/2 translate-x-1/2 -translate-y-4 w-max -z-10">
+              Pierwsza wizyta
+            </span>
           ) : null}
         </div>
         <div className="px-1 flex flex-col gap-1">
-          <strong className="flex items-center gap-1">
+          <strong className="flex items-center gap-1 font-medium">
             <LuUser size={16} />
             {arg.event.title}
           </strong>

@@ -31,6 +31,7 @@ const EditClientForm = props => {
     props.selectedClient.phoneNumber
   );
   const [email, setEmail] = useState(props.selectedClient.mailAddress);
+  const [birthDay, setBirthDay] = useState(props.selectedClient.birthDay);
 
   const {
     register,
@@ -158,6 +159,8 @@ const EditClientForm = props => {
               {...register("birthDay")}
               className="col-span-3"
               type="date"
+              value={birthDay}
+              onChange={e => setBirthDay(e.target.value)}
             />
           </div>
           <div className="flex self-end gap-4">

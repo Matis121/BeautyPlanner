@@ -74,7 +74,7 @@ const ClientTable = () => {
                     )}
                   </TableCell>
                   <TableCell>
-                    {client.visits.length ? (
+                    {client && client.visits && client.visits.length > 0 ? (
                       <div className="flex items-center gap-3">
                         <Link to={`/clients/${client.id}`}>
                           <LuFileClock

@@ -157,6 +157,16 @@ tr {
   border: none !important;
   color: white !important;
 }
+
+@media only screen and (max-width: 1200px) {
+  .fc-today-button {
+    display: none !important;
+  }
+  .fc-toolbar-title {
+    display: none !important;
+  }
+}
+
 /* CALENDAR EVENT */
 .fc-event-main:hover {
   cursor: pointer;
@@ -202,4 +212,11 @@ tr {
   transform: translateY(1px);
   border-radius: 1000px;
   background-color: red;
+}
+
+.fc-view-harness {
+  overflow-x: auto;
+}
+.fc-view {
+  min-width: 1200px;
 }

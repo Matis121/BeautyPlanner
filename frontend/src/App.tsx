@@ -14,12 +14,22 @@ import ClientVisitHistory from "./components/client/ClientVisitHistory";
 import { WrapMenuContext } from "./Contexts/WrapMenuContext";
 import { MobileMenuContext } from "./Contexts/MobileMenuContext";
 import { SmallCalendarContext } from "./Contexts/SmallCalendarContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [wrapMenu, setWrapMenu] = useState(false);
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false);
   const [toggleSmallCalendar, setToggleSmallCalendar] = useState(true);
+
+  // CHECK WIDTH
+  const isMobile = window.innerWidth <= 768;
+
+  // DEFAULT STATE OF SMALL CALENDAR ON MOBILE
+  useEffect(() => {
+    if (isMobile) {
+      setToggleSmallCalendar(false);
+    }
+  }, []);
 
   return (
     <>
