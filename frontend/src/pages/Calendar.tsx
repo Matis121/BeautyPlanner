@@ -99,8 +99,8 @@ const Calendar = () => {
             {arg.timeText}
           </div>
           {arg.event.extendedProps.newClient === true ? (
-            <span className="bg-red-500 text-white px-1 rounded-sm font-semibold absolute top-0 right-1/2 translate-x-1/2 -translate-y-4 w-max -z-10">
-              Pierwsza wizyta
+            <span className="bg-red-500 text-white font-normal px-1 rounded-sm absolute top-0 right-1/2 translate-x-1/2 -translate-y-4 w-max -z-10">
+              Nowy klient
             </span>
           ) : null}
         </div>
