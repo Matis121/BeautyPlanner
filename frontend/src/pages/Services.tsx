@@ -18,13 +18,24 @@ const Services = () => {
 
   return (
     <BasicLayout>
-      <section className="flex flex-col w-full h-full gap-6">
-        <div className="px-1 flex items-center">
-          <span className="text-2xl font-semibold leading-6 text-gray-700 mr-6">
-            Usługi
-          </span>
-          <ServiceForm />
-        </div>
+      <section
+        className={`flex flex-col w-full gap-6 ${
+          data.length > 0 ? null : "h-[calc(100vh-110px)] justify-center"
+        }`}
+      >
+        {data.length > 0 ? (
+          <div className="px-1 flex items-center">
+            <span className="text-2xl font-semibold leading-6 text-gray-700 mr-6">
+              Usługi
+            </span>
+            <ServiceForm />
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center w-full gap-6">
+            <h1>Dodaj pierwszą usługę do bazy</h1>
+            <ServiceForm />
+          </div>
+        )}
         {data.length > 0 ? <ServiceTable /> : ""}
       </section>
     </BasicLayout>
