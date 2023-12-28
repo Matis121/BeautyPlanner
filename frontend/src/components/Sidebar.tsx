@@ -3,7 +3,6 @@ import {
   LuCalendarRange,
   LuUsers,
   LuWrench,
-  LuSettings,
   LuX,
 } from "react-icons/lu";
 import { LuClock } from "react-icons/lu";
@@ -89,14 +88,6 @@ const Sidebar = () => {
               <span className={`font-normal text-sm block`}>Statystyki</span>
             </NavLink>
           </div>
-          {/* <NavLink
-            to="/settings"
-            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
-            onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
-          >
-            <LuSettings size={22} className="mr-3" />
-            <span className={`font-normal text-sm block`}>Ustawienia</span>
-          </NavLink> */}
         </nav>
       ) : (
         <nav
@@ -192,17 +183,6 @@ const Sidebar = () => {
               </span>
             </NavLink>
           </div>
-          {/* <NavLink
-            to="/settings"
-            className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
-          >
-            <LuSettings size={22} className={`${wrapMenu ? "" : "mr-3"}`} />
-            <span
-              className={`font-normal text-sm ${wrapMenu ? "hidden" : "block"}`}
-            >
-              Ustawienia
-            </span>
-          </NavLink> */}
         </nav>
       )}
     </>
