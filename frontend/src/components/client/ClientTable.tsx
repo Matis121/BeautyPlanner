@@ -1,4 +1,14 @@
-import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import EditClientForm from "./EditClientForm";
 import { getClients, removeClient } from "../../api/User";
 import { useQuery, useQueryClient, useMutation } from "react-query";
@@ -47,7 +57,7 @@ const ClientTable = () => {
             <TableHead>LP</TableHead>
             <TableHead>Imię i nazwisko</TableHead>
             <TableHead>Telefon</TableHead>
-            <TableHead>Wizyty</TableHead>
+            <TableHead className="text-center">Wizyty</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -73,22 +83,25 @@ const ClientTable = () => {
                       <p className="text-gray-400">Nie podano</p>
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
                     {client && client.visits && client.visits.length > 0 ? (
-                      <div className="flex items-center gap-3">
-                        <Link to={`/clients/${client.id}`}>
+                      <div className="flex justify-center gap-3">
+                        <p className="">{client.visits.length}</p>
+                        <Link
+                          to={`/clients/${client.id}`}
+                          className="flex items-end gap-2"
+                        >
                           <LuFileClock
-                            size={22}
+                            size={20}
                             className=" text-gray-500 hover:text-black cursor-pointer"
                           />
                         </Link>
-                        <p className="">{client.visits.length}</p>
                       </div>
                     ) : (
                       <p className="text-gray-400">Brak wizyt</p>
                     )}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right flex justify-end gap-3">
                     <EditClientForm
                       clientId={client.id}
                       selectedClient={{
@@ -100,12 +113,33 @@ const ClientTable = () => {
                         birthDay: client.birthDay,
                       }}
                     />
-                    <Button
-                      variant="link"
-                      onClick={() => handleRemoveClient(client.id)}
-                    >
-                      Usuń
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <AlertDialogAction variant="destructive">
+                          Usuń
+                        </AlertDialogAction>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Potwierdzenie usunięcia klienta
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Klient zostanie trwale usunięty z twojej bazy,
+                            natomiast wizyty dalej będą widoczne w kalendarzu.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Anuluj</AlertDialogCancel>
+                          <AlertDialogAction
+                            variant="destructive"
+                            onClick={() => handleRemoveClient(client.id)}
+                          >
+                            Usuń klienta
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </TableCell>
                 </TableRow>
               ))

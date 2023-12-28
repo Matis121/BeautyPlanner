@@ -91,7 +91,7 @@ const EditClientForm = props => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="link">Edytuj</Button>
+        <Button variant="outline">Edytuj</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

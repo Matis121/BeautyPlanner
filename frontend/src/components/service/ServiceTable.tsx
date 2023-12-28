@@ -1,7 +1,16 @@
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { getUserServices, removeService } from "../../api/User";
-
-import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
   Table,
   TableBody,
@@ -62,19 +71,40 @@ const ServiceTable = () => {
                   <TableCell>
                     <p>{service.price} zł</p>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right flex justify-end gap-3">
                     <EditServiceForm
                       serviceId={service.id}
                       name={service.name}
                       duration={service.duration}
                       price={service.price}
                     />
-                    <Button
-                      variant="link"
-                      onClick={() => handleRemoveService(service.id)}
-                    >
-                      Usuń
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger>
+                        <AlertDialogAction variant="destructive">
+                          Usuń
+                        </AlertDialogAction>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Potwierdzenie usunięcia usługi
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Usługa zostanie trwale usunięta z twojej bazy,
+                            natomiast wizyty dalej będą widoczne w kalendarzu.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Anuluj</AlertDialogCancel>
+                          <AlertDialogAction
+                            variant="destructive"
+                            onClick={() => handleRemoveService(service.id)}
+                          >
+                            Usuń usługę
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </TableCell>
                 </TableRow>
               ))
