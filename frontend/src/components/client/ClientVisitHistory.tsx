@@ -58,7 +58,7 @@ const ClientVisitHistory = () => {
                     <TableCell>{element.date}</TableCell>
                     <TableCell></TableCell>
                     <TableCell>{element.serviceName}</TableCell>
-                    <TableCell>{element.servicePrice}</TableCell>
+                    <TableCell>{element.servicePrice} zł</TableCell>
                     <TableCell>
                       <p
                         className={`"py-1 px-2 w-fit rounded-md flex items-center gap-1 text-base" ${
