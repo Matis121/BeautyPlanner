@@ -11,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useCustomForm from "@/hooks/useClientForm";
-import { useState } from "react";
 import { LuUserPlus } from "react-icons/lu";
 
 const ClientForm = props => {

@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import { logout } from "./../api/User";
 import {
   DropdownMenu,
   DropdownMenuContent,
