@@ -22,7 +22,7 @@ The Beauty Planner is a React-based calendar designed to help hairdressers, barb
 
 ## Tech Stack
 
-**Client:** React, React Query, Axios, Shadcn/ui, React icons, i18Next
+**Client:** React, Tailwind, React Query, Axios, Shadcn/ui, React icons, i18Next
 
 **Server:** Node, Express, Bcrypt, Cors, Express session, JWT, Nodemailer, Passport
 
