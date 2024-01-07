@@ -30,15 +30,6 @@ const Statistics = () => {
   let sortedClientData;
   let mostPopularClient;
 
-  useEffect(() => {
-    if (clientsData) {
-      sortedClientData = clientsData.sort(
-        (a, b) => b.visits.length - a.visits.length
-      );
-      mostPopularClient = sortedClientData.slice(0, 5);
-    }
-  }, [clientsData]);
-
   // RANDOM DATA
 
   const data = [
