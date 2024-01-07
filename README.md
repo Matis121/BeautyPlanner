@@ -7,7 +7,7 @@ The Beauty Planner is a React-based calendar designed to help hairdressers, barb
 
 
 
-## Features
+## Main features
 
 - Create clients
 - Create services
