@@ -3,8 +3,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
-const secret = "ilovechicken";
-
 // LOGIN || REGISTER || ACTIVATE ACCOUNT || NEW PASSWORD
 
 const transporter = nodemailer.createTransport({
@@ -37,9 +35,13 @@ const register = async (req, res, next) => {
     await user.save();
 
     // Generuj token aktywacyjny
-    const activationToken = jwt.sign({ userId: user._id }, secret, {
-      expiresIn: "1h",
-    });
+    const activationToken = jwt.sign(
+      { userId: user._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     // Wyślij e-mail z linkiem aktywacyjnym
     const activationLink = `localhost:5000/activate/${activationToken}`;
@@ -72,15 +74,19 @@ const forgotPassword = async (req, res, next) => {
     return res.json({ error: "Podany adres e-mail nie istanieje w bazie" });
   }
 
-  const resetPasswordToken = jwt.sign({ userEmail: email }, secret, {
-    expiresIn: "1h",
-  });
+  const resetPasswordToken = jwt.sign(
+    { userEmail: email },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1h",
+    }
+  );
   const tokenWithoutDots = encodeURIComponent(
     resetPasswordToken.replace(/\./g, "_")
   );
 
   // Wyślij e-mail z linkiem aktywacyjnym
-  const resetPasswordLink = `http://localhost:5173/resetPassword/${tokenWithoutDots}`;
+  const resetPasswordLink = `${process.env.CLIENT_URL}/resetPassword/${tokenWithoutDots}`;
 
   const mailOptions = {
     from: "mateusz6246@gmail.com",
@@ -103,7 +109,7 @@ const resetPassword = async (req, res, next) => {
   const decodeToken = decodeURIComponent(tokenFromURL);
 
   try {
-    const decodedToken = jwt.verify(decodeToken, secret);
+    const decodedToken = jwt.verify(decodeToken, process.env.JWT_SECRET);
     const userEmail = decodedToken.userEmail;
 
     // Hash the new password
@@ -129,13 +135,13 @@ const activateAccount = async (req, res, next) => {
   const { token } = req.params;
 
   try {
-    const decodedToken = jwt.verify(token, secret);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
 
     // Aktywuj konto użytkownika
     await User.findByIdAndUpdate(userId, { $set: { confirmed: true } });
 
-    res.redirect("http://localhost:5173/login");
+    res.redirect(process.env.CLIENT_URL);
   } catch (error) {
     res.json({
       error: "Invalid or expired activation token.",
@@ -163,7 +169,7 @@ const login = async (req, res, next) => {
         id: user._id,
         username: user.username,
       };
-      const token = jwt.sign(payload, secret);
+      const token = jwt.sign(payload, process.env.JWT_SECRET);
 
       return res.json({ token, username: user.username, id: user._id });
     } else {

@@ -11,7 +11,7 @@ authRouter.get(
   "/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   (req, res) => {
-    res.redirect("http://localhost:5173/");
+    res.redirect(process.env.CLIENT_URL);
   }
 );
 
@@ -27,7 +27,7 @@ authRouter.get("/logout", (req, res) => {
       return res.status(500).json({ error: "Failed to log out" });
     }
   });
-  res.redirect("http://localhost:5173/");
+  res.redirect(process.env.CLIENT_URL);
 });
 
 module.exports = authRouter;

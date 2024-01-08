@@ -20,7 +20,7 @@ mongoconn();
 app.use(
   session({
     name: "session",
-    secret: "your-secret-key",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
   })
@@ -33,7 +33,7 @@ app.use(passport.session());
 // middlewares
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
