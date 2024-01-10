@@ -1,10 +1,5 @@
 import { NavLink } from "react-router-dom";
-import {
-  LuCalendarRange,
-  LuUsers,
-  LuWrench,
-  LuX,
-} from "react-icons/lu";
+import { LuCalendarRange, LuUsers, LuWrench, LuX } from "react-icons/lu";
 import { LuClock } from "react-icons/lu";
 import { LuBarChart3 } from "react-icons/lu";
 import { useContext } from "react";
@@ -12,8 +7,8 @@ import { WrapMenuContext } from "@/Contexts/WrapMenuContext";
 import { MobileMenuContext } from "@/Contexts/MobileMenuContext";
 
 const Sidebar = () => {
-  const { wrapMenu } = useContext(WrapMenuContext);
-  const { setToggleMobileMenu, toggleMobileMenu } =
+  const { wrapMenu }: any = useContext(WrapMenuContext);
+  const { setToggleMobileMenu, toggleMobileMenu }: any =
     useContext(MobileMenuContext);
 
   const isMobile = window.innerWidth <= 768;

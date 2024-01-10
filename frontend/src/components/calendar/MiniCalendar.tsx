@@ -2,8 +2,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { useContext } from "react";
 import { SmallCalendarContext } from "@/Contexts/SmallCalendarContext";
 
-const MiniCalendar = props => {
-  const { toggleSmallCalendar } = useContext(SmallCalendarContext);
+const MiniCalendar = (props: any) => {
+  const { toggleSmallCalendar }: any = useContext(SmallCalendarContext);
 
   // CHECK WIDTH
   const isMobile = window.innerWidth <= 768;

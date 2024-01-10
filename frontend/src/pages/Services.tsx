@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 
 const Services = () => {
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // FETCH DATA

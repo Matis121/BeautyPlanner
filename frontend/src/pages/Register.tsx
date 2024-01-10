@@ -55,7 +55,7 @@ const Register = () => {
   } = useForm({ resolver: zodResolver(schema) });
 
   // CREATE NEW ACCOUNT
-  const submitData = async data => {
+  const submitData = async (data: any) => {
     const res = await registerUser(data);
     if (res.success) {
       toastEvent();
@@ -95,7 +95,7 @@ const Register = () => {
               placeholder="Nazwa użytkownika"
               {...register("username")}
             />
-            {errors.username && (
+            {errors.username && errors.username.message === "string" && (
               <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
                 {errors.username.message}
               </p>
@@ -110,7 +110,7 @@ const Register = () => {
               placeholder="E-mail"
               {...register("email")}
             />
-            {errors.email && (
+            {errors.email && errors.email.message === "string" && (
               <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
                 {errors.email.message}
               </p>
@@ -121,7 +121,7 @@ const Register = () => {
               type="password"
               {...register("password")}
             />
-            {errors.password && (
+            {errors.password && errors.password.message === "string" && (
               <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
                 {errors.password.message}
               </p>
@@ -132,11 +132,12 @@ const Register = () => {
               type="password"
               {...register("confirmPassword")}
             />
-            {errors.confirmPassword && (
-              <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
-                {errors.confirmPassword.message}
-              </p>
-            )}
+            {errors.confirmPassword &&
+              errors.confirmPassword.message === "string" && (
+                <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
             <Button className="w-full" type="submit">
               Utwórz konto
             </Button>

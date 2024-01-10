@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // LOGIN AND REGISTER
-export async function registerUser(user) {
+export async function registerUser(user: any) {
   let response = await axios.post(
     `${import.meta.env.VITE_SERVER_URL}/register`,
     user
@@ -9,7 +9,7 @@ export async function registerUser(user) {
   let data = response.data;
   return data;
 }
-export async function postLogin(user) {
+export async function postLogin(user: any) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/login`,
@@ -27,7 +27,7 @@ export async function logout() {
   console.log(data);
 }
 
-export async function forgotPassword(email) {
+export async function forgotPassword(email: string) {
   let response = await axios.post(
     `${import.meta.env.VITE_SERVER_URL}/forgotPassword`,
     email
@@ -35,7 +35,7 @@ export async function forgotPassword(email) {
   let data = response.data;
   return data;
 }
-export async function resetPassword(passwords, token) {
+export async function resetPassword(passwords: string, token: string) {
   let response = await axios.post(
     `${import.meta.env.VITE_SERVER_URL}/resetPassword`,
     {
@@ -55,7 +55,7 @@ export async function googleAuth() {
 }
 
 // SERVICES
-export async function addNewService(username, service) {
+export async function addNewService(username: string, service: any) {
   try {
     const obj = {
       username,
@@ -72,7 +72,7 @@ export async function addNewService(username, service) {
     console.log(error);
   }
 }
-export async function getUserServices(username) {
+export async function getUserServices(username: string) {
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_SERVER_URL}/getServices`,
@@ -87,7 +87,7 @@ export async function getUserServices(username) {
     throw error;
   }
 }
-export async function removeService(username, serviceId) {
+export async function removeService(username: string, serviceId: number) {
   try {
     const response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/removeService`,
@@ -102,7 +102,11 @@ export async function removeService(username, serviceId) {
     throw error;
   }
 }
-export async function editService(username, serviceId, updatedValue) {
+export async function editService(
+  username: string,
+  serviceId: number,
+  updatedValue: any
+) {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/editService`,
@@ -121,7 +125,7 @@ export async function editService(username, serviceId, updatedValue) {
 }
 
 // CLIENTS
-export async function addNewClient(username, client) {
+export async function addNewClient(username: string, client: any) {
   try {
     const obj = {
       username,
@@ -138,7 +142,7 @@ export async function addNewClient(username, client) {
     console.log(error);
   }
 }
-export async function getClients(username) {
+export async function getClients(username: string) {
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_SERVER_URL}/getClients`,
@@ -153,7 +157,7 @@ export async function getClients(username) {
     throw error;
   }
 }
-export async function removeClient(username, clientId) {
+export async function removeClient(username: string, clientId: number) {
   try {
     const response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/removeClient`,
@@ -168,7 +172,11 @@ export async function removeClient(username, clientId) {
     throw error;
   }
 }
-export async function editClient(username, clientId, updatedValue) {
+export async function editClient(
+  username: string,
+  clientId: number,
+  updatedValue: any
+) {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/editClient`,
@@ -185,7 +193,7 @@ export async function editClient(username, clientId, updatedValue) {
     throw error;
   }
 }
-export async function addVisitToClient(username, event) {
+export async function addVisitToClient(username: string, event: any) {
   try {
     const obj = {
       username,
@@ -202,7 +210,11 @@ export async function addVisitToClient(username, event) {
     console.log(error);
   }
 }
-export async function removeVisitFromClient(username, eventId, clientId) {
+export async function removeVisitFromClient(
+  username: string,
+  eventId: number,
+  clientId: number
+) {
   try {
     const response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/removeVisitFromClient`,
@@ -219,7 +231,7 @@ export async function removeVisitFromClient(username, eventId, clientId) {
 }
 
 // ACTIVE HOURS
-export async function editActiveHours(username, updatedValue) {
+export async function editActiveHours(username: string, updatedValue: any) {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/editActiveHours`,
@@ -235,7 +247,7 @@ export async function editActiveHours(username, updatedValue) {
     throw error;
   }
 }
-export async function getHours(username) {
+export async function getHours(username: string) {
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_SERVER_URL}/getHours`,
@@ -252,7 +264,7 @@ export async function getHours(username) {
 }
 
 // EVENTS
-export async function addEvent(username, event) {
+export async function addEvent(username: string, event: any) {
   try {
     const obj = {
       username,
@@ -269,7 +281,7 @@ export async function addEvent(username, event) {
     console.log(error);
   }
 }
-export async function getEvents(username) {
+export async function getEvents(username: string) {
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_SERVER_URL}/getEvents`,
@@ -284,7 +296,7 @@ export async function getEvents(username) {
     throw error;
   }
 }
-export async function removeEvent(username, eventId) {
+export async function removeEvent(username: string, eventId: number) {
   try {
     const response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/removeEvent`,
@@ -299,7 +311,11 @@ export async function removeEvent(username, eventId) {
     throw error;
   }
 }
-export async function finalizeEvent(username, eventId, finalizedEventData) {
+export async function finalizeEvent(
+  username: string,
+  eventId: number,
+  finalizedEventData: any
+) {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/finalizeEvent`,
@@ -315,7 +331,11 @@ export async function finalizeEvent(username, eventId, finalizedEventData) {
     throw error;
   }
 }
-export async function editEvent(username, eventId, updatedValue) {
+export async function editEvent(
+  username: string,
+  eventId: number,
+  updatedValue: any
+) {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/editEvent`,

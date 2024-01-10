@@ -22,12 +22,12 @@ import {
 import { addNewService } from "../../api/User";
 import { useToast } from "@/components/ui/use-toast";
 
-const ServiceForm = props => {
+const ServiceForm = (props: any) => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // USE STATE
@@ -60,7 +60,7 @@ const ServiceForm = props => {
   );
 
   const onSubmit = async () => {
-    const serviceStructure = {
+    const serviceStructure: any = {
       id: crypto.randomUUID(),
       name: getValues("name"),
       duration: durationService,
@@ -82,7 +82,7 @@ const ServiceForm = props => {
     (_, index) => index * 5
   );
 
-  const formatTime = time => {
+  const formatTime = (time: number) => {
     const hours = Math.floor(time / 60);
     const minutes = time % 60;
     if (time === 0) {
@@ -120,7 +120,7 @@ const ServiceForm = props => {
               }`}
               maxLength={30}
             />
-            <Select required onValueChange={e => setDurationService(e)}>
+            <Select required onValueChange={(e: any) => setDurationService(e)}>
               <SelectTrigger className="col-span-2 text-gray-500">
                 <SelectValue
                   placeholder="Czas trwania"

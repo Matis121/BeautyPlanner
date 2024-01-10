@@ -9,7 +9,7 @@ import { useQuery } from "react-query";
 
 const WorkHours = () => {
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // FETCH DATA
@@ -30,8 +30,8 @@ const WorkHours = () => {
     });
   };
 
-  const handleInputChange = (e, idx, field) => {
-    const updatedHours = [...newValues]; // Tworzenie kopii stanu
+  const handleInputChange = (e: any, idx: number, field: any) => {
+    const updatedHours: any = [...newValues]; // Tworzenie kopii stanu
     if (field === "active") {
       if (updatedHours[idx][field] === true) {
         updatedHours[idx][field] = false;
@@ -62,7 +62,7 @@ const WorkHours = () => {
         <div className="overflow-y-auto shadow-md rounded-md bg-white h-max flex justify-center">
           <div className="flex flex-col max-w-sm p-5 gap-4 items-center">
             {data
-              ? data.map((day, idx) => (
+              ? data.map((day: any, idx: number) => (
                   <div className="grid grid-cols-[1fr,50px,1fr]" key={idx}>
                     <h2 className="flex items-center">{day.dayName}</h2>
                     <div className="flex items-center">

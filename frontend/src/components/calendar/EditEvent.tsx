@@ -30,19 +30,18 @@ import { editEvent } from "../../api/User";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import ClientForm from "../client/ClientForm";
 
 import { getClients, getUserServices } from "../../api/User";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 
-const EditEvent = props => {
+const EditEvent = (props: any) => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
 
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // VARIABLE - ENTRY TIME FOR EVENT
@@ -69,9 +68,9 @@ const EditEvent = props => {
 
   // HANDLERS
   // HANDLE - EVENT DURATION
-  const handleEventDuration = duration => {
+  const handleEventDuration = (duration: number) => {
     const date = new Date(startTimeStr);
-    function addMinutes(date, minutes) {
+    function addMinutes(date: Date, minutes: number) {
       const newDate = new Date(date.getTime());
       // Calculate hours and remaining minutes
       const hoursToAdd = Math.floor(minutes / 60);
@@ -83,7 +82,7 @@ const EditEvent = props => {
       return newDate;
     }
     const endTime = addMinutes(date, duration);
-    const options = {
+    const options: any = {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false, // Use 24-hour format
@@ -101,7 +100,7 @@ const EditEvent = props => {
   );
 
   useEffect(() => {
-    servicesData.map(element => {
+    servicesData.map((element: any) => {
       if (element.id === props.serviceId) {
         setService(element.name);
         setServicePrice(element.price);
@@ -112,7 +111,7 @@ const EditEvent = props => {
   }, [servicesData]);
 
   useEffect(() => {
-    clientsData.map(element => {
+    clientsData.map((element: any) => {
       if (element.id === props.clientId) {
         setClient(element.firstName + " " + element.lastName);
         setClientId(element.id);
@@ -155,17 +154,17 @@ const EditEvent = props => {
   );
 
   // CREATE NEW EVENT
-  const handleAddEvents = async data => {
-    let eventStructure;
+  const handleAddEvents = async (data: any) => {
+    let eventStructure: any;
     // CREATE TIME VALUE
     const startDateStr = new Date(startTimeStr);
     const endDateStr = new Date(startTimeStr);
     // CREATE DATE VALUE
     const dateObject = new Date(startTimeStr);
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const options: any = { year: "numeric", month: "2-digit", day: "2-digit" };
     const dateEvent = dateObject.toLocaleString("en-US", options);
 
-    function createFinalDate(selectDate, timeValue) {
+    function createFinalDate(selectDate: any, timeValue: any) {
       const [hours, minutes] = timeValue.split(":").map(Number);
       selectDate.setHours(hours);
       selectDate.setMinutes(minutes);
@@ -242,7 +241,7 @@ const EditEvent = props => {
                     <CommandEmpty>Brak klienta.</CommandEmpty>
                     <CommandGroup>
                       {clientsData
-                        ? clientsData.map(element => (
+                        ? clientsData.map((element: any) => (
                             <CommandItem
                               key={element.id}
                               value={element.firstName + " " + element.lastName}
@@ -295,7 +294,7 @@ const EditEvent = props => {
                     <CommandEmpty>Brak usługi.</CommandEmpty>
                     <CommandGroup>
                       {servicesData
-                        ? servicesData.map(element => (
+                        ? servicesData.map((element: any) => (
                             <CommandItem
                               key={element.id}
                               value={element.name}

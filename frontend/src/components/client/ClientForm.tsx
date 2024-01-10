@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,20 +12,19 @@ import { Label } from "@/components/ui/label";
 import useCustomForm from "@/hooks/useClientForm";
 import { LuUserPlus } from "react-icons/lu";
 
-const ClientForm = props => {
+const ClientForm = (props: any) => {
   const {
     open,
     setOpen,
     register,
     handleSubmit,
     errors,
-    errorValue,
     onSubmit,
     setPhoneInput,
     phoneInput,
   } = useCustomForm();
 
-  const handleNumberLenght = e => {
+  const handleNumberLenght = (e: any) => {
     if (e.target.value.length > e.target.maxLength) {
       const truncatedValue = e.target.value.slice(0, 9);
       setPhoneInput(truncatedValue);

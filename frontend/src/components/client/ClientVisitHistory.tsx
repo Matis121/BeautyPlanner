@@ -20,7 +20,7 @@ import {
 
 const ClientVisitHistory = () => {
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   const { clientId } = useParams();
@@ -52,7 +52,7 @@ const ClientVisitHistory = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {eventsData.map((element, idx) =>
+              {eventsData.map((element: any) =>
                 element.clientId === clientId ? (
                   <TableRow>
                     <TableCell>{element.date}</TableCell>

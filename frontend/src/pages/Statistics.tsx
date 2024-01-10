@@ -18,7 +18,7 @@ import { useEffect } from "react";
 
 const Statistics = () => {
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // FETCH CLIENTS

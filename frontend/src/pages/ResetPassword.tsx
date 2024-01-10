@@ -14,7 +14,7 @@ import { zodI18nMap } from "zod-i18n-map";
 import translation from "zod-i18n-map/locales/pl/zod.json";
 
 const ResetPassword = () => {
-  const { token } = useParams();
+  const { token }: any = useParams();
   const navigate = useNavigate();
   const loggedIn = localStorage.getItem("user") !== null;
 
@@ -61,7 +61,7 @@ const ResetPassword = () => {
   } = useForm({ resolver: zodResolver(schema) });
 
   // LOGIN TO APP
-  const submitData = async data => {
+  const submitData = async (data: any) => {
     const user = await resetPassword(data, token);
     if (user.success) {
       toastEvent();
@@ -102,7 +102,7 @@ const ResetPassword = () => {
               placeholder="Nowe hasło"
               type="password"
             />
-            {errors.password && (
+            {errors.password && typeof errors.password.message === "string" && (
               <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
                 {errors.password.message}
               </p>
@@ -113,11 +113,12 @@ const ResetPassword = () => {
               placeholder="Powtórz nowe hasło"
               type="password"
             />
-            {errors.confirmPassword && (
-              <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
-                {errors.confirmPassword.message}
-              </p>
-            )}
+            {errors.confirmPassword &&
+              typeof errors.confirmPassword.message === "string" && (
+                <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
             <Button type="submit" className="mt-3 self-end">
               Zapisz
             </Button>

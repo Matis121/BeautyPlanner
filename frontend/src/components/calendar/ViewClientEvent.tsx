@@ -45,17 +45,17 @@ import { LuCheckCircle2 } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import EditEvent from "./EditEvent";
 
-const ViewClientEvent = props => {
+const ViewClientEvent = (props: any) => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   const [servicePrice, setServicePrice] = useState("");
   const [eventStatus, setEventStatus] = useState("finalized");
-  const [clientId, setClientId] = useState("123");
+  const [clientId, setClientId]: any = useState("123");
 
   // FETCH DATA
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
@@ -76,7 +76,7 @@ const ViewClientEvent = props => {
   //
   useEffect(() => {
     if (eventsData) {
-      eventsData.map(element => {
+      eventsData.map((element: any) => {
         if (element.id === props.clickedEventId) {
           setClientId(element.clientId);
         }
@@ -98,7 +98,7 @@ const ViewClientEvent = props => {
   );
 
   const handleFinalizeEvent = async () => {
-    const eventStructure = {
+    const eventStructure: any = {
       servicePrice: servicePrice,
       eventStatus: eventStatus,
     };
@@ -131,7 +131,7 @@ const ViewClientEvent = props => {
         onOpenChange={props.setOpenViewClientEvent}
       >
         {eventsData
-          ? eventsData.map((event, idx) => (
+          ? eventsData.map((event: any, idx: any) => (
               <div key={idx}>
                 {event.id === props.clickedEventId ? (
                   <>
@@ -156,7 +156,7 @@ const ViewClientEvent = props => {
                               Telefon
                             </span>
                             {clientData
-                              ? clientData.map(client =>
+                              ? clientData.map((client: any) =>
                                   client.id === props.eventClientId ? (
                                     <p>{client.phoneNumber}</p>
                                   ) : null

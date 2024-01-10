@@ -17,12 +17,12 @@ import {
 
 const NotivicationBar = () => {
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | any = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // WRAP MENU CONTEXT
-  const { setWrapMenu, wrapMenu } = useContext(WrapMenuContext);
-  const { setToggleMobileMenu, toggleMobileMenu } =
+  const { setWrapMenu, wrapMenu }: any = useContext(WrapMenuContext);
+  const { setToggleMobileMenu, toggleMobileMenu }: any =
     useContext(MobileMenuContext);
 
   // CHECK WIDTH

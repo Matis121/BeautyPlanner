@@ -21,12 +21,12 @@ import {
 import { editService } from "../../api/User";
 import { useMutation, useQueryClient } from "react-query";
 
-const EditServiceForm = props => {
+const EditServiceForm = (props: any) => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // USE STATE
@@ -58,7 +58,7 @@ const EditServiceForm = props => {
   );
 
   const onSubmit = async () => {
-    const serviceStructure = {
+    const serviceStructure: any = {
       id: crypto.randomUUID(),
       name: getValues("name"),
       duration: durationService,
@@ -80,7 +80,7 @@ const EditServiceForm = props => {
     (_, index) => index * 5
   );
 
-  const formatTime = time => {
+  const formatTime = (time: number) => {
     const hours = Math.floor(time / 60);
     const minutes = time % 60;
     if (time === 0) {
@@ -117,7 +117,7 @@ const EditServiceForm = props => {
             onChange={e => setServiceName(e.target.value)}
             placeholder="Nazwa usługi"
           />
-          <Select onValueChange={e => setDurationService(e)}>
+          <Select onValueChange={(e: any) => setDurationService(e)}>
             <SelectTrigger className="col-span-2 text-gray-500">
               <SelectValue placeholder="Czas trwania" />
             </SelectTrigger>

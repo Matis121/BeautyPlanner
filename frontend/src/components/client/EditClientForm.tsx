@@ -14,12 +14,12 @@ import {
 import { editClient } from "../../api/User";
 import { useMutation, useQueryClient } from "react-query";
 
-const EditClientForm = props => {
+const EditClientForm = (props: any) => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   const [open, setOpen] = useState(false);
@@ -54,7 +54,7 @@ const EditClientForm = props => {
 
   // VALIDATE NUMBER MAXLENGTH
 
-  const handleNumberLenght = e => {
+  const handleNumberLenght = (e: any) => {
     if (e.target.value.length > e.target.maxLength) {
       const truncatedValue = e.target.value.slice(0, 9);
       setPhoneNumber(truncatedValue);
@@ -69,7 +69,7 @@ const EditClientForm = props => {
   );
 
   const onSubmit = async () => {
-    const clientStructure = {
+    const clientStructure: any = {
       firstName: getValues("firstName"),
       lastName: getValues("lastName"),
       gender: getValues("gender"),

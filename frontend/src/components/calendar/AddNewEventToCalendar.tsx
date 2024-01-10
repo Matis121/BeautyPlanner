@@ -35,12 +35,12 @@ import ClientForm from "../client/ClientForm";
 import { getClients, getUserServices } from "../../api/User";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 
-const AddNewEventToCalendar = props => {
+const AddNewEventToCalendar = (props: any) => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // VARIABLE - FREE TIME
@@ -70,9 +70,9 @@ const AddNewEventToCalendar = props => {
 
   // HANDLERS
   // HANDLE - EVENT DURATION
-  const handleEventDuration = duration => {
+  const handleEventDuration = (duration: number) => {
     const date = new Date(startTimeStr);
-    function addMinutes(date, minutes) {
+    function addMinutes(date: Date, minutes: number) {
       const newDate = new Date(date.getTime());
       // Calculate hours and remaining minutes
       const hoursToAdd = Math.floor(minutes / 60);
@@ -84,7 +84,7 @@ const AddNewEventToCalendar = props => {
       return newDate;
     }
     const endTime = addMinutes(date, duration);
-    const options = {
+    const options: any = {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false, // Use 24-hour format
@@ -181,26 +181,26 @@ const AddNewEventToCalendar = props => {
   );
 
   // CREATE NEW EVENT
-  const handleAddEvents = async data => {
+  const handleAddEvents = async (data: any) => {
     let isCheckNewClient = false; // Initialize the variable
 
     // EXECUTE NEW CLIENT CHECK
-    clientsData.forEach(element => {
+    clientsData.forEach((element: any) => {
       if (element.id === clientId && element.visits.length === 0) {
         isCheckNewClient = true;
       }
     });
 
-    let eventStructure;
+    let eventStructure: any;
     // CREATE TIME VALUE
     const startDateStr = new Date(startTimeStr);
     const endDateStr = new Date(startTimeStr);
     // CREATE DATE VALUE
     const dateObject = new Date(startTimeStr);
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const options: any = { year: "numeric", month: "2-digit", day: "2-digit" };
     const dateEvent = dateObject.toLocaleString("en-US", options);
 
-    function createFinalDate(selectDate, timeValue) {
+    function createFinalDate(selectDate: any, timeValue: any) {
       const [hours, minutes] = timeValue.split(":").map(Number);
       selectDate.setHours(hours);
       selectDate.setMinutes(minutes);
@@ -307,7 +307,7 @@ const AddNewEventToCalendar = props => {
                       <CommandEmpty>Brak klienta.</CommandEmpty>
                       <CommandGroup>
                         {clientsData
-                          ? clientsData.map(element => (
+                          ? clientsData.map((element: any) => (
                               <CommandItem
                                 key={element.id}
                                 value={
@@ -363,7 +363,7 @@ const AddNewEventToCalendar = props => {
                       <CommandEmpty>Brak usługi.</CommandEmpty>
                       <CommandGroup>
                         {servicesData
-                          ? servicesData.map(element => (
+                          ? servicesData.map((element: any) => (
                               <CommandItem
                                 key={element.id}
                                 value={element.name}

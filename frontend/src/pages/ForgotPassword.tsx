@@ -64,7 +64,7 @@ const ForgotPassword = () => {
   }, [emailInput]);
 
   // LOGIN TO APP
-  const submitData = async data => {
+  const submitData = async (data: any) => {
     const user = await forgotPassword(data);
     if (user.success) {
       toastEvent();
@@ -116,7 +116,7 @@ const ForgotPassword = () => {
               placeholder="E-mail"
               type="text"
             />
-            {errors.email && (
+            {errors.email && errors.email.message === "string" && (
               <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
                 {errors.email.message}
               </p>

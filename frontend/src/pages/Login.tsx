@@ -62,7 +62,7 @@ const Login = () => {
   }, []);
 
   // LOGIN TO APP
-  const submitData = async data => {
+  const submitData = async (data: any) => {
     const user = await postLogin(data);
     if (user.token) {
       localStorage.setItem("user", JSON.stringify(user));

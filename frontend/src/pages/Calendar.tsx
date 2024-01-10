@@ -7,21 +7,17 @@ import interactionPlugin from "@fullcalendar/interaction";
 import BasicLayout from "@/layout/BasicLayout";
 import "../myCalendarStyles.css"; // Import your custom styles
 import { useQuery } from "react-query";
-
 import ViewClientEvent from "@/components/calendar/ViewClientEvent";
 import { LuClock8 } from "react-icons/lu";
 import { LuUser } from "react-icons/lu";
-
 import { getHours, getEvents } from "../api/User";
-
-// SMALL CALENDAR
 import MiniCalendar from "@/components/calendar/MiniCalendar";
 import { useContext } from "react";
 import { SmallCalendarContext } from "@/Contexts/SmallCalendarContext";
 
 const Calendar = () => {
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // USE STATE
@@ -35,20 +31,22 @@ const Calendar = () => {
   const [startTimeEvent, setStartTimeEvent] = useState("");
 
   // SMALL CALENDAR
-  const { toggleSmallCalendar, setToggleSmallCalendar } =
+  const { toggleSmallCalendar, setToggleSmallCalendar }: any =
     useContext(SmallCalendarContext);
 
   // CHANGING DATE BY SMALL CALENDAR
   const [date, setDate] = useState(new Date());
-  const calendarRef = useRef();
+  const calendarRef: any = useRef<FullCalendar | null>(null);
 
   useEffect(() => {
     if (date === undefined) {
       return;
     }
     // Check if the ref has a current value and if the FullCalendar API is available
-    if (calendarRef.current && calendarRef.current.getApi) {
-      calendarRef.current.getApi().gotoDate(date);
+    const typedCalendarRef = calendarRef as React.RefObject<any>;
+
+    if (typedCalendarRef.current && typedCalendarRef.current.getApi) {
+      typedCalendarRef.current.getApi().gotoDate(date);
     }
   }, [date]);
 
@@ -56,8 +54,8 @@ const Calendar = () => {
   const { data: hoursData } = useQuery(["hours"], () => getHours(userData), {
     onSuccess: data => {
       const activeHours = data
-        .filter(hour => hour.active === true)
-        .map(hour => ({
+        .filter((hour: any) => hour.active === true)
+        .map((hour: any) => ({
           daysOfWeek: hour.dayOfWeek,
           startTime: hour.startTime,
           endTime: hour.endTime,
@@ -70,7 +68,7 @@ const Calendar = () => {
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
 
   // CUSTOM EVENT CONTENT
-  const eventContent = arg => {
+  const eventContent = (arg: any) => {
     let bgEventColor;
 
     if (arg.event.extendedProps.freeTime === true) {

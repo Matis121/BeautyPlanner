@@ -26,18 +26,18 @@ const ServiceTable = () => {
   const queryClient = useQueryClient();
 
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // FETCH DATA
   const { data } = useQuery(["services"], () => getUserServices(userData));
 
   // MUTATION
-  const removeServiceMutation = useMutation(serviceId =>
+  const removeServiceMutation = useMutation((serviceId: number) =>
     removeService(userData, serviceId)
   );
 
-  const handleRemoveService = async serviceId => {
+  const handleRemoveService = async (serviceId: any) => {
     try {
       await removeServiceMutation.mutateAsync(serviceId);
       queryClient.invalidateQueries("services");

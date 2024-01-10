@@ -29,18 +29,18 @@ const ClientTable = () => {
   const queryClient = useQueryClient();
 
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // FETCH DATA
   const { data, isLoading } = useQuery(["clients"], () => getClients(userData));
 
   // MUTATION
-  const removeClientMutation = useMutation(clientId =>
+  const removeClientMutation = useMutation((clientId: number) =>
     removeClient(userData, clientId)
   );
 
-  const handleRemoveClient = async clientId => {
+  const handleRemoveClient = async (clientId: any) => {
     try {
       await removeClientMutation.mutateAsync(clientId);
       queryClient.invalidateQueries("clients");
@@ -62,7 +62,7 @@ const ClientTable = () => {
         </TableHeader>
         <TableBody>
           {data
-            ? data.map((client, idx) => (
+            ? data.map((client: any, idx: number) => (
                 <TableRow key={client.id}>
                   <TableCell className="font-medium">{idx + 1}</TableCell>
                   <TableCell>
