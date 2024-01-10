@@ -1,5 +1,5 @@
-import { getClients, getEvents } from "../../api/User";
-import { useQuery, useQueryClient } from "react-query";
+import { getEvents } from "../../api/User";
+import { useQuery } from "react-query";
 import BasicLayout from "@/layout/BasicLayout";
 import { useParams } from "react-router-dom";
 
@@ -26,9 +26,6 @@ const ClientVisitHistory = () => {
   const { clientId } = useParams();
 
   // FETCH DATA
-  const { data: clientsData } = useQuery(["clients"], () =>
-    getClients(userData)
-  );
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
 
   return (

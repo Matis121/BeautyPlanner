@@ -2,7 +2,7 @@ import Sidebar from "@/components/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
 import NotivicationBar from "../components/NotivicationBar";
 
-const BasicLayout = ({ children }) => {
+const BasicLayout = ({ children }: any) => {
   // CHECK WIDTH
   const isMobile = window.innerWidth <= 768;
 

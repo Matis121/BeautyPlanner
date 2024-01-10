@@ -22,7 +22,7 @@ import {
 import { addNewService } from "../../api/User";
 import { useToast } from "@/components/ui/use-toast";
 
-const ServiceForm = (props: any) => {
+const ServiceForm = () => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
@@ -45,7 +45,6 @@ const ServiceForm = (props: any) => {
     reset,
     formState: { errors },
   } = useForm({});
-  const errorValue = "Uzupełnij pole";
 
   const { toast } = useToast();
   const handleToast = () => {

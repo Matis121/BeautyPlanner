@@ -9,7 +9,7 @@ const useClientForm = () => {
   const queryClient = useQueryClient();
 
   // USER DATA
-  const userToken = localStorage.getItem("user");
+  const userToken: string | null = localStorage.getItem("user") ?? "";
   const userData = JSON.parse(userToken).username;
 
   // USE STATE
@@ -46,7 +46,7 @@ const useClientForm = () => {
   );
 
   const onSubmit = async () => {
-    const clientStructure = {
+    const clientStructure: any = {
       id: crypto.randomUUID(),
       firstName: getValues("firstName"),
       lastName: getValues("lastName"),

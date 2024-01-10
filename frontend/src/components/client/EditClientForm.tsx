@@ -40,7 +40,6 @@ const EditClientForm = (props: any) => {
     resetField,
     formState: { errors },
   } = useForm({});
-  const errorValue = "Uzupełnij pole";
 
   // RESET FUNCTION
   const resetValues = () => {

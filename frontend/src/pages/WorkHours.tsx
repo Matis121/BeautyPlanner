@@ -48,7 +48,7 @@ const WorkHours = () => {
     if (!newValues) {
       return;
     }
-    const res = await editActiveHours(userData, newValues);
+    await editActiveHours(userData, newValues);
     toastEvent();
   };
   return (

@@ -1,34 +1,22 @@
 import BasicLayout from "@/layout/BasicLayout";
-import { getClients } from "../api/User";
-import { useQuery } from "react-query";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
-  Brush,
   AreaChart,
   Area,
   ResponsiveContainer,
 } from "recharts";
-import { useEffect } from "react";
 
 const Statistics = () => {
   // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // const userToken: string | null = localStorage.getItem("user") ?? "";
+  // const userData = JSON.parse(userToken).username;
 
   // FETCH CLIENTS
-  const { data: clientsData } = useQuery(["clients"], () =>
-    getClients(userData)
-  );
 
   // VARIABLES
-  let sortedClientData;
-  let mostPopularClient;
 
   // RANDOM DATA
 

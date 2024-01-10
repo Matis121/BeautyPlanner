@@ -51,7 +51,7 @@ const Calendar = () => {
   }, [date]);
 
   // FETCHING HOURS
-  const { data: hoursData } = useQuery(["hours"], () => getHours(userData), {
+  useQuery(["hours"], () => getHours(userData), {
     onSuccess: data => {
       const activeHours = data
         .filter((hour: any) => hour.active === true)

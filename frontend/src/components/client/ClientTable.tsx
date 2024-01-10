@@ -33,7 +33,7 @@ const ClientTable = () => {
   const userData = JSON.parse(userToken).username;
 
   // FETCH DATA
-  const { data, isLoading } = useQuery(["clients"], () => getClients(userData));
+  const { data } = useQuery(["clients"], () => getClients(userData));
 
   // MUTATION
   const removeClientMutation = useMutation((clientId: number) =>

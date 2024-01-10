@@ -51,8 +51,6 @@ const EditServiceForm = (props: any) => {
     resetField("price");
   };
 
-  const errorValue = "Uzupełnij pole";
-
   const editServiceMutation = useMutation(serviceStructure =>
     editService(userData, props.serviceId, serviceStructure)
   );
