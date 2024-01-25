@@ -46,7 +46,7 @@ const Login = () => {
     const fetchUserData = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:5000/login/success",
+          `${import.meta.env.VITE_SERVER_URL}/login/success`
           {
             withCredentials: true,
           }
