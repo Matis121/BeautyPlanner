@@ -31,7 +31,7 @@ const NotivicationBar = () => {
   // LOGOUT
   const handleLogout = async () => {
     localStorage.removeItem("user");
-    window.location.href = "http://localhost:5000/logout";
+    window.location.href = `${import.meta.env.VITE_SERVER_URL}/logout`;
   };
 
   return (

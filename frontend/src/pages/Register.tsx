@@ -148,7 +148,7 @@ const Register = () => {
             </span>
           </div>
           <form
-            action="http://localhost:5000/auth/google/"
+            action={`${import.meta.env.VITE_SERVER_URL}/auth/google/`}
             method="get"
             className="w-full"
           >
