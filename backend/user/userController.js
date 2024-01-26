@@ -44,7 +44,7 @@ const register = async (req, res, next) => {
     );
 
     // Wyślij e-mail z linkiem aktywacyjnym
-    const activationLink = `${process.env.SERVER_URL}:${process.env.PORT}/activate/${activationToken}`;
+    const activationLink = `${process.env.SERVER_URL}/activate/${activationToken}`;
     const mailOptions = {
       from: "mateusz6246@gmail.com",
       to: user.email,
