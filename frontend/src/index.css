@@ -86,11 +86,7 @@ nav a.active:hover {
   z-index: -1;
 }
 .linear-gradient {
-  background: linear-gradient(
-    10deg,
-    hsla(0, 0%, 0%, 1) 0%,
-    hsla(260, 83%, 58%, 1) 100%
-  );
+  background: linear-gradient(10deg, hsla(0, 0%, 0%, 1) 0%, #2157cee6);
 }
 
 /* CALENDAR */

@@ -110,14 +110,14 @@ const Login = () => {
               placeholder="Hasło"
               type="password"
             />
-            <Link to="/forgotPassword" className="self-center">
-              <Button className="mt-2" variant="link">
-                Zapomniałeś hasło?
-              </Button>
-            </Link>
             <Button type="submit" className="mt-4 self-end">
               Zaloguj się
             </Button>
+            <Link to="/forgotPassword" className=" self-center">
+              <Button className="mb-2 mt-4" variant="link">
+                Zapomniałeś hasło?
+              </Button>
+            </Link>
           </form>
           <div className="line my-8">
             <span className="text-muted-foreground px-4 bg-white">
