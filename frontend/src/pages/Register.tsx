@@ -7,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { FieldElement, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import i18next from "i18next";
 import { zodI18nMap } from "zod-i18n-map";
@@ -43,7 +43,7 @@ const Register = () => {
       confirmPassword: z.string().min(5).max(20),
     })
     .refine(data => data.password === data.confirmPassword, {
-      message: "Hasło nie jest identyczne",
+      message: "Hasła nie są identyczne",
       path: ["confirmPassword"],
     });
 
@@ -95,9 +95,9 @@ const Register = () => {
               placeholder="Nazwa użytkownika"
               {...register("username")}
             />
-            {errors.username && errors.username.message === "string" && (
+            {errors.username && (
               <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
-                {errors.username.message}
+                {errors.username.message?.toString()}
               </p>
             )}
             {submitError ? (
@@ -110,34 +110,35 @@ const Register = () => {
               placeholder="E-mail"
               {...register("email")}
             />
-            {errors.email && errors.email.message === "string" && (
+            {errors.email && (
               <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
-                {errors.email.message}
+                {errors.email.message?.toString()}
               </p>
             )}
             <Input
               className=" mb-3"
               placeholder="Hasło"
               type="password"
+              autoComplete="off"
               {...register("password")}
             />
-            {errors.password && errors.password.message === "string" && (
+            {errors.password && (
               <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
-                {errors.password.message}
+                {errors.password.message?.toString()}
               </p>
             )}
             <Input
               className=" mb-3"
               placeholder="Powtórz hasło"
               type="password"
+              autoComplete="off"
               {...register("confirmPassword")}
             />
-            {errors.confirmPassword &&
-              errors.confirmPassword.message === "string" && (
-                <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
+            {errors.confirmPassword && (
+              <p className="text-sm text-muted-foreground -mt-2 mb-2 text-red-500">
+                {errors.confirmPassword.message?.toString()}
+              </p>
+            )}
             <Button className="w-full" type="submit">
               Utwórz konto
             </Button>
