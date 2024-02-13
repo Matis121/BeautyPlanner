@@ -7,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
-import { FieldElement, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import i18next from "i18next";
 import { zodI18nMap } from "zod-i18n-map";
