@@ -30,7 +30,7 @@ const Sidebar = () => {
           </button>
           <div className={`flex flex-col gap-6 items-start mt-8`}>
             <NavLink
-              to="/calendar"
+              to="/"
               className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
@@ -40,7 +40,7 @@ const Sidebar = () => {
               Wizyty
             </p>
             <NavLink
-              to="/calendar"
+              to="/"
               className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
               onClick={() => setToggleMobileMenu(!toggleMobileMenu)}
             >
@@ -96,7 +96,7 @@ const Sidebar = () => {
             }`}
           >
             <NavLink
-              to="/calendar"
+              to="/"
               className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all"
             >
               <p className="logo font-semibold text-xl mb-4">
@@ -107,7 +107,7 @@ const Sidebar = () => {
               Wizyty
             </p>
             <NavLink
-              to="/calendar"
+              to="/"
               className="flex justify-center items-center text-gray-300 hover:cursor-pointer hover:text-gray-400 transition-all "
             >
               <LuCalendarRange

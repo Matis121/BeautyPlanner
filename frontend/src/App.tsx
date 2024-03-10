@@ -54,14 +54,6 @@ function App() {
                 }
               />
               <Route
-                path="/calendar"
-                element={
-                  <PrivateRoute>
-                    <Calendar />
-                  </PrivateRoute>
-                }
-              />
-              <Route
                 path="/clients"
                 element={
                   <PrivateRoute>
