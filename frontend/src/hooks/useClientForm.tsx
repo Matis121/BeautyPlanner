@@ -78,6 +78,7 @@ const useClientForm = () => {
     onSubmit,
     phoneInput,
     setPhoneInput,
+    addNewClientMutation,
   };
 };
 

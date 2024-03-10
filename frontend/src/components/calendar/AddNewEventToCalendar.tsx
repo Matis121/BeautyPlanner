@@ -443,7 +443,9 @@ const AddNewEventToCalendar = (props: any) => {
                 >
                   Anuluj
                 </Button>
-                <Button type="submit">Dodaj</Button>
+                <Button type="submit" disabled={addNewEventMutation.isLoading}>
+                  Dodaj
+                </Button>
               </div>
             </form>
           ) : (
@@ -511,7 +513,9 @@ const AddNewEventToCalendar = (props: any) => {
                 >
                   Anuluj
                 </Button>
-                <Button type="submit">Dodaj</Button>
+                <Button type="submit" disabled={addNewEventMutation.isLoading}>
+                  Dodaj
+                </Button>
               </div>
             </form>
           )}

@@ -22,6 +22,7 @@ const ClientForm = (props: any) => {
     onSubmit,
     setPhoneInput,
     phoneInput,
+    addNewClientMutation,
   } = useCustomForm();
 
   const handleNumberLenght = (e: any) => {
@@ -122,7 +123,9 @@ const ClientForm = (props: any) => {
               >
                 Anuluj
               </Button>
-              <Button type="submit">Zapisz</Button>
+              <Button type="submit" disabled={addNewClientMutation.isLoading}>
+                Dodaj
+              </Button>
             </div>
           </form>
         </DialogContent>

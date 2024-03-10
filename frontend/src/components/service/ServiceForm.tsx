@@ -159,7 +159,9 @@ const ServiceForm = () => {
               >
                 Anuluj
               </Button>
-              <Button type="submit">Zapisz</Button>
+              <Button type="submit" disabled={addNewServiceMutation.isLoading}>
+                Dodaj
+              </Button>
             </div>
           </form>
         </DialogContent>
