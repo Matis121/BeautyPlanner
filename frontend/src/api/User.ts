@@ -150,7 +150,6 @@ export async function getClients(username: string) {
         params: { username: username },
       }
     );
-    console.log(response.data);
     return response.data.clients; // Assuming the response contains a 'clients' field
   } catch (error) {
     console.error("Error while fetching user clients:", error);
@@ -274,7 +273,6 @@ export async function addEvent(username: string, event: any) {
       `${import.meta.env.VITE_SERVER_URL}/addEvent`,
       obj
     );
-    console.log(response);
     let data = response.data;
     return data;
   } catch (error) {
@@ -289,7 +287,6 @@ export async function getEvents(username: string) {
         params: { username: username },
       }
     );
-    console.log(response.data);
     return response.data.events; // Assuming the response contains a 'clients' field
   } catch (error) {
     console.error("Error while fetching user events:", error);

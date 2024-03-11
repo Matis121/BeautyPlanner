@@ -27,6 +27,15 @@ const ClientVisitHistory = () => {
 
   // FETCH DATA
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
+  console.log(eventsData);
+
+  const displayVisitHours = string => {
+    const date = new Date(string);
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const formattedTime = `${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
+    return formattedTime;
+  };
 
   return (
     <BasicLayout>
@@ -53,7 +62,10 @@ const ClientVisitHistory = () => {
                 element.clientId === clientId ? (
                   <TableRow>
                     <TableCell>{element.date}</TableCell>
-                    <TableCell></TableCell>
+                    <TableCell>
+                      {displayVisitHours(element.start)} -{" "}
+                      {displayVisitHours(element.end)}
+                    </TableCell>
                     <TableCell>{element.serviceName}</TableCell>
                     <TableCell>{element.servicePrice} zł</TableCell>
                     <TableCell>
