@@ -89,7 +89,14 @@ const Login = () => {
         <Link to="/register" className="absolute top-6 right-6">
           <Button variant="link">Stwórz konto</Button>
         </Link>
-        <div className="flex justify-center items-center flex-col">
+        <div className="flex justify-center items-center flex-col relative">
+          <div className="flex items-center flex-col rounded-md bg-green-200 py-3 px-8 opacity-75 mb-10">
+            <span className="font-semibold text-lg text-green-900 mb-1">
+              Konto testowe
+            </span>
+            <p className="text-green-900">Login: test2024</p>
+            <p className="text-green-900">Hasło: test2024</p>
+          </div>
           <h1 className="text-2xl font-semibold tracking-tight mb-3">
             Zaloguj się
           </h1>
