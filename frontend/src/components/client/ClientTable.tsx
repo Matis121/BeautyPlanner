@@ -109,7 +109,7 @@ const ClientTable = () => {
                         firstName: client.firstName,
                         lastName: client.lastName,
                         phoneNumber: client.phoneNumber,
-                        emailAddress: client.mailAddress,
+                        mailAddress: client.mailAddress,
                         birthDay: client.birthDay,
                       }}
                     />
