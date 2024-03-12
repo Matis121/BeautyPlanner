@@ -27,9 +27,8 @@ const ClientVisitHistory = () => {
 
   // FETCH DATA
   const { data: eventsData } = useQuery(["events"], () => getEvents(userData));
-  console.log(eventsData);
 
-  const displayVisitHours = string => {
+  const displayVisitHours = (string: string) => {
     const date = new Date(string);
     const hours = date.getUTCHours();
     const minutes = date.getUTCMinutes();
