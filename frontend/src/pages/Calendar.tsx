@@ -202,7 +202,6 @@ const Calendar = () => {
             selectable={true}
             nowIndicator={true}
             dateClick={function (start) {
-              console.log(start);
               setStartTimeEvent(start.dateStr);
               setOpenNewEvent(true);
             }}
