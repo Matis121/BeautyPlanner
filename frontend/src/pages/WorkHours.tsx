@@ -60,11 +60,14 @@ const WorkHours = () => {
           </span>
         </div>
         <div className="overflow-y-auto shadow-md rounded-md bg-white h-max flex justify-center">
-          <div className="flex flex-col max-w-sm p-5 gap-4 items-center">
+          <div className="flex flex-col max-w-sm p-5 gap-6 items-center">
             {data
               ? data.map((day: any, idx: number) => (
-                  <div className="grid grid-cols-[1fr,50px,1fr]" key={idx}>
-                    <h2 className="flex items-center">{day.dayName}</h2>
+                  <div
+                    className="grid grid-cols-[1fr,50px,1fr] gap-4"
+                    key={idx}
+                  >
+                    <h2 className="flex items-center text-lg">{day.dayName}</h2>
                     <div className="flex items-center">
                       <Checkbox
                         checked={day.active ? true : false}
