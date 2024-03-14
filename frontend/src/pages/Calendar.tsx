@@ -201,8 +201,9 @@ const Calendar = () => {
             eventContent={eventContent}
             selectable={true}
             nowIndicator={true}
-            select={function (start) {
-              setStartTimeEvent(start.startStr);
+            dateClick={function (start) {
+              console.log(start);
+              setStartTimeEvent(start.dateStr);
               setOpenNewEvent(true);
             }}
             eventClick={function (info) {
@@ -210,7 +211,6 @@ const Calendar = () => {
               setClickedEventId(info.event._def.publicId);
               setOpenViewClientEvent(true);
             }}
-            longPressDelay={1}
           />
         </div>
       </div>
