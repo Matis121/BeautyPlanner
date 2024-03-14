@@ -121,6 +121,14 @@ tr {
   height: 30px !important;
 }
 
+.fc-timegrid-slot:first-of-type {
+  font-size: 15px;
+}
+tbody tr:nth-of-type(12n + 13) .fc-timegrid-slot {
+  color: black;
+  font-size: 17px !important;
+}
+
 /* CALENDAR BUTTONS */
 .fc-button {
   min-height: 33.5px !important;

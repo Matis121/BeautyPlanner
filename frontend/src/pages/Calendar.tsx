@@ -194,8 +194,8 @@ const Calendar = () => {
               meridiem: false,
               hour12: false,
             }}
-            slotLabelInterval="01:00"
-            slotDuration="00:15:00"
+            slotLabelInterval="00:15"
+            slotDuration="00:05:00"
             height={"90vh"}
             events={eventsData}
             eventContent={eventContent}
