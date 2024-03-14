@@ -210,6 +210,7 @@ const Calendar = () => {
               setClickedEventId(info.event._def.publicId);
               setOpenViewClientEvent(true);
             }}
+            longPressDelay={1}
           />
         </div>
       </div>

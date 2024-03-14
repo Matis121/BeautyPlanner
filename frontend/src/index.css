@@ -112,20 +112,13 @@ nav a.active:hover {
   font-weight: 500;
 }
 
-/* CALENDAR TOP */
-/* .fc-toolbar {
-  padding: 1.5rem 3rem;
-  background-color: white;
-  border-radius: 10px;
-} */
-
 .fc-toolbar-title {
   font-size: 1.3em !important;
   color: rgb(68, 68, 68);
 }
 
 tr {
-  height: 45px !important;
+  height: 30px !important;
 }
 
 /* CALENDAR BUTTONS */
