@@ -7,7 +7,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,10 +18,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
 import {
   getEvents,
   removeEvent,
@@ -31,7 +28,6 @@ import {
   removeVisitFromClient,
 } from "../../api/User";
 import { useQuery, useQueryClient, useMutation } from "react-query";
-
 import { LuPhone } from "react-icons/lu";
 import { LuUser } from "react-icons/lu";
 import { LuCalendar } from "react-icons/lu";
@@ -41,18 +37,19 @@ import { LuTag } from "react-icons/lu";
 import { LuBanknote } from "react-icons/lu";
 import { LuClipboardEdit } from "react-icons/lu";
 import { LuCheckCircle2 } from "react-icons/lu";
-
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 import { useEffect, useState } from "react";
 import EditEvent from "./EditEvent";
 
 const ViewClientEvent = (props: any) => {
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
+  
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
-
+  // STATES
   const [servicePrice, setServicePrice] = useState("");
   const [eventStatus, setEventStatus] = useState("finalized");
   const [clientId, setClientId]: any = useState("123");

@@ -20,14 +20,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import EditServiceForm from "./EditServiceForm";
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 
 const ServiceTable = () => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
   // FETCH DATA
   const { data } = useQuery(["services"], () => getUserServices(userData));

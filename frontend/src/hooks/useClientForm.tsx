@@ -3,14 +3,15 @@ import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { addNewClient } from "../api/User";
 import { useQueryClient, useMutation } from "react-query";
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 
 const useClientForm = () => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
   // USE STATE
   const [open, setOpen] = useState(false);

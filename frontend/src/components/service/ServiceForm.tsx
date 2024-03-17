@@ -21,14 +21,15 @@ import {
 } from "@/components/ui/select";
 import { addNewService } from "../../api/User";
 import { useToast } from "@/components/ui/use-toast";
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 
 const ServiceForm = () => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
   // USE STATE
   const [open, setOpen] = useState(false);

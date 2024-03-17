@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { WrapMenuContext } from "@/Contexts/WrapMenuContext";
 import { MobileMenuContext } from "@/Contexts/MobileMenuContext";
+import { UserDataContext } from "@/Contexts/UserDataContext";
 import { useContext } from "react";
 import {
   LuChevronDown,
@@ -16,9 +17,8 @@ import {
 } from "react-icons/lu";
 
 const NotivicationBar = () => {
-  // USER DATA
-  const userToken: string | any = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
   // WRAP MENU CONTEXT
   const { setWrapMenu, wrapMenu }: any = useContext(WrapMenuContext);

@@ -14,12 +14,16 @@ import ClientVisitHistory from "./components/client/ClientVisitHistory";
 import { WrapMenuContext } from "./Contexts/WrapMenuContext";
 import { MobileMenuContext } from "./Contexts/MobileMenuContext";
 import { SmallCalendarContext } from "./Contexts/SmallCalendarContext";
+import { UserDataContext } from "./Contexts/UserDataContext";
 import { useEffect, useState } from "react";
 
 function App() {
   const [wrapMenu, setWrapMenu] = useState(false);
   const [toggleMobileMenu, setToggleMobileMenu] = useState(false);
   const [toggleSmallCalendar, setToggleSmallCalendar] = useState(true);
+
+  const userToken: string | null = localStorage.getItem("user") ?? "";
+  const userData = JSON.parse(userToken).username;
 
   // CHECK WIDTH
   const isMobile = window.innerWidth <= 768;
@@ -40,60 +44,66 @@ function App() {
           <SmallCalendarContext.Provider
             value={{ toggleSmallCalendar, setToggleSmallCalendar }}
           >
-            <Routes>
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/forgotPassword" element={<ForgotPassword />} />
-              <Route path="/resetPassword/:token" element={<ResetPassword />} />
-              <Route
-                path="/"
-                element={
-                  <PrivateRoute>
-                    <Calendar />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/clients"
-                element={
-                  <PrivateRoute>
-                    <Clients />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/clients/:clientId"
-                element={
-                  <PrivateRoute>
-                    <ClientVisitHistory />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/services"
-                element={
-                  <PrivateRoute>
-                    <Services />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/statistics"
-                element={
-                  <PrivateRoute>
-                    <Statistics />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/work-hours"
-                element={
-                  <PrivateRoute>
-                    <WorkHours />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
+            <UserDataContext.Provider value={{ userData }}>
+              <Routes>
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/forgotPassword" element={<ForgotPassword />} />
+                <Route
+                  path="/resetPassword/:token"
+                  element={<ResetPassword />}
+                />
+
+                <Route
+                  path="/"
+                  element={
+                    <PrivateRoute>
+                      <Calendar />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/clients"
+                  element={
+                    <PrivateRoute>
+                      <Clients />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/clients/:clientId"
+                  element={
+                    <PrivateRoute>
+                      <ClientVisitHistory />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/services"
+                  element={
+                    <PrivateRoute>
+                      <Services />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/statistics"
+                  element={
+                    <PrivateRoute>
+                      <Statistics />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/work-hours"
+                  element={
+                    <PrivateRoute>
+                      <WorkHours />
+                    </PrivateRoute>
+                  }
+                />
+              </Routes>
+            </UserDataContext.Provider>
           </SmallCalendarContext.Provider>
         </MobileMenuContext.Provider>
       </WrapMenuContext.Provider>

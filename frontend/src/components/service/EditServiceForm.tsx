@@ -20,14 +20,15 @@ import {
 } from "@/components/ui/select";
 import { editService } from "../../api/User";
 import { useMutation, useQueryClient } from "react-query";
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 
 const EditServiceForm = (props: any) => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
   // USE STATE
   const [open, setOpen] = useState(false);

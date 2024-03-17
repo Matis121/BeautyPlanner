@@ -12,13 +12,13 @@ import { LuClock8 } from "react-icons/lu";
 import { LuUser } from "react-icons/lu";
 import { getHours, getEvents } from "../api/User";
 import MiniCalendar from "@/components/calendar/MiniCalendar";
-import { useContext } from "react";
 import { SmallCalendarContext } from "@/Contexts/SmallCalendarContext";
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 
 const Calendar = () => {
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
   // USE STATE
   const [clickedEventId, setClickedEventId] = useState("");

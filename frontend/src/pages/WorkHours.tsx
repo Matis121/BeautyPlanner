@@ -6,11 +6,12 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { editActiveHours, getHours } from "../api/User";
 import { useQuery } from "react-query";
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 
 const WorkHours = () => {
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
   // FETCH DATA
   const { data } = useQuery(["hours"], () => getHours(userData));

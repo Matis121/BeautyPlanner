@@ -14,7 +14,8 @@ import { getClients, removeClient } from "../../api/User";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { LuFileClock } from "react-icons/lu";
 import { Link } from "react-router-dom";
-
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 import {
   Table,
   TableBody,
@@ -28,9 +29,8 @@ const ClientTable = () => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
   // FETCH DATA
   const { data } = useQuery(["clients"], () => getClients(userData));

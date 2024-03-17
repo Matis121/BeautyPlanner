@@ -2,13 +2,13 @@ import { getEvents } from "../../api/User";
 import { useQuery } from "react-query";
 import BasicLayout from "@/layout/BasicLayout";
 import { useParams } from "react-router-dom";
-
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 import {
   Table,
   TableBody,
@@ -19,10 +19,10 @@ import {
 } from "@/components/ui/table";
 
 const ClientVisitHistory = () => {
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
+  // PARAMS
   const { clientId } = useParams();
 
   // FETCH DATA

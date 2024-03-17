@@ -3,11 +3,12 @@ import ServiceTable from "@/components/service/ServiceTable";
 import ServiceForm from "@/components/service/ServiceForm";
 import { getUserServices } from "../api/User";
 import { useQuery } from "react-query";
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 
 const Services = () => {
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
   // FETCH DATA
   const { data } = useQuery(["services"], () => getUserServices(userData));

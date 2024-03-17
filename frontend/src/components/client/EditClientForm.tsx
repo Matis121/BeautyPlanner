@@ -13,15 +13,17 @@ import {
 } from "@/components/ui/dialog";
 import { editClient } from "../../api/User";
 import { useMutation, useQueryClient } from "react-query";
+import { UserDataContext } from "@/Contexts/UserDataContext";
+import { useContext } from "react";
 
 const EditClientForm = (props: any) => {
   // QUERY CLIENT
   const queryClient = useQueryClient();
 
-  // USER DATA
-  const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  // USER DATA CONTEXT
+  const { userData }: any = useContext(UserDataContext);
 
+  // STATES
   const [open, setOpen] = useState(false);
 
   // FORM EDIT VALUES
