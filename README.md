@@ -3,6 +3,8 @@
 
 The Beauty Planner is a React-based calendar designed to help hairdressers, barbers, and beauty specialists organize their day.
 
+**Live:** https://beautyplanner-client.vercel.app/
+
 ![App Screenshot](https://i.ibb.co/2KK7Tr3/beauty-planner.png)
 
 
