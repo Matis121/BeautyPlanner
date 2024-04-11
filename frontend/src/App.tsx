@@ -23,7 +23,7 @@ function App() {
   const [toggleSmallCalendar, setToggleSmallCalendar] = useState(true);
 
   const userToken: string | null = localStorage.getItem("user") ?? "";
-  const userData = JSON.parse(userToken).username;
+  const userData = userToken ? JSON.parse(userToken).username ?? null : null;
 
   // CHECK WIDTH
   const isMobile = window.innerWidth <= 768;
