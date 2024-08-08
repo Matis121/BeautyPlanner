@@ -11,15 +11,15 @@ The Beauty Planner is a React-based calendar designed to help hairdressers, barb
 
 ## Main features
 
-- Create clients
-- Create services
-- Schedule visits based on added clients and services in the calendar
-- Set aside free time in the calendar
-- Modify working hours
-- View the history of visits for every client in the database
-- New clients are labeled to inform you in the calendar view
-- Utilize a mini calendar for quick date changes
-- Change the view in the calendar (day, week, month)
+- Creating clients
+- Creating services
+- Scheduling visits based on added clients and services in the calendar
+- Setting aside free time in the calendar
+- Modifying working hours
+- Viewing the history of visits for every client in the database
+- Labeling new clients to inform you in the calendar view
+- Utilizing a mini calendar for quick date changes
+- Changing the view in the calendar (day, week, month)
 
 
 ## Tech Stack
